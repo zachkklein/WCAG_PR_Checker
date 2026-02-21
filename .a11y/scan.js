@@ -5,6 +5,7 @@
  *
  * Usage:
  *   node .a11y/scan.js --baseUrl http://localhost:3000 --output baseline.json
+ *   node .a11y/scan.js --baseUrl http://localhost:3000 --output out.json [--config /path/to/config.json]
  */
 
 const { chromium } = require('playwright');
@@ -16,9 +17,10 @@ const minimist = require('minimist');
 const args = minimist(process.argv.slice(2));
 const baseUrl = (args.baseUrl || 'http://localhost:3000').replace(/\/$/, '');
 const outputFile = args.output || 'scan-output.json';
+const configPath = args.config || path.join(__dirname, 'config.json');
 
 const config = JSON.parse(
-  fs.readFileSync(path.join(__dirname, 'config.json'), 'utf8')
+  fs.readFileSync(configPath, 'utf8')
 );
 
 async function scanPage(page, urlPath, config) {

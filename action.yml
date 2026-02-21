@@ -1,0 +1,134 @@
+# WCAG PR Checker — reusable GitHub Action
+# Run a11y regression checks on PRs or update baseline on push to main.
+#
+# Requires the calling repo to have .a11y/config.json with "urls" to scan.
+# For baseline mode, the workflow needs permissions: contents: write.
+
+name: 'WCAG PR Checker'
+description: 'Run axe accessibility scans, diff against baseline, and comment on PRs'
+branding:
+  icon: 'eye'
+  color: 'green'
+
+inputs:
+  mode:
+    description: 'pr-check = scan both branches, diff, comment on PR; baseline = scan main and commit baseline'
+    required: true
+    default: 'pr-check'
+  build-command:
+    description: 'Command to build the app (e.g. npm run build)'
+    required: false
+    default: 'npm run build'
+  output-dir:
+    description: 'Directory where the build output is written (e.g. dist)'
+    required: false
+    default: 'dist'
+  node-version:
+    description: 'Node.js version'
+    required: false
+    default: '20'
+  config-path:
+    description: 'Path to .a11y/config.json (URLs to scan). For pr-check use pr-branch path.'
+    required: false
+    default: ''
+  pr-branch-path:
+    description: 'Path where the PR branch is checked out (mode=pr-check only)'
+    required: false
+    default: 'pr-branch'
+  main-branch-path:
+    description: 'Path where the base branch is checked out (mode=pr-check only)'
+    required: false
+    default: 'main-branch'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Resolve config path
+      id: config
+      shell: bash
+      run: |
+        if [ -n "${{ inputs.config-path }}" ]; then
+          echo "path=${{ inputs.config-path }}" >> $GITHUB_OUTPUT
+        elif [ "${{ inputs.mode }}" = "pr-check" ]; then
+          echo "path=${{ inputs.pr-branch-path }}/.a11y/config.json" >> $GITHUB_OUTPUT
+        else
+          echo "path=.a11y/config.json" >> $GITHUB_OUTPUT
+        fi
+
+    - name: Setup Node
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ inputs.node-version }}
+
+    - name: Install action dependencies
+      shell: bash
+      run: |
+        cd "$GITHUB_ACTION_PATH"
+        npm install
+        npx playwright install chromium --with-deps
+
+    - name: Install and build (PR check)
+      if: inputs.mode == 'pr-check'
+      shell: bash
+      run: |
+        for dir in "${{ inputs.main-branch-path }}" "${{ inputs.pr-branch-path }}"; do
+          (cd "$dir" && (npm ci || npm install) && ${{ inputs.build-command }})
+        done
+
+    - name: Install and build (baseline)
+      if: inputs.mode == 'baseline'
+      shell: bash
+      run: |
+        npm ci || npm install
+        ${{ inputs.build-command }}
+
+    - name: Serve and scan (PR check)
+      if: inputs.mode == 'pr-check'
+      shell: bash
+      env:
+        CONFIG: ${{ steps.config.outputs.path }}
+        ACTION_PATH: $GITHUB_ACTION_PATH
+        WORKSPACE: ${{ github.workspace }}
+      run: |
+        export PATH="$ACTION_PATH/node_modules/.bin:$PATH"
+        (cd "$WORKSPACE/${{ inputs.main-branch-path }}" && npx serve ${{ inputs.output-dir }} -l 4000 &)
+        (cd "$WORKSPACE/${{ inputs.pr-branch-path }}" && npx serve ${{ inputs.output-dir }} -l 5000 &)
+        npx wait-on http://localhost:4000 http://localhost:5000 --timeout 30000
+        (cd "$ACTION_PATH" && node .a11y/scan.js --config "$WORKSPACE/$CONFIG" --baseUrl http://localhost:4000 --output "$WORKSPACE/${{ inputs.pr-branch-path }}/baseline.json")
+        (cd "$ACTION_PATH" && node .a11y/scan.js --config "$WORKSPACE/$CONFIG" --baseUrl http://localhost:5000 --output "$WORKSPACE/${{ inputs.pr-branch-path }}/pr.json")
+        (cd "$ACTION_PATH" && node .a11y/diff.js --baseline "$WORKSPACE/${{ inputs.pr-branch-path }}/baseline.json" --head "$WORKSPACE/${{ inputs.pr-branch-path }}/pr.json" --output "$WORKSPACE/${{ inputs.pr-branch-path }}/diff.json") || true
+        (cd "$ACTION_PATH" && node .a11y/comment.js --diff "$WORKSPACE/${{ inputs.pr-branch-path }}/diff.json")
+
+    - name: Serve and scan (baseline)
+      if: inputs.mode == 'baseline'
+      shell: bash
+      env:
+        CONFIG: ${{ steps.config.outputs.path }}
+        ACTION_PATH: $GITHUB_ACTION_PATH
+        WORKSPACE: ${{ github.workspace }}
+      run: |
+        export PATH="$ACTION_PATH/node_modules/.bin:$PATH"
+        npx serve ${{ inputs.output-dir }} -l 3000 &
+        npx wait-on http://localhost:3000 --timeout 30000
+        (cd "$ACTION_PATH" && node .a11y/scan.js --config "$WORKSPACE/$CONFIG" --baseUrl http://localhost:3000 --output "$WORKSPACE/.a11y/baseline.json")
+
+    - name: Commit baseline
+      if: inputs.mode == 'baseline'
+      shell: bash
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+        git add .a11y/baseline.json
+        git diff --staged --quiet || git commit -m "chore: update a11y baseline [skip ci]"
+        git push
+
+    - name: Upload scan artifacts (PR check)
+      if: always() && inputs.mode == 'pr-check'
+      uses: actions/upload-artifact@v4
+      with:
+        name: a11y-scan-results
+        path: |
+          ${{ inputs.pr-branch-path }}/baseline.json
+          ${{ inputs.pr-branch-path }}/pr.json
+          ${{ inputs.pr-branch-path }}/diff.json
+        retention-days: 7
