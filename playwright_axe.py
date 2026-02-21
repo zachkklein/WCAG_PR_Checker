@@ -13,7 +13,7 @@ async def run_axe(url: str):
 
         # Inject axe-core
         await page.add_script_tag(
-            url="https://cdnjs.cloudflare.com/ajax/libs/axe-core/4.7.5/axe.min.js"
+            await page.add_script_tag(url="https://cdnjs.cloudflare.com/ajax/libs/axe-core/4.9.1/axe.min.js")
         )
 
         # Run axe
