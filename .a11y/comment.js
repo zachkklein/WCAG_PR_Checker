@@ -64,8 +64,8 @@ function buildComment(diff) {
   const { summary, newViolations, resolvedViolations, impactDelta, regression } = diff;
 
   const statusHeader = regression
-    ? `## ♿ Accessibility Check — ❌ Regressions Found`
-    : `## ♿ Accessibility Check — ✅ No Regressions`;
+    ? `##  Accessibility errors found`
+    : `##  No accessibility errors found`;
 
   const summaryTable = `
 | | Baseline | This PR | Delta |
@@ -88,12 +88,12 @@ function buildComment(diff) {
       .join('\n');
 
     newSection = `
-### 🚨 New Violations (${newViolations.length})
+###  New Violations (${newViolations.length})
 
 These were introduced by this PR and must be fixed before merging.
 
-| Impact | Rule | WCAG | Page | Selector | Docs |
-|--------|------|------|------|----------|------|
+| Impact | Rule | WCAG | Page | Selector | Documentation |
+|--------|------|------|------|----------|---------------|
 ${rows}
 
 <details>
@@ -107,7 +107,7 @@ ${newViolations
 - **Element**: \`${v.target.join(' > ')}\`
 - **HTML**: \`${v.html.slice(0, 120)}\`
 - **Issue**: ${v.failureSummary}
-- **Docs**: ${v.helpUrl}
+- **Documentation**: ${v.helpUrl}
 `
   )
   .join('\n---\n')}
@@ -118,7 +118,7 @@ ${newViolations
   let resolvedSection = '';
   if (resolvedViolations.length > 0) {
     resolvedSection = `
-### ✅ Resolved Violations (${resolvedViolations.length})
+### Resolved Violations (${resolvedViolations.length})
 
 Great work — this PR fixed the following issues:
 
