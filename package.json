@@ -1,0 +1,19 @@
+{
+    "name": "a11y-diff",
+    "version": "1.0.0",
+    "description": "Accessibility regression detection for GitHub PRs",
+    "private": true,
+    "scripts": {
+      "scan": "node .a11y/scan.js",
+      "diff": "node .a11y/diff.js",
+      "comment": "node .a11y/comment.js",
+      "build": "vite build"
+    },
+    "dependencies": {
+      "@axe-core/playwright": "^4.9.0",
+      "minimist": "^1.2.8",
+      "playwright": "^1.42.0",
+      "serve": "^14.2.0",
+      "wait-on": "^7.0.1"
+    }
+  }
