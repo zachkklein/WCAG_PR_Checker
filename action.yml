@@ -128,15 +128,23 @@ runs:
         npm run ${{ inputs.BUILD_COMMAND }}
 
     # ── 8. Serve both builds ──────────────────────────────────────────────────
+    # Use the action's bundled serve/wait-on (no npx download). Give servers time
+    # to bind before wait-on so we don't timeout on slow runners.
     - name: Serve both builds
       shell: bash
       run: |
-        npx --yes serve _a11y_base/${{ inputs.APP_DIR }}/${{ inputs.BUILD_DIR }} -l 4000 > /tmp/serve-4000.log 2>&1 &
-        npx --yes serve _a11y_pr/${{ inputs.APP_DIR }}/${{ inputs.BUILD_DIR }} -l 5000 > /tmp/serve-5000.log 2>&1 &
-        
-        npx --yes wait-on http://127.0.0.1:4000 --timeout 30000 \
+        export PATH="${{ github.action_path }}/node_modules/.bin:$PATH"
+        BASE_DIR="_a11y_base/${{ inputs.APP_DIR }}/${{ inputs.BUILD_DIR }}"
+        PR_DIR="_a11y_pr/${{ inputs.APP_DIR }}/${{ inputs.BUILD_DIR }}"
+
+        serve "$BASE_DIR" -l 4000 > /tmp/serve-4000.log 2>&1 &
+        serve "$PR_DIR" -l 5000 > /tmp/serve-5000.log 2>&1 &
+
+        echo "Waiting for servers to bind..."
+        sleep 5
+        wait-on http://127.0.0.1:4000 --timeout 60000 \
           || (echo "Base branch server failed:" && cat /tmp/serve-4000.log && exit 1)
-        npx --yes wait-on http://127.0.0.1:5000 --timeout 30000 \
+        wait-on http://127.0.0.1:5000 --timeout 60000 \
           || (echo "PR branch server failed:" && cat /tmp/serve-5000.log && exit 1)
 
         echo "Both servers ready."
@@ -198,3 +206,4 @@ runs:
           /tmp/a11y_pr.json
           /tmp/a11y_diff.json
         retention-days: 7
+        if-no-files-found: ignore
