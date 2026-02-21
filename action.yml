@@ -131,8 +131,8 @@ runs:
     - name: Serve both builds
       shell: bash
       run: |
-        npx --yes serve _a11y_base/${{ inputs.APP_DIR }}/${{ inputs.BUILD_DIR }} -l 4000 --listen 0.0.0.0 > /tmp/serve-4000.log 2>&1 &
-        npx --yes serve _a11y_pr/${{ inputs.APP_DIR }}/${{ inputs.BUILD_DIR }} -l 5000 --listen 0.0.0.0 > /tmp/serve-5000.log 2>&1 &
+        npx --yes serve _a11y_base/${{ inputs.APP_DIR }}/${{ inputs.BUILD_DIR }} -l 4000 > /tmp/serve-4000.log 2>&1 &
+        npx --yes serve _a11y_pr/${{ inputs.APP_DIR }}/${{ inputs.BUILD_DIR }} -l 5000 > /tmp/serve-5000.log 2>&1 &
         
         npx --yes wait-on http://127.0.0.1:4000 --timeout 30000 \
           || (echo "Base branch server failed:" && cat /tmp/serve-4000.log && exit 1)
