@@ -128,8 +128,8 @@ runs:
         npm run ${{ inputs.BUILD_COMMAND }}
 
     # ── 8. Serve both builds ──────────────────────────────────────────────────
-    # Use the action's bundled serve/wait-on (no npx download). Give servers time
-    # to bind before wait-on so we don't timeout on slow runners.
+    # Wait for ports with tcp: so we only require the server to be listening,
+    # not returning 2xx (Next.js static export may 404 on HEAD / until routes exist).
     - name: Serve both builds
       shell: bash
       run: |
@@ -141,10 +141,9 @@ runs:
         serve "$PR_DIR" -l 5000 > /tmp/serve-5000.log 2>&1 &
 
         echo "Waiting for servers to bind..."
-        sleep 5
-        wait-on http://127.0.0.1:4000 --timeout 60000 \
+        wait-on tcp:127.0.0.1:4000 --timeout 60000 \
           || (echo "Base branch server failed:" && cat /tmp/serve-4000.log && exit 1)
-        wait-on http://127.0.0.1:5000 --timeout 60000 \
+        wait-on tcp:127.0.0.1:5000 --timeout 60000 \
           || (echo "PR branch server failed:" && cat /tmp/serve-5000.log && exit 1)
 
         echo "Both servers ready."
