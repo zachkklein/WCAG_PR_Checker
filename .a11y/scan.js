@@ -33,7 +33,7 @@ async function scanPage(page, urlPath, config) {
     try {
       await page.waitForLoadState('networkidle', { timeout: 10000 });
     } catch {
-      console.warn(`  ⚠ networkidle timeout on ${urlPath}, continuing`);
+      console.warn(`networkidle timeout on ${urlPath}, continuing`);
     }
   }
 
@@ -60,7 +60,7 @@ async function scanPage(page, urlPath, config) {
 }
 
 async function main() {
-  console.log('\n🔍 a11y-diff scanner starting');
+  console.log('\n a11y-diff scanner starting');
   console.log(`   baseUrl : ${baseUrl}`);
   console.log(`   output  : ${outputFile}`);
   console.log(`   urls    : ${config.urls.join(', ')}\n`);
@@ -96,15 +96,15 @@ async function main() {
   };
 
   fs.writeFileSync(outputFile, JSON.stringify(output, null, 2));
-  console.log(`\n✅ Scan written to ${outputFile}`);
+  console.log(`\n Scan written to ${outputFile}`);
 
   if (errors.length > 0) {
-    console.error(`\n❌ ${errors.length} page(s) failed to scan.`);
+    console.error(`\n ${errors.length} page(s) failed to scan.`);
     process.exit(1);
   }
 }
 
 main().catch((err) => {
-  console.error('\n💥 Fatal scan error:', err.message);
+  console.error('\n Fatal scan error:', err.message);
   process.exit(1);
 });

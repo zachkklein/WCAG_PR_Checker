@@ -80,7 +80,7 @@ function countByImpact(fingerprintMap) {
 }
 
 function main() {
-  console.log('\n📊 a11y-diff running');
+  console.log('\n a11y-diff running');
   console.log(`   baseline : ${baselineFile}`);
   console.log(`   head     : ${headFile}`);
   console.log(`   output   : ${outputFile}\n`);
@@ -142,7 +142,7 @@ function main() {
   console.log(`  Unchanged           : ${unchangedCount}`);
 
   if (regression) {
-    console.error(`\n❌ REGRESSION DETECTED — ${newViolations.length} new accessibility violation(s)\n`);
+    console.error(`\n REGRESSION DETECTED — ${newViolations.length} new accessibility violation(s)\n`);
 
     // Print each new violation to logs for immediate visibility
     for (const v of newViolations) {
@@ -155,7 +155,7 @@ function main() {
     fs.writeFileSync(outputFile, JSON.stringify(diff, null, 2));
     process.exit(1);
   } else {
-    console.log('\n✅ No accessibility regressions detected.');
+    console.log('\n No accessibility regressions detected.');
     fs.writeFileSync(outputFile, JSON.stringify(diff, null, 2));
     process.exit(0);
   }
