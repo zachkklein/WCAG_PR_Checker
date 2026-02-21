@@ -1,34 +1,36 @@
 /**
  * diff.js
  * Compares two axe scan JSON files (baseline vs PR head) and outputs a diff.
- * A violation is matched by: rule id + CSS selector target.
+ * A violation is matched by: rule id + CSS selector target + HTML length.
  *
  * Usage:
- *   node .a11y/diff.js --baseline baseline.json --head pr.json --output diff.json
+ *   node diff.js --baseline baseline.json --head pr.json --output diff.json
  *
  * Exit codes:
  *   0 — no regressions
- *   1 — regressions detected (new violations exist)
+ *   1 — regressions detected
  */
+
+'use strict';
 
 const fs = require('fs');
 const minimist = require('minimist');
 
 const args = minimist(process.argv.slice(2));
 const baselineFile = args.baseline;
-const headFile = args.head;
-const outputFile = args.output || 'diff.json';
+const headFile     = args.head;
+const outputFile   = args.output || 'diff.json';
 
 if (!baselineFile || !headFile) {
-  console.error('Usage: node diff.js --baseline <file> --head <file> --output <file>');
+  console.error('Usage: node diff.js --baseline <file> --head <file> [--output <file>]');
   process.exit(1);
 }
 
 /**
- * Build a fingerprint string for a single violation node.
+ * Build a stable fingerprint for a single violation node.
  * Format: "ruleId::selector1>selector2::htmlLength"
- * Using HTML length (not content) avoids false positives from minor markup tweaks
- * while still distinguishing between different elements.
+ * Using HTML length (not content) avoids false positives from minor markup
+ * tweaks while still distinguishing between different elements.
  */
 function fingerprint(violationId, node) {
   const target = node.target.join('>');
@@ -37,9 +39,8 @@ function fingerprint(violationId, node) {
 }
 
 /**
- * Flatten a scan result's pages into a map of:
- *   fingerprint -> { violation metadata, urlPath }
- * This lets us compare across the full site, not just per-page.
+ * Flatten all pages in a scan result into a single Map of:
+ *   fingerprint → violation metadata
  */
 function buildFingerprintMap(scanResult) {
   const map = new Map();
@@ -49,16 +50,16 @@ function buildFingerprintMap(scanResult) {
       for (const node of violation.nodes) {
         const fp = fingerprint(violation.id, node);
         map.set(fp, {
-          id: violation.id,
-          impact: violation.impact,
-          description: violation.description,
-          helpUrl: violation.helpUrl,
-          tags: violation.tags || [],
-          urlPath: page.urlPath,
-          target: node.target,
-          html: node.html,
+          id:             violation.id,
+          impact:         violation.impact,
+          description:    violation.description,
+          helpUrl:        violation.helpUrl,
+          tags:           violation.tags || [],
+          urlPath:        page.urlPath,
+          target:         node.target,
+          html:           node.html,
           failureSummary: node.failureSummary,
-          fingerprint: fp,
+          fingerprint:    fp,
         });
       }
     }
@@ -67,12 +68,9 @@ function buildFingerprintMap(scanResult) {
   return map;
 }
 
-/**
- * Summarise violation counts by impact level for a scan result.
- */
-function countByImpact(fingerprintMap) {
+function countByImpact(map) {
   const counts = { critical: 0, serious: 0, moderate: 0, minor: 0 };
-  for (const v of fingerprintMap.values()) {
+  for (const v of map.values()) {
     if (counts[v.impact] !== undefined) counts[v.impact]++;
     else counts[v.impact] = 1;
   }
@@ -80,53 +78,43 @@ function countByImpact(fingerprintMap) {
 }
 
 function main() {
-  console.log('\n a11y-diff running');
+  console.log('\n📊 a11y-diff diffing');
   console.log(`   baseline : ${baselineFile}`);
   console.log(`   head     : ${headFile}`);
   console.log(`   output   : ${outputFile}\n`);
 
   const baseline = JSON.parse(fs.readFileSync(baselineFile, 'utf8'));
-  const head = JSON.parse(fs.readFileSync(headFile, 'utf8'));
+  const head     = JSON.parse(fs.readFileSync(headFile, 'utf8'));
 
   const baselineMap = buildFingerprintMap(baseline);
-  const headMap = buildFingerprintMap(head);
+  const headMap     = buildFingerprintMap(head);
 
-  // New violations: in head but NOT in baseline
   const newViolations = [];
   for (const [fp, v] of headMap) {
-    if (!baselineMap.has(fp)) {
-      newViolations.push(v);
-    }
+    if (!baselineMap.has(fp)) newViolations.push(v);
   }
 
-  // Resolved violations: in baseline but NOT in head
   const resolvedViolations = [];
   for (const [fp, v] of baselineMap) {
-    if (!headMap.has(fp)) {
-      resolvedViolations.push(v);
-    }
+    if (!headMap.has(fp)) resolvedViolations.push(v);
   }
 
-  // Unchanged: in both
   const unchangedCount = [...headMap.keys()].filter((fp) => baselineMap.has(fp)).length;
-
-  const baselineCounts = countByImpact(baselineMap);
-  const headCounts = countByImpact(headMap);
-  const regression = newViolations.length > 0;
+  const regression     = newViolations.length > 0;
 
   const diff = {
     generatedAt: new Date().toISOString(),
     regression,
     summary: {
-      baselineTotal: baselineMap.size,
-      headTotal: headMap.size,
-      newViolations: newViolations.length,
+      baselineTotal:     baselineMap.size,
+      headTotal:         headMap.size,
+      newViolations:     newViolations.length,
       resolvedViolations: resolvedViolations.length,
-      unchanged: unchangedCount,
+      unchanged:         unchangedCount,
     },
     impactDelta: {
-      baseline: baselineCounts,
-      head: headCounts,
+      baseline: countByImpact(baselineMap),
+      head:     countByImpact(headMap),
     },
     newViolations,
     resolvedViolations,
@@ -134,7 +122,6 @@ function main() {
 
   fs.writeFileSync(outputFile, JSON.stringify(diff, null, 2));
 
-  // Human-readable summary to CI logs
   console.log(`  Baseline violations : ${baselineMap.size}`);
   console.log(`  Head violations     : ${headMap.size}`);
   console.log(`  New (regressions)   : ${newViolations.length}`);
@@ -142,23 +129,18 @@ function main() {
   console.log(`  Unchanged           : ${unchangedCount}`);
 
   if (regression) {
-    console.error(`\n REGRESSION DETECTED — ${newViolations.length} new accessibility violation(s)\n`);
-
-    // Print each new violation to logs for immediate visibility
+    console.error(`\n❌ REGRESSION — ${newViolations.length} new accessibility violation(s)\n`);
     for (const v of newViolations) {
       console.error(`  [${v.impact.toUpperCase()}] ${v.id} on ${v.urlPath}`);
       console.error(`    Selector : ${v.target.join(' > ')}`);
       console.error(`    Summary  : ${v.failureSummary}`);
       console.error(`    Help     : ${v.helpUrl}\n`);
     }
-
-    fs.writeFileSync(outputFile, JSON.stringify(diff, null, 2));
     process.exit(1);
-  } else {
-    console.log('\n No accessibility regressions detected.');
-    fs.writeFileSync(outputFile, JSON.stringify(diff, null, 2));
-    process.exit(0);
   }
+
+  console.log('\n✅ No regressions detected.');
+  process.exit(0);
 }
 
 main();

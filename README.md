@@ -1,34 +1,23 @@
-# WCAG PR Checker
+# a11y-diff
 
-Accessibility regression detection for GitHub PRs. Runs [axe](https://github.com/dequelabs/axe-core) on your built app, diffs results against the base branch, and posts a comment on the PR. Optionally updates a committed baseline on push to `main`.
+> Detect accessibility regressions between pull requests — without punishing existing debt.
 
-**Jumbohack 2026**
+Unlike standard axe CI integrations that pass/fail absolutely, **a11y-diff compares accessibility health over time**. It blocks a PR only if it makes things *worse* — so teams with legacy debt can hold the line without first fixing everything.
 
 ---
 
-## Use as a GitHub Action
+## How it works
 
-Other repos can use this as a reusable action. You only need a config file in your repo; the action brings its own scripts and dependencies.
+1. On every PR, the action builds both the **base branch** and the **PR branch**
+2. Runs [axe-core](https://github.com/dequelabs/axe-core) on both via Playwright
+3. Diffs the results — new violations are flagged, resolved violations are celebrated
+4. Posts a structured comment to the PR and optionally fails the check
 
-### 1. Add config in your repo
+---
 
-Create **`.a11y/config.json`** in the repo you want to check, with the URLs to scan (paths relative to your app’s origin):
+## Usage
 
-```json
-{
-  "urls": ["/", "/about", "/dashboard"],
-  "ignore": [],
-  "waitForNetworkIdle": true,
-  "extraWaitMs": 500,
-  "impactLevels": ["critical", "serious", "moderate", "minor"]
-}
-```
-
-### 2. Add workflows
-
-**PR check** (runs on every pull request):
-
-Create **`.github/workflows/a11y-check.yml`**:
+Add this to `.github/workflows/a11y.yml` in any repository:
 
 ```yaml
 name: Accessibility Regression Check
@@ -42,96 +31,133 @@ jobs:
     permissions:
       contents: read
       pull-requests: write
-
     steps:
-      - name: Checkout PR branch
-        uses: actions/checkout@v4
+      - uses: your-org/a11y-diff-action@v1
         with:
-          path: pr-branch
-
-      - name: Checkout base branch
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.pull_request.base.sha }}
-          path: main-branch
-
-      - name: Run a11y check
-        uses: YOUR_USERNAME/WCAG_PR_Checker@v1
-        with:
-          mode: pr-check
+          APP_DIR: '.'
+          BUILD_DIR: 'dist'
+          URLS: '/,/about,/dashboard'
 ```
 
-**Baseline update** (runs on push to `main`, commits updated baseline):
+That's it. No scripts to copy, no config files to manage.
 
-Create **`.github/workflows/a11y-baseline.yml`**:
+---
 
-```yaml
-name: Update Accessibility Baseline
+## Inputs
 
-on:
-  push:
-    branches:
-      - main
+| Input | Description | Default |
+|-------|-------------|---------|
+| `APP_DIR` | Path to your app directory relative to repo root. Use `"."` if your app is at the root. | `.` |
+| `BUILD_DIR` | Static build output directory (`dist`, `out`, `build`). | `dist` |
+| `BUILD_COMMAND` | npm script to build your app. | `build` |
+| `URLS` | Comma-separated URL paths to scan. | `/` |
+| `IGNORE_RULES` | Comma-separated axe rule IDs to skip (e.g. `"duplicate-id,color-contrast"`). | `` |
+| `FAIL_ON_REGRESSION` | Fail the check when new violations are found. Set `"false"` to report only. | `true` |
+| `IMPACT_LEVEL` | Minimum severity to track: `minor`, `moderate`, `serious`, `critical`. | `moderate` |
+| `WAIT_FOR_NETWORK_IDLE` | Wait for network idle before scanning. Recommended for SPAs. | `true` |
+| `EXTRA_WAIT_MS` | Additional milliseconds to wait after page load before scanning. | `500` |
+| `TOKEN` | GitHub token with `pull-requests: write`. | `github.token` |
 
-jobs:
-  baseline:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
+## Outputs
 
-    steps:
-      - uses: actions/checkout@v4
+| Output | Description |
+|--------|-------------|
+| `new_violations` | Number of new violations introduced by this PR |
+| `resolved_violations` | Number of violations resolved by this PR |
+| `regression` | `"true"` or `"false"` |
 
-      - name: Update baseline
-        uses: YOUR_USERNAME/WCAG_PR_Checker@v1
-        with:
-          mode: baseline
+---
+
+## Example PR comment
+
+When regressions are found, the action posts a comment like this:
+
+```
+♿ Accessibility Check — ❌ Regressions Found
+
+|                  | Baseline | This PR | Delta  |
+|------------------|----------|---------|--------|
+| Total violations | 12       | 14      | +2     |
+| 🔴 Critical      | 0        | 1       | +1 ⬆️  |
+| 🟠 Serious       | 3        | 4       | +1 ⬆️  |
+
+🚨 New Violations (2)
+| Impact       | Rule            | WCAG        | Page  | Selector    | Docs |
+|--------------|-----------------|-------------|-------|-------------|------|
+| 🔴 critical  | color-contrast  | WCAG 2.1 AA | /     | #submit-btn | docs |
 ```
 
-Replace `YOUR_USERNAME` with your GitHub username or org (e.g. `goldm/WCAG_PR_Checker`). Use `@v1` after you tag a release (see **Publishing** below), or `@main` to follow the default branch.
+---
 
-### 3. Action inputs (optional)
+## Framework compatibility
 
-| Input | Default | Description |
-|-------|---------|-------------|
-| `mode` | `pr-check` | `pr-check` = scan both branches, diff, comment on PR; `baseline` = scan and commit baseline |
-| `build-command` | `npm run build` | Command to build the app |
-| `output-dir` | `dist` | Directory containing the built app (for `serve`) |
-| `node-version` | `20` | Node.js version |
-| `config-path` | (auto) | Path to `.a11y/config.json`; defaults to `pr-branch/.a11y/config.json` (pr-check) or `.a11y/config.json` (baseline) |
-| `pr-branch-path` | `pr-branch` | Where the PR branch is checked out |
-| `main-branch-path` | `main-branch` | Where the base branch is checked out |
+The action requires your app to produce a **static export** that can be served with `npx serve`. Most frameworks support this:
 
-Example with a different build:
+| Framework | Build command | Output dir | Notes |
+|-----------|--------------|------------|-------|
+| Vite | `vite build` | `dist` | Works out of the box |
+| Next.js | `next build` | `out` | Requires `output: 'export'` in `next.config.ts` |
+| Create React App | `react-scripts build` | `build` | Works out of the box |
+| Nuxt | `nuxt generate` | `.output/public` | Use static generation mode |
+
+---
+
+## Examples
+
+### Vite app at repo root
 
 ```yaml
-- uses: YOUR_USERNAME/WCAG_PR_Checker@v1
+- uses: your-org/a11y-diff-action@v1
   with:
-    mode: pr-check
-    build-command: npm run build:prod
-    output-dir: build
+    APP_DIR: '.'
+    BUILD_DIR: 'dist'
+    URLS: '/,/about'
 ```
 
-### 4. Requirements in your repo
+### Next.js app in a subdirectory
 
-- **Node/npm** project with a `package.json`
-- A **build script** that produces a static output (e.g. `npm run build` → `dist/`). The action runs `npx serve <output-dir>` to serve it.
-- For **baseline**: the workflow needs `permissions: contents: write` so it can push the updated `.a11y/baseline.json`.
+```yaml
+- uses: your-org/a11y-diff-action@v1
+  with:
+    APP_DIR: 'frontend'
+    BUILD_DIR: 'out'
+    URLS: '/,/dashboard'
+```
+
+### Report-only mode (never fails the build)
+
+```yaml
+- uses: your-org/a11y-diff-action@v1
+  with:
+    FAIL_ON_REGRESSION: 'false'
+    URLS: '/,/about,/contact'
+```
+
+### Only track serious and critical violations
+
+```yaml
+- uses: your-org/a11y-diff-action@v1
+  with:
+    IMPACT_LEVEL: 'serious'
+    URLS: '/'
+```
 
 ---
 
-## Publishing the action
+## Repository structure
 
-1. **Tag a release** so others can pin a version (e.g. `v1`):
-   ```bash
-   git tag -a v1 -m "WCAG PR Checker v1"
-   git push origin v1
-   ```
-2. Callers use `uses: YOUR_USERNAME/WCAG_PR_Checker@v1` (or `@main` for latest).
-3. No need to publish to the Marketplace; any public repo can be used as `owner/repo@ref`.
+```
+a11y-diff-action/
+├── action.yml          # Action definition and inputs
+├── package.json        # Self-contained dependencies
+└── src/
+    ├── scan.js         # Playwright + axe-core scanner
+    ├── diff.js         # Violation diffing logic
+    └── comment.js      # PR comment formatting and posting
+```
 
 ---
 
-## Local / non-Action usage
+## License
 
-Clone this repo, copy `.a11y/` and the workflows into your app repo, add the same npm dependencies, and run the workflows or scripts locally. See the repo’s `.github/workflows/` and `.a11y/` for the full setup.
+MIT

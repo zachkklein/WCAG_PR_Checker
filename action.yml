@@ -1,134 +1,200 @@
-# WCAG PR Checker — reusable GitHub Action
-# Run a11y regression checks on PRs or update baseline on push to main.
-#
-# Requires the calling repo to have .a11y/config.json with "urls" to scan.
-# For baseline mode, the workflow needs permissions: contents: write.
+name: 'A11y Diff'
+description: 'Detect accessibility regressions between your PR and main. Fails the check if violations increase — without punishing existing debt.'
+author: 'a11y-diff'
 
-name: 'WCAG PR Checker'
-description: 'Run axe accessibility scans, diff against baseline, and comment on PRs'
 branding:
   icon: 'eye'
-  color: 'green'
+  color: 'blue'
 
 inputs:
-  mode:
-    description: 'pr-check = scan both branches, diff, comment on PR; baseline = scan main and commit baseline'
-    required: true
-    default: 'pr-check'
-  build-command:
-    description: 'Command to build the app (e.g. npm run build)'
+  APP_DIR:
+    description: 'Path to your app directory relative to the repo root (e.g. "my-app", "frontend", or "." for root).'
     required: false
-    default: 'npm run build'
-  output-dir:
-    description: 'Directory where the build output is written (e.g. dist)'
+    default: '.'
+
+  BUILD_DIR:
+    description: 'The static build output directory name (e.g. "out", "dist", "build").'
     required: false
     default: 'dist'
-  node-version:
-    description: 'Node.js version'
+
+  BUILD_COMMAND:
+    description: 'The npm script used to build your app.'
     required: false
-    default: '20'
-  config-path:
-    description: 'Path to .a11y/config.json (URLs to scan). For pr-check use pr-branch path.'
+    default: 'build'
+
+  URLS:
+    description: 'Comma-separated list of URL paths to scan (e.g. "/,/about,/dashboard").'
+    required: false
+    default: '/'
+
+  IGNORE_RULES:
+    description: 'Comma-separated list of axe rule IDs to ignore (e.g. "color-contrast,duplicate-id").'
     required: false
     default: ''
-  pr-branch-path:
-    description: 'Path where the PR branch is checked out (mode=pr-check only)'
+
+  FAIL_ON_REGRESSION:
+    description: 'Fail the check if new violations are introduced. Set to "false" to report only.'
     required: false
-    default: 'pr-branch'
-  main-branch-path:
-    description: 'Path where the base branch is checked out (mode=pr-check only)'
+    default: 'true'
+
+  IMPACT_LEVEL:
+    description: 'Minimum impact level to track. One of: minor, moderate, serious, critical.'
     required: false
-    default: 'main-branch'
+    default: 'moderate'
+
+  WAIT_FOR_NETWORK_IDLE:
+    description: 'Wait for network idle before scanning each page. Recommended for SPAs.'
+    required: false
+    default: 'true'
+
+  EXTRA_WAIT_MS:
+    description: 'Additional wait time in milliseconds after page load before scanning.'
+    required: false
+    default: '500'
+
+  TOKEN:
+    description: 'GitHub token with pull-requests: write permission.'
+    required: false
+    default: ${{ github.token }}
+
+outputs:
+  new_violations:
+    description: 'Number of new violations introduced by this PR.'
+  resolved_violations:
+    description: 'Number of violations resolved by this PR.'
+  regression:
+    description: 'Whether a regression was detected ("true" or "false").'
 
 runs:
   using: 'composite'
   steps:
-    - name: Resolve config path
-      id: config
-      shell: bash
-      run: |
-        if [ -n "${{ inputs.config-path }}" ]; then
-          echo "path=${{ inputs.config-path }}" >> $GITHUB_OUTPUT
-        elif [ "${{ inputs.mode }}" = "pr-check" ]; then
-          echo "path=${{ inputs.pr-branch-path }}/.a11y/config.json" >> $GITHUB_OUTPUT
-        else
-          echo "path=.a11y/config.json" >> $GITHUB_OUTPUT
-        fi
+    # ── 1. Checkout PR branch ─────────────────────────────────────────────────
+    - name: Checkout PR branch
+      uses: actions/checkout@v4
+      with:
+        path: _a11y_pr
 
+    # ── 2. Checkout base (main) branch ───────────────────────────────────────
+    - name: Checkout base branch
+      uses: actions/checkout@v4
+      with:
+        ref: ${{ github.event.pull_request.base.sha }}
+        path: _a11y_base
+
+    # ── 3. Setup Node ─────────────────────────────────────────────────────────
     - name: Setup Node
       uses: actions/setup-node@v4
       with:
-        node-version: ${{ inputs.node-version }}
+        node-version: 20
 
+    # ── 4. Install action's own dependencies ─────────────────────────────────
     - name: Install action dependencies
       shell: bash
       run: |
-        cd "$GITHUB_ACTION_PATH"
-        npm install
+        cd ${{ github.action_path }}
+        npm ci
+
+    # ── 5. Install Playwright browser ────────────────────────────────────────
+    - name: Install Playwright browser
+      shell: bash
+      run: |
+        cd ${{ github.action_path }}
         npx playwright install chromium --with-deps
 
-    - name: Install and build (PR check)
-      if: inputs.mode == 'pr-check'
+    # ── 6. Install & build PR branch ─────────────────────────────────────────
+    - name: Install dependencies (PR branch)
       shell: bash
       run: |
-        for dir in "${{ inputs.main-branch-path }}" "${{ inputs.pr-branch-path }}"; do
-          (cd "$dir" && (npm ci || npm install) && ${{ inputs.build-command }})
-        done
+        cd _a11y_pr/${{ inputs.APP_DIR }}
+        npm ci
 
-    - name: Install and build (baseline)
-      if: inputs.mode == 'baseline'
+    - name: Build PR branch
       shell: bash
       run: |
-        npm ci || npm install
-        ${{ inputs.build-command }}
+        cd _a11y_pr/${{ inputs.APP_DIR }}
+        npm run ${{ inputs.BUILD_COMMAND }}
 
-    - name: Serve and scan (PR check)
-      if: inputs.mode == 'pr-check'
+    # ── 7. Install & build base branch ───────────────────────────────────────
+    - name: Install dependencies (base branch)
+      shell: bash
+      run: |
+        cd _a11y_base/${{ inputs.APP_DIR }}
+        npm ci
+
+    - name: Build base branch
+      shell: bash
+      run: |
+        cd _a11y_base/${{ inputs.APP_DIR }}
+        npm run ${{ inputs.BUILD_COMMAND }}
+
+    # ── 8. Serve both builds ──────────────────────────────────────────────────
+    - name: Serve both builds
+      shell: bash
+      run: |
+        npx --yes serve _a11y_base/${{ inputs.APP_DIR }}/${{ inputs.BUILD_DIR }} -l 4000 > /tmp/serve-4000.log 2>&1 &
+        npx --yes serve _a11y_pr/${{ inputs.APP_DIR }}/${{ inputs.BUILD_DIR }} -l 5000 > /tmp/serve-5000.log 2>&1 &
+
+        npx --yes wait-on http://localhost:4000 --timeout 30000 \
+          || (echo "Base branch server failed:" && cat /tmp/serve-4000.log && exit 1)
+        npx --yes wait-on http://localhost:5000 --timeout 30000 \
+          || (echo "PR branch server failed:" && cat /tmp/serve-5000.log && exit 1)
+
+        echo "Both servers ready."
+
+    # ── 9. Scan base branch ───────────────────────────────────────────────────
+    - name: Scan base branch
+      shell: bash
+      run: |
+        node ${{ github.action_path }}/src/scan.js \
+          --baseUrl http://localhost:4000 \
+          --output /tmp/a11y_baseline.json \
+          --urls "${{ inputs.URLS }}" \
+          --ignore "${{ inputs.IGNORE_RULES }}" \
+          --impactLevel "${{ inputs.IMPACT_LEVEL }}" \
+          --waitForNetworkIdle "${{ inputs.WAIT_FOR_NETWORK_IDLE }}" \
+          --extraWaitMs "${{ inputs.EXTRA_WAIT_MS }}"
+
+    # ── 10. Scan PR branch ────────────────────────────────────────────────────
+    - name: Scan PR branch
+      shell: bash
+      run: |
+        node ${{ github.action_path }}/src/scan.js \
+          --baseUrl http://localhost:5000 \
+          --output /tmp/a11y_pr.json \
+          --urls "${{ inputs.URLS }}" \
+          --ignore "${{ inputs.IGNORE_RULES }}" \
+          --impactLevel "${{ inputs.IMPACT_LEVEL }}" \
+          --waitForNetworkIdle "${{ inputs.WAIT_FOR_NETWORK_IDLE }}" \
+          --extraWaitMs "${{ inputs.EXTRA_WAIT_MS }}"
+
+    # ── 11. Diff results ──────────────────────────────────────────────────────
+    - name: Diff accessibility results
+      shell: bash
+      run: |
+        node ${{ github.action_path }}/src/diff.js \
+          --baseline /tmp/a11y_baseline.json \
+          --head /tmp/a11y_pr.json \
+          --output /tmp/a11y_diff.json || true
+
+    # ── 12. Post PR comment ───────────────────────────────────────────────────
+    - name: Post PR comment
       shell: bash
       env:
-        CONFIG: ${{ steps.config.outputs.path }}
-        ACTION_PATH: $GITHUB_ACTION_PATH
-        WORKSPACE: ${{ github.workspace }}
+        GITHUB_TOKEN: ${{ inputs.TOKEN }}
+        PR_NUMBER: ${{ github.event.pull_request.number }}
+        GITHUB_REPOSITORY: ${{ github.repository }}
+        FAIL_ON_REGRESSION: ${{ inputs.FAIL_ON_REGRESSION }}
       run: |
-        export PATH="$ACTION_PATH/node_modules/.bin:$PATH"
-        (cd "$WORKSPACE/${{ inputs.main-branch-path }}" && npx serve ${{ inputs.output-dir }} -l 4000 &)
-        (cd "$WORKSPACE/${{ inputs.pr-branch-path }}" && npx serve ${{ inputs.output-dir }} -l 5000 &)
-        npx wait-on http://localhost:4000 http://localhost:5000 --timeout 30000
-        (cd "$ACTION_PATH" && node .a11y/scan.js --config "$WORKSPACE/$CONFIG" --baseUrl http://localhost:4000 --output "$WORKSPACE/${{ inputs.pr-branch-path }}/baseline.json")
-        (cd "$ACTION_PATH" && node .a11y/scan.js --config "$WORKSPACE/$CONFIG" --baseUrl http://localhost:5000 --output "$WORKSPACE/${{ inputs.pr-branch-path }}/pr.json")
-        (cd "$ACTION_PATH" && node .a11y/diff.js --baseline "$WORKSPACE/${{ inputs.pr-branch-path }}/baseline.json" --head "$WORKSPACE/${{ inputs.pr-branch-path }}/pr.json" --output "$WORKSPACE/${{ inputs.pr-branch-path }}/diff.json") || true
-        (cd "$ACTION_PATH" && node .a11y/comment.js --diff "$WORKSPACE/${{ inputs.pr-branch-path }}/diff.json")
+        node ${{ github.action_path }}/src/comment.js --diff /tmp/a11y_diff.json
 
-    - name: Serve and scan (baseline)
-      if: inputs.mode == 'baseline'
-      shell: bash
-      env:
-        CONFIG: ${{ steps.config.outputs.path }}
-        ACTION_PATH: $GITHUB_ACTION_PATH
-        WORKSPACE: ${{ github.workspace }}
-      run: |
-        export PATH="$ACTION_PATH/node_modules/.bin:$PATH"
-        npx serve ${{ inputs.output-dir }} -l 3000 &
-        npx wait-on http://localhost:3000 --timeout 30000
-        (cd "$ACTION_PATH" && node .a11y/scan.js --config "$WORKSPACE/$CONFIG" --baseUrl http://localhost:3000 --output "$WORKSPACE/.a11y/baseline.json")
-
-    - name: Commit baseline
-      if: inputs.mode == 'baseline'
-      shell: bash
-      run: |
-        git config user.name "github-actions[bot]"
-        git config user.email "github-actions[bot]@users.noreply.github.com"
-        git add .a11y/baseline.json
-        git diff --staged --quiet || git commit -m "chore: update a11y baseline [skip ci]"
-        git push
-
-    - name: Upload scan artifacts (PR check)
-      if: always() && inputs.mode == 'pr-check'
+    # ── 13. Upload scan artifacts for debugging ───────────────────────────────
+    - name: Upload scan artifacts
+      if: always()
       uses: actions/upload-artifact@v4
       with:
-        name: a11y-scan-results
+        name: a11y-diff-results
         path: |
-          ${{ inputs.pr-branch-path }}/baseline.json
-          ${{ inputs.pr-branch-path }}/pr.json
-          ${{ inputs.pr-branch-path }}/diff.json
+          /tmp/a11y_baseline.json
+          /tmp/a11y_pr.json
+          /tmp/a11y_diff.json
         retention-days: 7
