@@ -1,0 +1,3243 @@
+{
+    "inapplicable": [
+        {
+            "description": "Ensures every accesskey attribute value is unique",
+            "help": "accesskey attribute value must be unique",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/3.1/accesskeys?application=axeAPI",
+            "id": "accesskeys",
+            "impact": null,
+            "nodes": [],
+            "tags": [
+                "best-practice",
+                "cat.keyboard"
+            ]
+        },
+        {
+            "description": "Ensures <area> elements of image maps have alternate text",
+            "help": "Active <area> elements must have alternate text",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/3.1/area-alt?application=axeAPI",
+            "id": "area-alt",
+            "impact": null,
+            "nodes": [],
+            "tags": [
+                "cat.text-alternatives",
+                "wcag2a",
+                "wcag111",
+                "section508",
+                "section508.22.a"
+            ]
+        },
+        {
+            "description": "Ensures unsupported DPUB roles are only used on elements with implicit fallback roles",
+            "help": "Unsupported DPUB ARIA roles should be used on elements with implicit fallback roles",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/3.1/aria-dpub-role-fallback?application=axeAPI",
+            "id": "aria-dpub-role-fallback",
+            "impact": null,
+            "nodes": [],
+            "tags": [
+                "cat.aria",
+                "wcag2a",
+                "wcag131"
+            ]
+        },
+        {
+            "description": "Ensure the autocomplete attribute is correct and suitable for the form field",
+            "help": "autocomplete attribute must be used correctly",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/3.1/autocomplete-valid?application=axeAPI",
+            "id": "autocomplete-valid",
+            "impact": null,
+            "nodes": [],
+            "tags": [
+                "cat.forms",
+                "wcag21aa",
+                "wcag135"
+            ]
+        },
+        {
+            "description": "Ensures <blink> elements are not used",
+            "help": "<blink> elements are deprecated and must not be used",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/3.1/blink?application=axeAPI",
+            "id": "blink",
+            "impact": null,
+            "nodes": [],
+            "tags": [
+                "cat.time-and-media",
+                "wcag2a",
+                "wcag222",
+                "section508",
+                "section508.22.j"
+            ]
+        },
+        {
+            "description": "Ensures related <input type=\"checkbox\"> elements have a group and that the group designation is consistent",
+            "help": "Checkbox inputs with the same name attribute value must be part of a group",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/3.1/checkboxgroup?application=axeAPI",
+            "id": "checkboxgroup",
+            "impact": null,
+            "nodes": [],
+            "tags": [
+                "cat.forms",
+                "best-practice"
+            ]
+        },
+        {
+            "description": "Ensures <dl> elements are structured correctly",
+            "help": "<dl> elements must only directly contain properly-ordered <dt> and <dd> groups, <script> or <template> elements",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/3.1/definition-list?application=axeAPI",
+            "id": "definition-list",
+            "impact": null,
+            "nodes": [],
+            "tags": [
+                "cat.structure",
+                "wcag2a",
+                "wcag131"
+            ]
+        },
+        {
+            "description": "Ensures <dt> and <dd> elements are contained by a <dl>",
+            "help": "<dt> and <dd> elements must be contained by a <dl>",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/3.1/dlitem?application=axeAPI",
+            "id": "dlitem",
+            "impact": null,
+            "nodes": [],
+            "tags": [
+                "cat.structure",
+                "wcag2a",
+                "wcag131"
+            ]
+        },
+        {
+            "description": "Ensures every id attribute value of active elements is unique",
+            "help": "IDs of active elements must be unique",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/3.1/duplicate-id-active?application=axeAPI",
+            "id": "duplicate-id-active",
+            "impact": null,
+            "nodes": [],
+            "tags": [
+                "cat.parsing",
+                "wcag2a",
+                "wcag411"
+            ]
+        },
+        {
+            "description": "Ensures every id attribute value used in ARIA and in labels is unique",
+            "help": "IDs used in ARIA and labels must be unique",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/3.1/duplicate-id-aria?application=axeAPI",
+            "id": "duplicate-id-aria",
+            "impact": null,
+            "nodes": [],
+            "tags": [
+                "cat.parsing",
+                "wcag2a",
+                "wcag411"
+            ]
+        },
+        {
+            "description": "Ensures <iframe> and <frame> elements contain the axe-core script",
+            "help": "Frames must be tested with axe-core",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/3.1/frame-tested?application=axeAPI",
+            "id": "frame-tested",
+            "impact": null,
+            "nodes": [],
+            "tags": [
+                "cat.structure",
+                "review-item"
+            ]
+        },
+        {
+            "description": "Ensures <iframe> and <frame> elements contain a unique title attribute",
+            "help": "Frames must have a unique title attribute",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/3.1/frame-title-unique?application=axeAPI",
+            "id": "frame-title-unique",
+            "impact": null,
+            "nodes": [],
+            "tags": [
+                "cat.text-alternatives",
+                "best-practice"
+            ]
+        },
+        {
+            "description": "Ensures <iframe> and <frame> elements contain a non-empty title attribute",
+            "help": "Frames must have title attribute",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/3.1/frame-title?application=axeAPI",
+            "id": "frame-title",
+            "impact": null,
+            "nodes": [],
+            "tags": [
+                "cat.text-alternatives",
+                "wcag2a",
+                "wcag241",
+                "wcag412",
+                "section508",
+                "section508.22.i"
+            ]
+        },
+        {
+            "description": "Ensure that HTML elements with both valid lang and xml:lang attributes agree on the base language of the page",
+            "help": "HTML elements with lang and xml:lang must have the same base language",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/3.1/html-xml-lang-mismatch?application=axeAPI",
+            "id": "html-xml-lang-mismatch",
+            "impact": null,
+            "nodes": [],
+            "tags": [
+                "cat.language",
+                "wcag2a",
+                "wcag311"
+            ]
+        },
+        {
+            "description": "Ensures <input type=\"image\"> elements have alternate text",
+            "help": "Image buttons must have alternate text",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/3.1/input-image-alt?application=axeAPI",
+            "id": "input-image-alt",
+            "impact": null,
+            "nodes": [],
+            "tags": [
+                "cat.text-alternatives",
+                "wcag2a",
+                "wcag111",
+                "section508",
+                "section508.22.a"
+            ]
+        },
+        {
+            "description": "Ensures that every form element is not solely labeled using the title or aria-describedby attributes",
+            "help": "Form elements should have a visible label",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/3.1/label-title-only?application=axeAPI",
+            "id": "label-title-only",
+            "impact": null,
+            "nodes": [],
+            "tags": [
+                "cat.forms",
+                "best-practice"
+            ]
+        },
+        {
+            "description": "Ensures every form element has a label",
+            "help": "Form elements must have labels",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/3.1/label?application=axeAPI",
+            "id": "label",
+            "impact": null,
+            "nodes": [],
+            "tags": [
+                "cat.forms",
+                "wcag2a",
+                "wcag332",
+                "wcag131",
+                "section508",
+                "section508.22.n"
+            ]
+        },
+        {
+            "description": "Ensures the banner landmark is at top level",
+            "help": "Banner landmark must not be contained in another landmark",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/3.1/landmark-banner-is-top-level?application=axeAPI",
+            "id": "landmark-banner-is-top-level",
+            "impact": null,
+            "nodes": [],
+            "tags": [
+                "cat.semantics",
+                "best-practice"
+            ]
+        },
+        {
+            "description": "Ensures presentational <table> elements do not use <th>, <caption> elements or the summary attribute",
+            "help": "Layout tables must not use data table elements",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/3.1/layout-table?application=axeAPI",
+            "id": "layout-table",
+            "impact": null,
+            "nodes": [],
+            "tags": [
+                "cat.semantics",
+                "wcag2a",
+                "wcag131"
+            ]
+        },
+        {
+            "description": "Ensures that lists are structured correctly",
+            "help": "<ul> and <ol> must only directly contain <li>, <script> or <template> elements",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/3.1/list?application=axeAPI",
+            "id": "list",
+            "impact": null,
+            "nodes": [],
+            "tags": [
+                "cat.structure",
+                "wcag2a",
+                "wcag131"
+            ]
+        },
+        {
+            "description": "Ensures <li> elements are used semantically",
+            "help": "<li> elements must be contained in a <ul> or <ol>",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/3.1/listitem?application=axeAPI",
+            "id": "listitem",
+            "impact": null,
+            "nodes": [],
+            "tags": [
+                "cat.structure",
+                "wcag2a",
+                "wcag131"
+            ]
+        },
+        {
+            "description": "Ensures <marquee> elements are not used",
+            "help": "<marquee> elements are deprecated and must not be used",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/3.1/marquee?application=axeAPI",
+            "id": "marquee",
+            "impact": null,
+            "nodes": [],
+            "tags": [
+                "cat.parsing",
+                "wcag2a",
+                "wcag222"
+            ]
+        },
+        {
+            "description": "Ensures <meta http-equiv=\"refresh\"> is not used",
+            "help": "Timed refresh must not exist",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/3.1/meta-refresh?application=axeAPI",
+            "id": "meta-refresh",
+            "impact": null,
+            "nodes": [],
+            "tags": [
+                "cat.time",
+                "wcag2a",
+                "wcag2aaa",
+                "wcag221",
+                "wcag224",
+                "wcag325"
+            ]
+        },
+        {
+            "description": "Ensures <object> elements have alternate text",
+            "help": "<object> elements must have alternate text",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/3.1/object-alt?application=axeAPI",
+            "id": "object-alt",
+            "impact": null,
+            "nodes": [],
+            "tags": [
+                "cat.text-alternatives",
+                "wcag2a",
+                "wcag111",
+                "section508",
+                "section508.22.a"
+            ]
+        },
+        {
+            "description": "Ensures related <input type=\"radio\"> elements have a group and that the group designation is consistent",
+            "help": "Radio inputs with the same name attribute value must be part of a group",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/3.1/radiogroup?application=axeAPI",
+            "id": "radiogroup",
+            "impact": null,
+            "nodes": [],
+            "tags": [
+                "cat.forms",
+                "best-practice"
+            ]
+        },
+        {
+            "description": "Ensures the scope attribute is used correctly on tables",
+            "help": "scope attribute should be used correctly",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/3.1/scope-attr-valid?application=axeAPI",
+            "id": "scope-attr-valid",
+            "impact": null,
+            "nodes": [],
+            "tags": [
+                "cat.tables",
+                "best-practice"
+            ]
+        },
+        {
+            "description": "Ensures that server-side image maps are not used",
+            "help": "Server-side image maps must not be used",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/3.1/server-side-image-map?application=axeAPI",
+            "id": "server-side-image-map",
+            "impact": null,
+            "nodes": [],
+            "tags": [
+                "cat.text-alternatives",
+                "wcag2a",
+                "wcag211",
+                "section508",
+                "section508.22.f"
+            ]
+        },
+        {
+            "description": "Ensure all skip links have a focusable target",
+            "help": "The skip-link target should exist and be focusable",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/3.1/skip-link?application=axeAPI",
+            "id": "skip-link",
+            "impact": null,
+            "nodes": [],
+            "tags": [
+                "cat.keyboard",
+                "best-practice"
+            ]
+        },
+        {
+            "description": "Ensures tabindex attribute values are not greater than 0",
+            "help": "Elements should not have tabindex greater than zero",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/3.1/tabindex?application=axeAPI",
+            "id": "tabindex",
+            "impact": null,
+            "nodes": [],
+            "tags": [
+                "cat.keyboard",
+                "best-practice"
+            ]
+        },
+        {
+            "description": "Ensure that tables do not have the same summary and caption",
+            "help": "The <caption> element should not contain the same text as the summary attribute",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/3.1/table-duplicate-name?application=axeAPI",
+            "id": "table-duplicate-name",
+            "impact": null,
+            "nodes": [],
+            "tags": [
+                "cat.tables",
+                "best-practice"
+            ]
+        },
+        {
+            "description": "Ensure that each cell in a table using the headers refers to another cell in that table",
+            "help": "All cells in a table element that use the headers attribute must only refer to other cells of that same table",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/3.1/td-headers-attr?application=axeAPI",
+            "id": "td-headers-attr",
+            "impact": null,
+            "nodes": [],
+            "tags": [
+                "cat.tables",
+                "wcag2a",
+                "wcag131",
+                "section508",
+                "section508.22.g"
+            ]
+        },
+        {
+            "description": "Ensure that each table header in a data table refers to data cells",
+            "help": "All th elements and elements with role=columnheader/rowheader must have data cells they describe",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/3.1/th-has-data-cells?application=axeAPI",
+            "id": "th-has-data-cells",
+            "impact": null,
+            "nodes": [],
+            "tags": [
+                "cat.tables",
+                "wcag2a",
+                "wcag131",
+                "section508",
+                "section508.22.g"
+            ]
+        },
+        {
+            "description": "Ensures lang attributes have valid values",
+            "help": "lang attribute must have a valid value",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/3.1/valid-lang?application=axeAPI",
+            "id": "valid-lang",
+            "impact": null,
+            "nodes": [],
+            "tags": [
+                "cat.language",
+                "wcag2aa",
+                "wcag312"
+            ]
+        },
+        {
+            "description": "Ensures <video> elements have captions",
+            "help": "<video> elements must have captions",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/3.1/video-caption?application=axeAPI",
+            "id": "video-caption",
+            "impact": null,
+            "nodes": [],
+            "tags": [
+                "cat.text-alternatives",
+                "wcag2a",
+                "wcag122",
+                "section508",
+                "section508.22.a"
+            ]
+        },
+        {
+            "description": "Ensures <video> elements have audio descriptions",
+            "help": "<video> elements must have an audio description track",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/3.1/video-description?application=axeAPI",
+            "id": "video-description",
+            "impact": null,
+            "nodes": [],
+            "tags": [
+                "cat.text-alternatives",
+                "wcag2aa",
+                "wcag125",
+                "section508",
+                "section508.22.b"
+            ]
+        }
+    ],
+    "incomplete": [
+        {
+            "description": "Ensures the contrast between foreground and background colors meets WCAG 2 AA contrast ratio thresholds",
+            "help": "Elements must have sufficient color contrast",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/3.1/color-contrast?application=axeAPI",
+            "id": "color-contrast",
+            "impact": "serious",
+            "nodes": [
+                {
+                    "all": [],
+                    "any": [
+                        {
+                            "data": {
+                                "bgColor": null,
+                                "contrastRatio": 0,
+                                "expectedContrastRatio": "4.5:1",
+                                "fgColor": "#2563eb",
+                                "fontSize": "9.0pt",
+                                "fontWeight": "bold",
+                                "missingData": "bgGradient"
+                            },
+                            "id": "color-contrast",
+                            "impact": "serious",
+                            "message": "Element's background color could not be determined due to a background gradient",
+                            "relatedNodes": [
+                                {
+                                    "html": "<main class=\"mt-4 bg-white/90 dark:bg-gray-900/90 rounded-lg shadow p-3 sm:p-8\">",
+                                    "target": [
+                                        ".mt-4"
+                                    ]
+                                },
+                                {
+                                    "html": "<div class=\"background-rec background-rec-3 transition-all duration-300\"></div>",
+                                    "target": [
+                                        ".background-rec-3"
+                                    ]
+                                }
+                            ]
+                        }
+                    ],
+                    "html": "<span class=\"\n                    mt-1 transition-colors duration-300\n                    text-blue-600 dark:text-blue-400 font-semibold\n                  \">Home</span>",
+                    "impact": "serious",
+                    "none": [],
+                    "target": [
+                        ".text-blue-600.dark\\:text-blue-400.font-semibold"
+                    ]
+                },
+                {
+                    "all": [],
+                    "any": [
+                        {
+                            "data": {
+                                "bgColor": null,
+                                "contrastRatio": 0,
+                                "expectedContrastRatio": "4.5:1",
+                                "fgColor": "#6b7280",
+                                "fontSize": "9.0pt",
+                                "fontWeight": "normal",
+                                "missingData": "bgGradient"
+                            },
+                            "id": "color-contrast",
+                            "impact": "serious",
+                            "message": "Element's background color could not be determined due to a background gradient",
+                            "relatedNodes": [
+                                {
+                                    "html": "<main class=\"mt-4 bg-white/90 dark:bg-gray-900/90 rounded-lg shadow p-3 sm:p-8\">",
+                                    "target": [
+                                        ".mt-4"
+                                    ]
+                                },
+                                {
+                                    "html": "<div class=\"background-rec background-rec-3 transition-all duration-300\"></div>",
+                                    "target": [
+                                        ".background-rec-3"
+                                    ]
+                                }
+                            ]
+                        }
+                    ],
+                    "html": "<span class=\"\n                    mt-1 transition-colors duration-300\n                    text-gray-500 dark:text-gray-400\n                  \">Resume</span>",
+                    "impact": "serious",
+                    "none": [],
+                    "target": [
+                        ".flex-col.text-xs[href$=\"resume\"] > .mt-1"
+                    ]
+                },
+                {
+                    "all": [],
+                    "any": [
+                        {
+                            "data": {
+                                "bgColor": null,
+                                "contrastRatio": 0,
+                                "expectedContrastRatio": "4.5:1",
+                                "fgColor": "#6b7280",
+                                "fontSize": "9.0pt",
+                                "fontWeight": "normal",
+                                "missingData": "bgGradient"
+                            },
+                            "id": "color-contrast",
+                            "impact": "serious",
+                            "message": "Element's background color could not be determined due to a background gradient",
+                            "relatedNodes": [
+                                {
+                                    "html": "<main class=\"mt-4 bg-white/90 dark:bg-gray-900/90 rounded-lg shadow p-3 sm:p-8\">",
+                                    "target": [
+                                        ".mt-4"
+                                    ]
+                                },
+                                {
+                                    "html": "<div class=\"background-rec background-rec-3 transition-all duration-300\"></div>",
+                                    "target": [
+                                        ".background-rec-3"
+                                    ]
+                                }
+                            ]
+                        }
+                    ],
+                    "html": "<span class=\"\n                    mt-1 transition-colors duration-300\n                    text-gray-500 dark:text-gray-400\n                  \">Projects</span>",
+                    "impact": "serious",
+                    "none": [],
+                    "target": [
+                        ".flex-col.text-xs[href$=\"projects\"] > .mt-1"
+                    ]
+                },
+                {
+                    "all": [],
+                    "any": [
+                        {
+                            "data": {
+                                "bgColor": null,
+                                "contrastRatio": 0,
+                                "expectedContrastRatio": "4.5:1",
+                                "fgColor": "#6b7280",
+                                "fontSize": "9.0pt",
+                                "fontWeight": "normal",
+                                "missingData": "bgGradient"
+                            },
+                            "id": "color-contrast",
+                            "impact": "serious",
+                            "message": "Element's background color could not be determined due to a background gradient",
+                            "relatedNodes": [
+                                {
+                                    "html": "<main class=\"mt-4 bg-white/90 dark:bg-gray-900/90 rounded-lg shadow p-3 sm:p-8\">",
+                                    "target": [
+                                        ".mt-4"
+                                    ]
+                                },
+                                {
+                                    "html": "<div class=\"background-rec background-rec-3 transition-all duration-300\"></div>",
+                                    "target": [
+                                        ".background-rec-3"
+                                    ]
+                                }
+                            ]
+                        }
+                    ],
+                    "html": "<span class=\"\n                    mt-1 transition-colors duration-300\n                    text-gray-500 dark:text-gray-400\n                  \">Skills</span>",
+                    "impact": "serious",
+                    "none": [],
+                    "target": [
+                        ".flex-col.text-xs[href$=\"skills\"] > .mt-1"
+                    ]
+                },
+                {
+                    "all": [],
+                    "any": [
+                        {
+                            "data": {
+                                "bgColor": null,
+                                "contrastRatio": 0,
+                                "expectedContrastRatio": "4.5:1",
+                                "fgColor": "#6b7280",
+                                "fontSize": "9.0pt",
+                                "fontWeight": "normal",
+                                "missingData": "bgGradient"
+                            },
+                            "id": "color-contrast",
+                            "impact": "serious",
+                            "message": "Element's background color could not be determined due to a background gradient",
+                            "relatedNodes": [
+                                {
+                                    "html": "<main class=\"mt-4 bg-white/90 dark:bg-gray-900/90 rounded-lg shadow p-3 sm:p-8\">",
+                                    "target": [
+                                        ".mt-4"
+                                    ]
+                                },
+                                {
+                                    "html": "<div class=\"background-rec background-rec-3 transition-all duration-300\"></div>",
+                                    "target": [
+                                        ".background-rec-3"
+                                    ]
+                                }
+                            ]
+                        }
+                    ],
+                    "html": "<span class=\"\n                    mt-1 transition-colors duration-300\n                    text-gray-500 dark:text-gray-400\n                  \">Hobbies</span>",
+                    "impact": "serious",
+                    "none": [],
+                    "target": [
+                        ".flex-col.text-xs[href$=\"hobbies\"] > .mt-1"
+                    ]
+                },
+                {
+                    "all": [],
+                    "any": [
+                        {
+                            "data": {
+                                "bgColor": null,
+                                "contrastRatio": 0,
+                                "expectedContrastRatio": "3:1",
+                                "fgColor": "#000000",
+                                "fontSize": "36.0pt",
+                                "fontWeight": "bold",
+                                "missingData": "bgGradient"
+                            },
+                            "id": "color-contrast",
+                            "impact": "serious",
+                            "message": "Element's background color could not be determined due to a background gradient",
+                            "relatedNodes": [
+                                {
+                                    "html": "<h1 class=\"text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold font-mono uppercase leading-tight mb-2 w-full text-center\" style=\"background:linear-gradient(to right, rgb(59, 130, 246), rgb(34, 197, 94));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;display:inline-block\">",
+                                    "target": [
+                                        "h1"
+                                    ]
+                                }
+                            ]
+                        }
+                    ],
+                    "html": "<h1 class=\"text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold font-mono uppercase leading-tight mb-2 w-full text-center\" style=\"background:linear-gradient(to right, rgb(59, 130, 246), rgb(34, 197, 94));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;display:inline-block\">",
+                    "impact": "serious",
+                    "none": [],
+                    "target": [
+                        "h1"
+                    ]
+                },
+                {
+                    "all": [],
+                    "any": [
+                        {
+                            "data": {
+                                "bgColor": null,
+                                "contrastRatio": 0,
+                                "expectedContrastRatio": "4.5:1",
+                                "fgColor": "#4b5563",
+                                "fontSize": "12.0pt",
+                                "fontWeight": "normal",
+                                "missingData": "bgGradient"
+                            },
+                            "id": "color-contrast",
+                            "impact": "serious",
+                            "message": "Element's background color could not be determined due to a background gradient",
+                            "relatedNodes": [
+                                {
+                                    "html": "<main class=\"mt-4 bg-white/90 dark:bg-gray-900/90 rounded-lg shadow p-3 sm:p-8\">",
+                                    "target": [
+                                        ".mt-4"
+                                    ]
+                                },
+                                {
+                                    "html": "<div class=\"background-rec background-rec-3 transition-all duration-300\"></div>",
+                                    "target": [
+                                        ".background-rec-3"
+                                    ]
+                                }
+                            ]
+                        }
+                    ],
+                    "html": "<span>William.Goldman@tufts.edu</span>",
+                    "impact": "serious",
+                    "none": [],
+                    "target": [
+                        ".inline-flex > span"
+                    ]
+                },
+                {
+                    "all": [],
+                    "any": [
+                        {
+                            "data": {
+                                "bgColor": null,
+                                "contrastRatio": 0,
+                                "expectedContrastRatio": "4.5:1",
+                                "fgColor": null,
+                                "fontSize": "13.5pt",
+                                "fontWeight": "normal",
+                                "missingData": "bgGradient"
+                            },
+                            "id": "color-contrast",
+                            "impact": "serious",
+                            "message": "Element's background color could not be determined due to a background gradient",
+                            "relatedNodes": [
+                                {
+                                    "html": "<main class=\"mt-4 bg-white/90 dark:bg-gray-900/90 rounded-lg shadow p-3 sm:p-8\">",
+                                    "target": [
+                                        ".mt-4"
+                                    ]
+                                },
+                                {
+                                    "html": "<div class=\"background-rec background-rec-3 transition-all duration-300\"></div>",
+                                    "target": [
+                                        ".background-rec-3"
+                                    ]
+                                }
+                            ]
+                        }
+                    ],
+                    "html": "<p class=\"text-lg leading-relaxed text-gray-800 dark:text-gray-200 text-center lg:text-left\" style=\"opacity:0;transform:translateY(20px)\">",
+                    "impact": "serious",
+                    "none": [],
+                    "target": [
+                        ".text-lg.leading-relaxed.text-gray-800:nth-child(1)"
+                    ]
+                },
+                {
+                    "all": [],
+                    "any": [
+                        {
+                            "data": {
+                                "bgColor": null,
+                                "contrastRatio": 0,
+                                "expectedContrastRatio": "4.5:1",
+                                "fgColor": null,
+                                "fontSize": "13.5pt",
+                                "fontWeight": "normal",
+                                "missingData": "bgGradient"
+                            },
+                            "id": "color-contrast",
+                            "impact": "serious",
+                            "message": "Element's background color could not be determined due to a background gradient",
+                            "relatedNodes": [
+                                {
+                                    "html": "<main class=\"mt-4 bg-white/90 dark:bg-gray-900/90 rounded-lg shadow p-3 sm:p-8\">",
+                                    "target": [
+                                        ".mt-4"
+                                    ]
+                                },
+                                {
+                                    "html": "<div class=\"background-rec background-rec-3 transition-all duration-300\"></div>",
+                                    "target": [
+                                        ".background-rec-3"
+                                    ]
+                                }
+                            ]
+                        }
+                    ],
+                    "html": "<p class=\"text-lg leading-relaxed text-gray-800 dark:text-gray-200 text-center lg:text-left\" style=\"opacity:0;transform:translateY(20px)\">",
+                    "impact": "serious",
+                    "none": [],
+                    "target": [
+                        ".text-lg.leading-relaxed.text-gray-800:nth-child(2)"
+                    ]
+                },
+                {
+                    "all": [],
+                    "any": [
+                        {
+                            "data": {
+                                "bgColor": null,
+                                "contrastRatio": 0,
+                                "expectedContrastRatio": "4.5:1",
+                                "fgColor": null,
+                                "fontSize": "13.5pt",
+                                "fontWeight": "normal",
+                                "missingData": "bgGradient"
+                            },
+                            "id": "color-contrast",
+                            "impact": "serious",
+                            "message": "Element's background color could not be determined due to a background gradient",
+                            "relatedNodes": [
+                                {
+                                    "html": "<main class=\"mt-4 bg-white/90 dark:bg-gray-900/90 rounded-lg shadow p-3 sm:p-8\">",
+                                    "target": [
+                                        ".mt-4"
+                                    ]
+                                },
+                                {
+                                    "html": "<div class=\"background-rec background-rec-3 transition-all duration-300\"></div>",
+                                    "target": [
+                                        ".background-rec-3"
+                                    ]
+                                }
+                            ]
+                        }
+                    ],
+                    "html": "<p class=\"text-lg leading-relaxed text-gray-800 dark:text-gray-200 text-center lg:text-left\" style=\"opacity:0;transform:translateY(20px)\">",
+                    "impact": "serious",
+                    "none": [],
+                    "target": [
+                        ".text-lg.leading-relaxed.text-gray-800:nth-child(3)"
+                    ]
+                },
+                {
+                    "all": [],
+                    "any": [
+                        {
+                            "data": {
+                                "bgColor": null,
+                                "contrastRatio": 0,
+                                "expectedContrastRatio": "3:1",
+                                "fgColor": null,
+                                "fontSize": "18.0pt",
+                                "fontWeight": "bold",
+                                "missingData": "bgGradient"
+                            },
+                            "id": "color-contrast",
+                            "impact": "serious",
+                            "message": "Element's background color could not be determined due to a background gradient",
+                            "relatedNodes": [
+                                {
+                                    "html": "<main class=\"mt-4 bg-white/90 dark:bg-gray-900/90 rounded-lg shadow p-3 sm:p-8\">",
+                                    "target": [
+                                        ".mt-4"
+                                    ]
+                                },
+                                {
+                                    "html": "<div class=\"background-rec background-rec-3 transition-all duration-300\"></div>",
+                                    "target": [
+                                        ".background-rec-3"
+                                    ]
+                                }
+                            ]
+                        }
+                    ],
+                    "html": "<h2 class=\"text-2xl font-bold mb-4 text-center text-gray-900 dark:text-gray-100\" style=\"opacity:0;transform:translateY(-10px)\">Featured Projects</h2>",
+                    "impact": "serious",
+                    "none": [],
+                    "target": [
+                        "h2"
+                    ]
+                },
+                {
+                    "all": [],
+                    "any": [
+                        {
+                            "data": {
+                                "bgColor": null,
+                                "contrastRatio": 0,
+                                "expectedContrastRatio": "4.5:1",
+                                "fgColor": "#ffffff",
+                                "fontSize": "12.0pt",
+                                "fontWeight": "bold",
+                                "missingData": "bgGradient"
+                            },
+                            "id": "color-contrast",
+                            "impact": "serious",
+                            "message": "Element's background color could not be determined due to a background gradient",
+                            "relatedNodes": [
+                                {
+                                    "html": "<div class=\"absolute top-0 left-0 w-full h-full bg-gradient-to-b from-transparent to-black/70 flex items-end p-3\"><h3 class=\"text-white text-base font-semibold\">Technologies and Designs for Remote Robotics Competition</h3></div>",
+                                    "target": [
+                                        ".overflow-hidden.shadow-md.rounded-lg:nth-child(1) > .relative > .top-0.h-full.bg-gradient-to-b"
+                                    ]
+                                }
+                            ]
+                        }
+                    ],
+                    "html": "<h3 class=\"text-white text-base font-semibold\">Technologies and Designs for Remote Robotics Competition</h3>",
+                    "impact": "serious",
+                    "none": [],
+                    "target": [
+                        ".overflow-hidden.shadow-md.rounded-lg:nth-child(1) > .relative > .top-0.h-full.bg-gradient-to-b > h3"
+                    ]
+                },
+                {
+                    "all": [],
+                    "any": [
+                        {
+                            "data": {
+                                "bgColor": null,
+                                "contrastRatio": 0,
+                                "expectedContrastRatio": "4.5:1",
+                                "fgColor": "#4c5664",
+                                "fontSize": "9.0pt",
+                                "fontWeight": "normal",
+                                "missingData": "bgGradient"
+                            },
+                            "id": "color-contrast",
+                            "impact": "serious",
+                            "message": "Element's background color could not be determined due to a background gradient",
+                            "relatedNodes": [
+                                {
+                                    "html": "<main class=\"mt-4 bg-white/90 dark:bg-gray-900/90 rounded-lg shadow p-3 sm:p-8\">",
+                                    "target": [
+                                        ".mt-4"
+                                    ]
+                                },
+                                {
+                                    "html": "<div class=\"background-rec background-rec-3 transition-all duration-300\"></div>",
+                                    "target": [
+                                        ".background-rec-3"
+                                    ]
+                                }
+                            ]
+                        }
+                    ],
+                    "html": "<p class=\"text-xs text-gray-600 dark:text-gray-400\">July 2025 | MicroPython, Python, JavaScript, OpenCV, Websockets, WebRTC, Pyscript.com</p>",
+                    "impact": "serious",
+                    "none": [],
+                    "target": [
+                        ".overflow-hidden.shadow-md.rounded-lg:nth-child(1) > .p-3 > p"
+                    ]
+                },
+                {
+                    "all": [],
+                    "any": [
+                        {
+                            "data": {
+                                "bgColor": null,
+                                "contrastRatio": 0,
+                                "expectedContrastRatio": "4.5:1",
+                                "fgColor": "#ffffff",
+                                "fontSize": "12.0pt",
+                                "fontWeight": "bold",
+                                "missingData": "bgGradient"
+                            },
+                            "id": "color-contrast",
+                            "impact": "serious",
+                            "message": "Element's background color could not be determined due to a background gradient",
+                            "relatedNodes": [
+                                {
+                                    "html": "<div class=\"absolute top-0 left-0 w-full h-full bg-gradient-to-b from-transparent to-black/70 flex items-end p-3\"><h3 class=\"text-white text-base font-semibold\">MealPlanGuru</h3></div>",
+                                    "target": [
+                                        ".overflow-hidden.shadow-md.rounded-lg:nth-child(2) > .relative > .top-0.h-full.bg-gradient-to-b"
+                                    ]
+                                }
+                            ]
+                        }
+                    ],
+                    "html": "<h3 class=\"text-white text-base font-semibold\">MealPlanGuru</h3>",
+                    "impact": "serious",
+                    "none": [],
+                    "target": [
+                        ".overflow-hidden.shadow-md.rounded-lg:nth-child(2) > .relative > .top-0.h-full.bg-gradient-to-b > h3"
+                    ]
+                },
+                {
+                    "all": [],
+                    "any": [
+                        {
+                            "data": {
+                                "bgColor": null,
+                                "contrastRatio": 0,
+                                "expectedContrastRatio": "4.5:1",
+                                "fgColor": "#4c5664",
+                                "fontSize": "9.0pt",
+                                "fontWeight": "normal",
+                                "missingData": "bgGradient"
+                            },
+                            "id": "color-contrast",
+                            "impact": "serious",
+                            "message": "Element's background color could not be determined due to a background gradient",
+                            "relatedNodes": [
+                                {
+                                    "html": "<main class=\"mt-4 bg-white/90 dark:bg-gray-900/90 rounded-lg shadow p-3 sm:p-8\">",
+                                    "target": [
+                                        ".mt-4"
+                                    ]
+                                },
+                                {
+                                    "html": "<div class=\"background-rec background-rec-3 transition-all duration-300\"></div>",
+                                    "target": [
+                                        ".background-rec-3"
+                                    ]
+                                }
+                            ]
+                        }
+                    ],
+                    "html": "<p class=\"text-xs text-gray-600 dark:text-gray-400\">January 2025 | React.js, Next.js, Tailwind CSS, PostgreSQL, Neon, Resend Email</p>",
+                    "impact": "serious",
+                    "none": [],
+                    "target": [
+                        ".overflow-hidden.shadow-md.rounded-lg:nth-child(2) > .p-3 > p"
+                    ]
+                }
+            ],
+            "tags": [
+                "cat.color",
+                "wcag2aa",
+                "wcag143"
+            ]
+        }
+    ],
+    "passes": [
+        {
+            "description": "Ensures ARIA attributes are allowed for an element's role",
+            "help": "Elements must only use allowed ARIA attributes",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/3.1/aria-allowed-attr?application=axeAPI",
+            "id": "aria-allowed-attr",
+            "impact": null,
+            "nodes": [
+                {
+                    "all": [],
+                    "any": [
+                        {
+                            "data": null,
+                            "id": "aria-allowed-attr",
+                            "impact": "critical",
+                            "message": "ARIA attributes are used correctly for the defined role",
+                            "relatedNodes": []
+                        }
+                    ],
+                    "html": "<button class=\"p-2 rounded-full transition-all duration-300 hover:scale-110 shadow-lg dark:bg-gray-800 dark:hover:bg-gray-700  bg-white hover:bg-gray-100\" aria-label=\"Toggle dark mode\">",
+                    "impact": null,
+                    "none": [],
+                    "target": [
+                        "button"
+                    ]
+                },
+                {
+                    "all": [],
+                    "any": [
+                        {
+                            "data": null,
+                            "id": "aria-allowed-attr",
+                            "impact": "critical",
+                            "message": "ARIA attributes are used correctly for the defined role",
+                            "relatedNodes": []
+                        }
+                    ],
+                    "html": "<div aria-live=\"assertive\" id=\"__next-route-announcer__\" role=\"alert\" style=\"position: absolute; border: 0px; height: 1px; margin: -1px; padding: 0px; width: 1px; clip: rect(0px, 0px, 0px, 0px); overflow: hidden; white-space: nowrap; overflow-wrap: normal;\"></div>",
+                    "impact": null,
+                    "none": [],
+                    "target": [
+                        [
+                            "next-route-announcer",
+                            "#__next-route-announcer__"
+                        ]
+                    ]
+                }
+            ],
+            "tags": [
+                "cat.aria",
+                "wcag2a",
+                "wcag412"
+            ]
+        },
+        {
+            "description": "Ensures role attribute has an appropriate value for the element",
+            "help": "ARIA role must be appropriate for the element",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/3.1/aria-allowed-role?application=axeAPI",
+            "id": "aria-allowed-role",
+            "impact": null,
+            "nodes": [
+                {
+                    "all": [],
+                    "any": [
+                        {
+                            "data": null,
+                            "id": "aria-allowed-role",
+                            "impact": "minor",
+                            "message": "ARIA role is allowed for given element",
+                            "relatedNodes": []
+                        }
+                    ],
+                    "html": "<div aria-live=\"assertive\" id=\"__next-route-announcer__\" role=\"alert\" style=\"position: absolute; border: 0px; height: 1px; margin: -1px; padding: 0px; width: 1px; clip: rect(0px, 0px, 0px, 0px); overflow: hidden; white-space: nowrap; overflow-wrap: normal;\"></div>",
+                    "impact": null,
+                    "none": [],
+                    "target": [
+                        [
+                            "next-route-announcer",
+                            "#__next-route-announcer__"
+                        ]
+                    ]
+                }
+            ],
+            "tags": [
+                "cat.aria",
+                "best-practice"
+            ]
+        },
+        {
+            "description": "Ensures aria-hidden='true' is not present on the document body.",
+            "help": "aria-hidden='true' must not be present on the document body",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/3.1/aria-hidden-body?application=axeAPI",
+            "id": "aria-hidden-body",
+            "impact": null,
+            "nodes": [
+                {
+                    "all": [],
+                    "any": [
+                        {
+                            "data": null,
+                            "id": "aria-hidden-body",
+                            "impact": "critical",
+                            "message": "No aria-hidden attribute is present on document body",
+                            "relatedNodes": []
+                        }
+                    ],
+                    "html": "<body class=\"lora_c6113804-module__LwFUCa__className\">",
+                    "impact": null,
+                    "none": [],
+                    "target": [
+                        "body"
+                    ]
+                }
+            ],
+            "tags": [
+                "cat.aria",
+                "wcag2a",
+                "wcag412"
+            ]
+        },
+        {
+            "description": "Ensures elements with ARIA roles have all required ARIA attributes",
+            "help": "Required ARIA attributes must be provided",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/3.1/aria-required-attr?application=axeAPI",
+            "id": "aria-required-attr",
+            "impact": null,
+            "nodes": [
+                {
+                    "all": [],
+                    "any": [
+                        {
+                            "data": null,
+                            "id": "aria-required-attr",
+                            "impact": "critical",
+                            "message": "All required ARIA attributes are present",
+                            "relatedNodes": []
+                        }
+                    ],
+                    "html": "<div aria-live=\"assertive\" id=\"__next-route-announcer__\" role=\"alert\" style=\"position: absolute; border: 0px; height: 1px; margin: -1px; padding: 0px; width: 1px; clip: rect(0px, 0px, 0px, 0px); overflow: hidden; white-space: nowrap; overflow-wrap: normal;\"></div>",
+                    "impact": null,
+                    "none": [],
+                    "target": [
+                        [
+                            "next-route-announcer",
+                            "#__next-route-announcer__"
+                        ]
+                    ]
+                }
+            ],
+            "tags": [
+                "cat.aria",
+                "wcag2a",
+                "wcag412"
+            ]
+        },
+        {
+            "description": "Ensures elements with an ARIA role that require child roles contain them",
+            "help": "Certain ARIA roles must contain particular children",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/3.1/aria-required-children?application=axeAPI",
+            "id": "aria-required-children",
+            "impact": null,
+            "nodes": [
+                {
+                    "all": [],
+                    "any": [
+                        {
+                            "data": null,
+                            "id": "aria-required-children",
+                            "impact": "critical",
+                            "message": "Required ARIA children are present",
+                            "relatedNodes": []
+                        }
+                    ],
+                    "html": "<div aria-live=\"assertive\" id=\"__next-route-announcer__\" role=\"alert\" style=\"position: absolute; border: 0px; height: 1px; margin: -1px; padding: 0px; width: 1px; clip: rect(0px, 0px, 0px, 0px); overflow: hidden; white-space: nowrap; overflow-wrap: normal;\"></div>",
+                    "impact": null,
+                    "none": [],
+                    "target": [
+                        [
+                            "next-route-announcer",
+                            "#__next-route-announcer__"
+                        ]
+                    ]
+                }
+            ],
+            "tags": [
+                "cat.aria",
+                "wcag2a",
+                "wcag131"
+            ]
+        },
+        {
+            "description": "Ensures elements with an ARIA role that require parent roles are contained by them",
+            "help": "Certain ARIA roles must be contained by particular parents",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/3.1/aria-required-parent?application=axeAPI",
+            "id": "aria-required-parent",
+            "impact": null,
+            "nodes": [
+                {
+                    "all": [],
+                    "any": [
+                        {
+                            "data": null,
+                            "id": "aria-required-parent",
+                            "impact": "critical",
+                            "message": "Required ARIA parent role present",
+                            "relatedNodes": []
+                        }
+                    ],
+                    "html": "<div aria-live=\"assertive\" id=\"__next-route-announcer__\" role=\"alert\" style=\"position: absolute; border: 0px; height: 1px; margin: -1px; padding: 0px; width: 1px; clip: rect(0px, 0px, 0px, 0px); overflow: hidden; white-space: nowrap; overflow-wrap: normal;\"></div>",
+                    "impact": null,
+                    "none": [],
+                    "target": [
+                        [
+                            "next-route-announcer",
+                            "#__next-route-announcer__"
+                        ]
+                    ]
+                }
+            ],
+            "tags": [
+                "cat.aria",
+                "wcag2a",
+                "wcag131"
+            ]
+        },
+        {
+            "description": "Ensures all elements with a role attribute use a valid value",
+            "help": "ARIA roles used must conform to valid values",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/3.1/aria-roles?application=axeAPI",
+            "id": "aria-roles",
+            "impact": null,
+            "nodes": [
+                {
+                    "all": [],
+                    "any": [],
+                    "html": "<div aria-live=\"assertive\" id=\"__next-route-announcer__\" role=\"alert\" style=\"position: absolute; border: 0px; height: 1px; margin: -1px; padding: 0px; width: 1px; clip: rect(0px, 0px, 0px, 0px); overflow: hidden; white-space: nowrap; overflow-wrap: normal;\"></div>",
+                    "impact": null,
+                    "none": [
+                        {
+                            "data": null,
+                            "id": "invalidrole",
+                            "impact": "critical",
+                            "message": "ARIA role is valid",
+                            "relatedNodes": []
+                        },
+                        {
+                            "data": null,
+                            "id": "abstractrole",
+                            "impact": "serious",
+                            "message": "Abstract roles are not used",
+                            "relatedNodes": []
+                        },
+                        {
+                            "data": null,
+                            "id": "unsupportedrole",
+                            "impact": "critical",
+                            "message": "ARIA role is supported",
+                            "relatedNodes": []
+                        }
+                    ],
+                    "target": [
+                        [
+                            "next-route-announcer",
+                            "#__next-route-announcer__"
+                        ]
+                    ]
+                }
+            ],
+            "tags": [
+                "cat.aria",
+                "wcag2a",
+                "wcag412"
+            ]
+        },
+        {
+            "description": "Ensures all ARIA attributes have valid values",
+            "help": "ARIA attributes must conform to valid values",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/3.1/aria-valid-attr-value?application=axeAPI",
+            "id": "aria-valid-attr-value",
+            "impact": null,
+            "nodes": [
+                {
+                    "all": [
+                        {
+                            "data": null,
+                            "id": "aria-valid-attr-value",
+                            "impact": "critical",
+                            "message": "ARIA attribute values are valid",
+                            "relatedNodes": []
+                        },
+                        {
+                            "data": null,
+                            "id": "aria-errormessage",
+                            "impact": "critical",
+                            "message": "Uses a supported aria-errormessage technique",
+                            "relatedNodes": []
+                        }
+                    ],
+                    "any": [],
+                    "html": "<button class=\"p-2 rounded-full transition-all duration-300 hover:scale-110 shadow-lg dark:bg-gray-800 dark:hover:bg-gray-700  bg-white hover:bg-gray-100\" aria-label=\"Toggle dark mode\">",
+                    "impact": null,
+                    "none": [],
+                    "target": [
+                        "button"
+                    ]
+                },
+                {
+                    "all": [
+                        {
+                            "data": null,
+                            "id": "aria-valid-attr-value",
+                            "impact": "critical",
+                            "message": "ARIA attribute values are valid",
+                            "relatedNodes": []
+                        },
+                        {
+                            "data": null,
+                            "id": "aria-errormessage",
+                            "impact": "critical",
+                            "message": "Uses a supported aria-errormessage technique",
+                            "relatedNodes": []
+                        }
+                    ],
+                    "any": [],
+                    "html": "<div aria-live=\"assertive\" id=\"__next-route-announcer__\" role=\"alert\" style=\"position: absolute; border: 0px; height: 1px; margin: -1px; padding: 0px; width: 1px; clip: rect(0px, 0px, 0px, 0px); overflow: hidden; white-space: nowrap; overflow-wrap: normal;\"></div>",
+                    "impact": null,
+                    "none": [],
+                    "target": [
+                        [
+                            "next-route-announcer",
+                            "#__next-route-announcer__"
+                        ]
+                    ]
+                }
+            ],
+            "tags": [
+                "cat.aria",
+                "wcag2a",
+                "wcag412"
+            ]
+        },
+        {
+            "description": "Ensures attributes that begin with aria- are valid ARIA attributes",
+            "help": "ARIA attributes must conform to valid names",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/3.1/aria-valid-attr?application=axeAPI",
+            "id": "aria-valid-attr",
+            "impact": null,
+            "nodes": [
+                {
+                    "all": [],
+                    "any": [
+                        {
+                            "data": null,
+                            "id": "aria-valid-attr",
+                            "impact": "critical",
+                            "message": "ARIA attribute name are valid",
+                            "relatedNodes": []
+                        }
+                    ],
+                    "html": "<button class=\"p-2 rounded-full transition-all duration-300 hover:scale-110 shadow-lg dark:bg-gray-800 dark:hover:bg-gray-700  bg-white hover:bg-gray-100\" aria-label=\"Toggle dark mode\">",
+                    "impact": null,
+                    "none": [],
+                    "target": [
+                        "button"
+                    ]
+                },
+                {
+                    "all": [],
+                    "any": [
+                        {
+                            "data": null,
+                            "id": "aria-valid-attr",
+                            "impact": "critical",
+                            "message": "ARIA attribute name are valid",
+                            "relatedNodes": []
+                        }
+                    ],
+                    "html": "<div aria-live=\"assertive\" id=\"__next-route-announcer__\" role=\"alert\" style=\"position: absolute; border: 0px; height: 1px; margin: -1px; padding: 0px; width: 1px; clip: rect(0px, 0px, 0px, 0px); overflow: hidden; white-space: nowrap; overflow-wrap: normal;\"></div>",
+                    "impact": null,
+                    "none": [],
+                    "target": [
+                        [
+                            "next-route-announcer",
+                            "#__next-route-announcer__"
+                        ]
+                    ]
+                }
+            ],
+            "tags": [
+                "cat.aria",
+                "wcag2a",
+                "wcag412"
+            ]
+        },
+        {
+            "description": "Ensures buttons have discernible text",
+            "help": "Buttons must have discernible text",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/3.1/button-name?application=axeAPI",
+            "id": "button-name",
+            "impact": null,
+            "nodes": [
+                {
+                    "all": [],
+                    "any": [
+                        {
+                            "data": "Toggle dark mode",
+                            "id": "button-has-visible-text",
+                            "impact": "critical",
+                            "message": "Element has inner text that is visible to screen readers",
+                            "relatedNodes": []
+                        },
+                        {
+                            "data": null,
+                            "id": "aria-label",
+                            "impact": "serious",
+                            "message": "aria-label attribute exists and is not empty",
+                            "relatedNodes": []
+                        }
+                    ],
+                    "html": "<button class=\"p-2 rounded-full transition-all duration-300 hover:scale-110 shadow-lg dark:bg-gray-800 dark:hover:bg-gray-700  bg-white hover:bg-gray-100\" aria-label=\"Toggle dark mode\">",
+                    "impact": null,
+                    "none": [
+                        {
+                            "data": null,
+                            "id": "focusable-no-name",
+                            "impact": "serious",
+                            "message": "Element is not in tab order or has accessible text",
+                            "relatedNodes": []
+                        }
+                    ],
+                    "target": [
+                        "button"
+                    ]
+                }
+            ],
+            "tags": [
+                "cat.name-role-value",
+                "wcag2a",
+                "wcag412",
+                "section508",
+                "section508.22.a"
+            ]
+        },
+        {
+            "description": "Ensures each page has at least one mechanism for a user to bypass navigation and jump straight to the content",
+            "help": "Page must have means to bypass repeated blocks",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/3.1/bypass?application=axeAPI",
+            "id": "bypass",
+            "impact": null,
+            "nodes": [
+                {
+                    "all": [],
+                    "any": [
+                        {
+                            "data": null,
+                            "id": "header-present",
+                            "impact": "serious",
+                            "message": "Page has a header",
+                            "relatedNodes": []
+                        },
+                        {
+                            "data": null,
+                            "id": "landmark",
+                            "impact": "serious",
+                            "message": "Page has a landmark region",
+                            "relatedNodes": []
+                        }
+                    ],
+                    "html": "<html lang=\"en\" class=\"dark theme-transition\">",
+                    "impact": null,
+                    "none": [],
+                    "target": [
+                        "html"
+                    ]
+                }
+            ],
+            "tags": [
+                "cat.keyboard",
+                "wcag2a",
+                "wcag241",
+                "section508",
+                "section508.22.o"
+            ]
+        },
+        {
+            "description": "Ensures the contrast between foreground and background colors meets WCAG 2 AA contrast ratio thresholds",
+            "help": "Elements must have sufficient color contrast",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/3.1/color-contrast?application=axeAPI",
+            "id": "color-contrast",
+            "impact": "serious",
+            "nodes": [
+                {
+                    "all": [],
+                    "any": [
+                        {
+                            "data": {
+                                "bgColor": "#fdfdfd",
+                                "contrastRatio": 7.31,
+                                "expectedContrastRatio": "4.5:1",
+                                "fgColor": "#4c5664",
+                                "fontSize": "9.0pt",
+                                "fontWeight": "normal",
+                                "missingData": null
+                            },
+                            "id": "color-contrast",
+                            "impact": "serious",
+                            "message": "Element has sufficient color contrast of 7.31",
+                            "relatedNodes": []
+                        }
+                    ],
+                    "html": "<span class=\"text-xs mt-1 text-gray-600 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-gray-200\">GitHub</span>",
+                    "impact": null,
+                    "none": [],
+                    "target": [
+                        ".group.transition-transform.hover\\:scale-110:nth-child(1) > .group-hover\\:text-gray-900.dark\\:group-hover\\:text-gray-200.text-gray-600"
+                    ]
+                },
+                {
+                    "all": [],
+                    "any": [
+                        {
+                            "data": {
+                                "bgColor": "#fdfdfd",
+                                "contrastRatio": 7.31,
+                                "expectedContrastRatio": "4.5:1",
+                                "fgColor": "#4c5664",
+                                "fontSize": "9.0pt",
+                                "fontWeight": "normal",
+                                "missingData": null
+                            },
+                            "id": "color-contrast",
+                            "impact": "serious",
+                            "message": "Element has sufficient color contrast of 7.31",
+                            "relatedNodes": []
+                        }
+                    ],
+                    "html": "<span class=\"text-xs mt-1 text-gray-600 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-gray-200\">Email</span>",
+                    "impact": null,
+                    "none": [],
+                    "target": [
+                        ".group.transition-transform.hover\\:scale-110:nth-child(2) > .group-hover\\:text-gray-900.dark\\:group-hover\\:text-gray-200.text-gray-600"
+                    ]
+                },
+                {
+                    "all": [],
+                    "any": [
+                        {
+                            "data": {
+                                "bgColor": "#fdfdfd",
+                                "contrastRatio": 7.31,
+                                "expectedContrastRatio": "4.5:1",
+                                "fgColor": "#4c5664",
+                                "fontSize": "9.0pt",
+                                "fontWeight": "normal",
+                                "missingData": null
+                            },
+                            "id": "color-contrast",
+                            "impact": "serious",
+                            "message": "Element has sufficient color contrast of 7.31",
+                            "relatedNodes": []
+                        }
+                    ],
+                    "html": "<span class=\"text-xs mt-1 text-gray-600 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-gray-200\">LinkedIn</span>",
+                    "impact": null,
+                    "none": [],
+                    "target": [
+                        ".group.transition-transform.hover\\:scale-110:nth-child(3) > .group-hover\\:text-gray-900.dark\\:group-hover\\:text-gray-200.text-gray-600"
+                    ]
+                },
+                {
+                    "all": [],
+                    "any": [
+                        {
+                            "data": {
+                                "bgColor": "#fdfdfd",
+                                "contrastRatio": 4.75,
+                                "expectedContrastRatio": "4.5:1",
+                                "fgColor": "#6b7280",
+                                "fontSize": "9.0pt",
+                                "fontWeight": "normal",
+                                "missingData": null
+                            },
+                            "id": "color-contrast",
+                            "impact": "serious",
+                            "message": "Element has sufficient color contrast of 4.75",
+                            "relatedNodes": []
+                        }
+                    ],
+                    "html": "<div class=\"text-center text-xs text-gray-500 dark:text-gray-400\">William Goldman \u00a9 <!-- -->2026</div>",
+                    "impact": null,
+                    "none": [],
+                    "target": [
+                        ".text-center.text-gray-500.text-xs"
+                    ]
+                }
+            ],
+            "tags": [
+                "cat.color",
+                "wcag2aa",
+                "wcag143"
+            ]
+        },
+        {
+            "description": "Ensures each HTML document contains a non-empty <title> element",
+            "help": "Documents must have <title> element to aid in navigation",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/3.1/document-title?application=axeAPI",
+            "id": "document-title",
+            "impact": null,
+            "nodes": [
+                {
+                    "all": [],
+                    "any": [
+                        {
+                            "data": null,
+                            "id": "doc-has-title",
+                            "impact": "serious",
+                            "message": "Document has a non-empty <title> element",
+                            "relatedNodes": []
+                        }
+                    ],
+                    "html": "<html lang=\"en\" class=\"dark theme-transition\">",
+                    "impact": null,
+                    "none": [],
+                    "target": [
+                        "html"
+                    ]
+                }
+            ],
+            "tags": [
+                "cat.text-alternatives",
+                "wcag2a",
+                "wcag242"
+            ]
+        },
+        {
+            "description": "Ensures every id attribute value is unique",
+            "help": "id attribute value must be unique",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/3.1/duplicate-id?application=axeAPI",
+            "id": "duplicate-id",
+            "impact": null,
+            "nodes": [
+                {
+                    "all": [],
+                    "any": [
+                        {
+                            "data": "_R_",
+                            "id": "duplicate-id",
+                            "impact": "minor",
+                            "message": "Document has no static elements that share the same id attribute",
+                            "relatedNodes": []
+                        }
+                    ],
+                    "html": "<script id=\"_R_\">self.__next_r=\"9HEEER-vJRNqHVTFOGAG8\"</script>",
+                    "impact": null,
+                    "none": [],
+                    "target": [
+                        "#_R_"
+                    ]
+                },
+                {
+                    "all": [],
+                    "any": [
+                        {
+                            "data": "__next-route-announcer__",
+                            "id": "duplicate-id",
+                            "impact": "minor",
+                            "message": "Document has no static elements that share the same id attribute",
+                            "relatedNodes": []
+                        }
+                    ],
+                    "html": "<div aria-live=\"assertive\" id=\"__next-route-announcer__\" role=\"alert\" style=\"position: absolute; border: 0px; height: 1px; margin: -1px; padding: 0px; width: 1px; clip: rect(0px, 0px, 0px, 0px); overflow: hidden; white-space: nowrap; overflow-wrap: normal;\"></div>",
+                    "impact": null,
+                    "none": [],
+                    "target": [
+                        [
+                            "next-route-announcer",
+                            "#__next-route-announcer__"
+                        ]
+                    ]
+                }
+            ],
+            "tags": [
+                "cat.parsing",
+                "wcag2a",
+                "wcag411"
+            ]
+        },
+        {
+            "description": "Ensures headings have discernible text",
+            "help": "Headings must not be empty",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/3.1/empty-heading?application=axeAPI",
+            "id": "empty-heading",
+            "impact": null,
+            "nodes": [
+                {
+                    "all": [],
+                    "any": [
+                        {
+                            "data": null,
+                            "id": "has-visible-text",
+                            "impact": "minor",
+                            "message": "Element has text that is visible to screen readers",
+                            "relatedNodes": []
+                        }
+                    ],
+                    "html": "<h1 class=\"text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold font-mono uppercase leading-tight mb-2 w-full text-center\" style=\"background:linear-gradient(to right, rgb(59, 130, 246), rgb(34, 197, 94));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;display:inline-block\">",
+                    "impact": null,
+                    "none": [],
+                    "target": [
+                        "h1"
+                    ]
+                },
+                {
+                    "all": [],
+                    "any": [
+                        {
+                            "data": null,
+                            "id": "has-visible-text",
+                            "impact": "minor",
+                            "message": "Element has text that is visible to screen readers",
+                            "relatedNodes": []
+                        }
+                    ],
+                    "html": "<h2 class=\"text-2xl font-bold mb-4 text-center text-gray-900 dark:text-gray-100\" style=\"opacity:0;transform:translateY(-10px)\">Featured Projects</h2>",
+                    "impact": null,
+                    "none": [],
+                    "target": [
+                        "h2"
+                    ]
+                },
+                {
+                    "all": [],
+                    "any": [
+                        {
+                            "data": null,
+                            "id": "has-visible-text",
+                            "impact": "minor",
+                            "message": "Element has text that is visible to screen readers",
+                            "relatedNodes": []
+                        }
+                    ],
+                    "html": "<h3 class=\"text-white text-base font-semibold\">Technologies and Designs for Remote Robotics Competition</h3>",
+                    "impact": null,
+                    "none": [],
+                    "target": [
+                        ".overflow-hidden.shadow-md.rounded-lg:nth-child(1) > .relative > .top-0.h-full.bg-gradient-to-b > h3"
+                    ]
+                },
+                {
+                    "all": [],
+                    "any": [
+                        {
+                            "data": null,
+                            "id": "has-visible-text",
+                            "impact": "minor",
+                            "message": "Element has text that is visible to screen readers",
+                            "relatedNodes": []
+                        }
+                    ],
+                    "html": "<h3 class=\"text-white text-base font-semibold\">MealPlanGuru</h3>",
+                    "impact": null,
+                    "none": [],
+                    "target": [
+                        ".overflow-hidden.shadow-md.rounded-lg:nth-child(2) > .relative > .top-0.h-full.bg-gradient-to-b > h3"
+                    ]
+                }
+            ],
+            "tags": [
+                "cat.name-role-value",
+                "best-practice"
+            ]
+        },
+        {
+            "description": "Ensures the order of headings is semantically correct",
+            "help": "Heading levels should only increase by one",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/3.1/heading-order?application=axeAPI",
+            "id": "heading-order",
+            "impact": null,
+            "nodes": [
+                {
+                    "all": [],
+                    "any": [
+                        {
+                            "data": 1,
+                            "id": "heading-order",
+                            "impact": "moderate",
+                            "message": "Heading order valid",
+                            "relatedNodes": []
+                        }
+                    ],
+                    "html": "<h1 class=\"text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold font-mono uppercase leading-tight mb-2 w-full text-center\" style=\"background:linear-gradient(to right, rgb(59, 130, 246), rgb(34, 197, 94));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;display:inline-block\">",
+                    "impact": null,
+                    "none": [],
+                    "target": [
+                        "h1"
+                    ]
+                },
+                {
+                    "all": [],
+                    "any": [
+                        {
+                            "data": 2,
+                            "id": "heading-order",
+                            "impact": "moderate",
+                            "message": "Heading order valid",
+                            "relatedNodes": []
+                        }
+                    ],
+                    "html": "<h2 class=\"text-2xl font-bold mb-4 text-center text-gray-900 dark:text-gray-100\" style=\"opacity:0;transform:translateY(-10px)\">Featured Projects</h2>",
+                    "impact": null,
+                    "none": [],
+                    "target": [
+                        "h2"
+                    ]
+                },
+                {
+                    "all": [],
+                    "any": [
+                        {
+                            "data": 3,
+                            "id": "heading-order",
+                            "impact": "moderate",
+                            "message": "Heading order valid",
+                            "relatedNodes": []
+                        }
+                    ],
+                    "html": "<h3 class=\"text-white text-base font-semibold\">Technologies and Designs for Remote Robotics Competition</h3>",
+                    "impact": null,
+                    "none": [],
+                    "target": [
+                        ".overflow-hidden.shadow-md.rounded-lg:nth-child(1) > .relative > .top-0.h-full.bg-gradient-to-b > h3"
+                    ]
+                },
+                {
+                    "all": [],
+                    "any": [
+                        {
+                            "data": 3,
+                            "id": "heading-order",
+                            "impact": "moderate",
+                            "message": "Heading order valid",
+                            "relatedNodes": []
+                        }
+                    ],
+                    "html": "<h3 class=\"text-white text-base font-semibold\">MealPlanGuru</h3>",
+                    "impact": null,
+                    "none": [],
+                    "target": [
+                        ".overflow-hidden.shadow-md.rounded-lg:nth-child(2) > .relative > .top-0.h-full.bg-gradient-to-b > h3"
+                    ]
+                }
+            ],
+            "tags": [
+                "cat.semantics",
+                "best-practice"
+            ]
+        },
+        {
+            "description": "Ensures every HTML document has a lang attribute",
+            "help": "<html> element must have a lang attribute",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/3.1/html-has-lang?application=axeAPI",
+            "id": "html-has-lang",
+            "impact": null,
+            "nodes": [
+                {
+                    "all": [],
+                    "any": [
+                        {
+                            "data": null,
+                            "id": "has-lang",
+                            "impact": "serious",
+                            "message": "The <html> element has a lang attribute",
+                            "relatedNodes": []
+                        }
+                    ],
+                    "html": "<html lang=\"en\" class=\"dark theme-transition\">",
+                    "impact": null,
+                    "none": [],
+                    "target": [
+                        "html"
+                    ]
+                }
+            ],
+            "tags": [
+                "cat.language",
+                "wcag2a",
+                "wcag311"
+            ]
+        },
+        {
+            "description": "Ensures the lang attribute of the <html> element has a valid value",
+            "help": "<html> element must have a valid value for the lang attribute",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/3.1/html-lang-valid?application=axeAPI",
+            "id": "html-lang-valid",
+            "impact": null,
+            "nodes": [
+                {
+                    "all": [],
+                    "any": [],
+                    "html": "<html lang=\"en\" class=\"dark theme-transition\">",
+                    "impact": null,
+                    "none": [
+                        {
+                            "data": null,
+                            "id": "valid-lang",
+                            "impact": "serious",
+                            "message": "Value of lang attribute is included in the list of valid languages",
+                            "relatedNodes": []
+                        }
+                    ],
+                    "target": [
+                        "html"
+                    ]
+                }
+            ],
+            "tags": [
+                "cat.language",
+                "wcag2a",
+                "wcag311"
+            ]
+        },
+        {
+            "description": "Ensures <img> elements have alternate text or a role of none or presentation",
+            "help": "Images must have alternate text",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/3.1/image-alt?application=axeAPI",
+            "id": "image-alt",
+            "impact": null,
+            "nodes": [
+                {
+                    "all": [],
+                    "any": [
+                        {
+                            "data": null,
+                            "id": "has-alt",
+                            "impact": "critical",
+                            "message": "Element has an alt attribute",
+                            "relatedNodes": []
+                        }
+                    ],
+                    "html": "<img alt=\"Technologies and Designs for Remote Robotics Competition\" loading=\"lazy\" width=\"400\" height=\"112\" decoding=\"async\" data-nimg=\"1\" class=\"w-full h-28 object-cover\" style=\"color:transparent\" srcset=\"/_next/image?url=%2Fimages%2FApriltag%20overview1.png&amp;w=640&amp;q=75 1x, /_next/image?url=%2Fimages%2FApriltag%20overview1.png&amp;w=828&amp;q=75 2x\" src=\"/_next/image?url=%2Fimages%2FApriltag%20overview1.png&amp;w=828&amp;q=75\">",
+                    "impact": null,
+                    "none": [],
+                    "target": [
+                        ".overflow-hidden.shadow-md.rounded-lg:nth-child(1) > .relative > img"
+                    ]
+                },
+                {
+                    "all": [],
+                    "any": [
+                        {
+                            "data": null,
+                            "id": "has-alt",
+                            "impact": "critical",
+                            "message": "Element has an alt attribute",
+                            "relatedNodes": []
+                        }
+                    ],
+                    "html": "<img alt=\"MealPlanGuru\" loading=\"lazy\" width=\"400\" height=\"112\" decoding=\"async\" data-nimg=\"1\" class=\"w-full h-28 object-cover\" style=\"color:transparent\" srcset=\"/_next/image?url=%2Fimages%2Fmealplangurus.png&amp;w=640&amp;q=75 1x, /_next/image?url=%2Fimages%2Fmealplangurus.png&amp;w=828&amp;q=75 2x\" src=\"/_next/image?url=%2Fimages%2Fmealplangurus.png&amp;w=828&amp;q=75\">",
+                    "impact": null,
+                    "none": [],
+                    "target": [
+                        "img[alt=\"MealPlanGuru\"]"
+                    ]
+                }
+            ],
+            "tags": [
+                "cat.text-alternatives",
+                "wcag2a",
+                "wcag111",
+                "section508",
+                "section508.22.a"
+            ]
+        },
+        {
+            "description": "Ensure button and link text is not repeated as image alternative",
+            "help": "Text of buttons and links should not be repeated in the image alternative",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/3.1/image-redundant-alt?application=axeAPI",
+            "id": "image-redundant-alt",
+            "impact": null,
+            "nodes": [
+                {
+                    "all": [],
+                    "any": [],
+                    "html": "<a class=\"flex flex-col items-center text-xs\" href=\"/\">",
+                    "impact": null,
+                    "none": [
+                        {
+                            "data": null,
+                            "id": "duplicate-img-label",
+                            "impact": "minor",
+                            "message": "Element does not duplicate existing text in <img> alt text",
+                            "relatedNodes": []
+                        }
+                    ],
+                    "target": [
+                        ".flex-col.text-xs[href=\"/\"]"
+                    ]
+                },
+                {
+                    "all": [],
+                    "any": [],
+                    "html": "<a class=\"flex flex-col items-center text-xs\" href=\"/resume\">",
+                    "impact": null,
+                    "none": [
+                        {
+                            "data": null,
+                            "id": "duplicate-img-label",
+                            "impact": "minor",
+                            "message": "Element does not duplicate existing text in <img> alt text",
+                            "relatedNodes": []
+                        }
+                    ],
+                    "target": [
+                        ".flex-col.text-xs[href$=\"resume\"]"
+                    ]
+                },
+                {
+                    "all": [],
+                    "any": [],
+                    "html": "<a class=\"flex flex-col items-center text-xs\" href=\"/projects\">",
+                    "impact": null,
+                    "none": [
+                        {
+                            "data": null,
+                            "id": "duplicate-img-label",
+                            "impact": "minor",
+                            "message": "Element does not duplicate existing text in <img> alt text",
+                            "relatedNodes": []
+                        }
+                    ],
+                    "target": [
+                        ".flex-col.text-xs[href$=\"projects\"]"
+                    ]
+                },
+                {
+                    "all": [],
+                    "any": [],
+                    "html": "<a class=\"flex flex-col items-center text-xs\" href=\"/skills\">",
+                    "impact": null,
+                    "none": [
+                        {
+                            "data": null,
+                            "id": "duplicate-img-label",
+                            "impact": "minor",
+                            "message": "Element does not duplicate existing text in <img> alt text",
+                            "relatedNodes": []
+                        }
+                    ],
+                    "target": [
+                        ".flex-col.text-xs[href$=\"skills\"]"
+                    ]
+                },
+                {
+                    "all": [],
+                    "any": [],
+                    "html": "<a class=\"flex flex-col items-center text-xs\" href=\"/hobbies\">",
+                    "impact": null,
+                    "none": [
+                        {
+                            "data": null,
+                            "id": "duplicate-img-label",
+                            "impact": "minor",
+                            "message": "Element does not duplicate existing text in <img> alt text",
+                            "relatedNodes": []
+                        }
+                    ],
+                    "target": [
+                        ".flex-col.text-xs[href$=\"hobbies\"]"
+                    ]
+                },
+                {
+                    "all": [],
+                    "any": [],
+                    "html": "<p class=\"text-sm sm:text-base text-gray-600 dark:text-gray-400 mb-4\" style=\"opacity:0;transform:translateY(10px)\">",
+                    "impact": null,
+                    "none": [
+                        {
+                            "data": null,
+                            "id": "duplicate-img-label",
+                            "impact": "minor",
+                            "message": "Element does not duplicate existing text in <img> alt text",
+                            "relatedNodes": []
+                        }
+                    ],
+                    "target": [
+                        ".text-sm"
+                    ]
+                },
+                {
+                    "all": [],
+                    "any": [],
+                    "html": "<a href=\"mailto:William.Goldman@tufts.edu\" class=\"inline-flex items-center gap-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200\">",
+                    "impact": null,
+                    "none": [
+                        {
+                            "data": null,
+                            "id": "duplicate-img-label",
+                            "impact": "minor",
+                            "message": "Element does not duplicate existing text in <img> alt text",
+                            "relatedNodes": []
+                        }
+                    ],
+                    "target": [
+                        ".inline-flex"
+                    ]
+                },
+                {
+                    "all": [],
+                    "any": [],
+                    "html": "<p class=\"text-lg leading-relaxed text-gray-800 dark:text-gray-200 text-center lg:text-left\" style=\"opacity:0;transform:translateY(20px)\">",
+                    "impact": null,
+                    "none": [
+                        {
+                            "data": null,
+                            "id": "duplicate-img-label",
+                            "impact": "minor",
+                            "message": "Element does not duplicate existing text in <img> alt text",
+                            "relatedNodes": []
+                        }
+                    ],
+                    "target": [
+                        ".text-lg.leading-relaxed.text-gray-800:nth-child(1)"
+                    ]
+                },
+                {
+                    "all": [],
+                    "any": [],
+                    "html": "<p class=\"text-lg leading-relaxed text-gray-800 dark:text-gray-200 text-center lg:text-left\" style=\"opacity:0;transform:translateY(20px)\">",
+                    "impact": null,
+                    "none": [
+                        {
+                            "data": null,
+                            "id": "duplicate-img-label",
+                            "impact": "minor",
+                            "message": "Element does not duplicate existing text in <img> alt text",
+                            "relatedNodes": []
+                        }
+                    ],
+                    "target": [
+                        ".text-lg.leading-relaxed.text-gray-800:nth-child(2)"
+                    ]
+                },
+                {
+                    "all": [],
+                    "any": [],
+                    "html": "<p class=\"text-lg leading-relaxed text-gray-800 dark:text-gray-200 text-center lg:text-left\" style=\"opacity:0;transform:translateY(20px)\">",
+                    "impact": null,
+                    "none": [
+                        {
+                            "data": null,
+                            "id": "duplicate-img-label",
+                            "impact": "minor",
+                            "message": "Element does not duplicate existing text in <img> alt text",
+                            "relatedNodes": []
+                        }
+                    ],
+                    "target": [
+                        ".text-lg.leading-relaxed.text-gray-800:nth-child(3)"
+                    ]
+                },
+                {
+                    "all": [],
+                    "any": [],
+                    "html": "<p class=\"text-xs text-gray-600 dark:text-gray-400\">July 2025 | MicroPython, Python, JavaScript, OpenCV, Websockets, WebRTC, Pyscript.com</p>",
+                    "impact": null,
+                    "none": [
+                        {
+                            "data": null,
+                            "id": "duplicate-img-label",
+                            "impact": "minor",
+                            "message": "Element does not duplicate existing text in <img> alt text",
+                            "relatedNodes": []
+                        }
+                    ],
+                    "target": [
+                        ".overflow-hidden.shadow-md.rounded-lg:nth-child(1) > .p-3 > p"
+                    ]
+                },
+                {
+                    "all": [],
+                    "any": [],
+                    "html": "<a href=\"https://fetlab.notion.site/Remote-FLL-Competition-237df3d0e05280e09622c856f06f14f7\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"flex-1 flex items-center justify-center hover:bg-black/10 transition-colors\">",
+                    "impact": null,
+                    "none": [
+                        {
+                            "data": null,
+                            "id": "duplicate-img-label",
+                            "impact": "minor",
+                            "message": "Element does not duplicate existing text in <img> alt text",
+                            "relatedNodes": []
+                        }
+                    ],
+                    "target": [
+                        ".overflow-hidden.shadow-md.rounded-lg:nth-child(1) > .inset-0.bg-gray-900.bg-opacity-70 > .flex-1.hover\\:bg-black\\/10[target=\"_blank\"]:nth-child(1)"
+                    ]
+                },
+                {
+                    "all": [],
+                    "any": [],
+                    "html": "<a href=\"https://github.com/tuftsceeo/Remote-Robotics-Competition\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"flex-1 flex items-center justify-center hover:bg-black/10 transition-colors\">",
+                    "impact": null,
+                    "none": [
+                        {
+                            "data": null,
+                            "id": "duplicate-img-label",
+                            "impact": "minor",
+                            "message": "Element does not duplicate existing text in <img> alt text",
+                            "relatedNodes": []
+                        }
+                    ],
+                    "target": [
+                        ".overflow-hidden.shadow-md.rounded-lg:nth-child(1) > .inset-0.bg-gray-900.bg-opacity-70 > .flex-1.hover\\:bg-black\\/10[target=\"_blank\"]:nth-child(2)"
+                    ]
+                },
+                {
+                    "all": [],
+                    "any": [],
+                    "html": "<p class=\"text-xs text-gray-600 dark:text-gray-400\">January 2025 | React.js, Next.js, Tailwind CSS, PostgreSQL, Neon, Resend Email</p>",
+                    "impact": null,
+                    "none": [
+                        {
+                            "data": null,
+                            "id": "duplicate-img-label",
+                            "impact": "minor",
+                            "message": "Element does not duplicate existing text in <img> alt text",
+                            "relatedNodes": []
+                        }
+                    ],
+                    "target": [
+                        ".overflow-hidden.shadow-md.rounded-lg:nth-child(2) > .p-3 > p"
+                    ]
+                },
+                {
+                    "all": [],
+                    "any": [],
+                    "html": "<a href=\"https://www.mealplangurus.com/\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"flex-1 flex items-center justify-center hover:bg-black/10 transition-colors\">",
+                    "impact": null,
+                    "none": [
+                        {
+                            "data": null,
+                            "id": "duplicate-img-label",
+                            "impact": "minor",
+                            "message": "Element does not duplicate existing text in <img> alt text",
+                            "relatedNodes": []
+                        }
+                    ],
+                    "target": [
+                        "a[href$=\"mealplangurus.com/\"]"
+                    ]
+                },
+                {
+                    "all": [],
+                    "any": [],
+                    "html": "<a href=\"https://github.com/iliketocode2/mealplanguruofficial\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"flex-1 flex items-center justify-center hover:bg-black/10 transition-colors\">",
+                    "impact": null,
+                    "none": [
+                        {
+                            "data": null,
+                            "id": "duplicate-img-label",
+                            "impact": "minor",
+                            "message": "Element does not duplicate existing text in <img> alt text",
+                            "relatedNodes": []
+                        }
+                    ],
+                    "target": [
+                        ".overflow-hidden.shadow-md.rounded-lg:nth-child(2) > .inset-0.bg-gray-900.bg-opacity-70 > .flex-1.hover\\:bg-black\\/10[target=\"_blank\"]:nth-child(2)"
+                    ]
+                },
+                {
+                    "all": [],
+                    "any": [],
+                    "html": "<button class=\"p-2 rounded-full transition-all duration-300 hover:scale-110 shadow-lg dark:bg-gray-800 dark:hover:bg-gray-700  bg-white hover:bg-gray-100\" aria-label=\"Toggle dark mode\">",
+                    "impact": null,
+                    "none": [
+                        {
+                            "data": null,
+                            "id": "duplicate-img-label",
+                            "impact": "minor",
+                            "message": "Element does not duplicate existing text in <img> alt text",
+                            "relatedNodes": []
+                        }
+                    ],
+                    "target": [
+                        "button"
+                    ]
+                },
+                {
+                    "all": [],
+                    "any": [],
+                    "html": "<a href=\"https://github.com/iliketocode2\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"group flex flex-col items-center transition-transform hover:scale-110\">",
+                    "impact": null,
+                    "none": [
+                        {
+                            "data": null,
+                            "id": "duplicate-img-label",
+                            "impact": "minor",
+                            "message": "Element does not duplicate existing text in <img> alt text",
+                            "relatedNodes": []
+                        }
+                    ],
+                    "target": [
+                        ".group.transition-transform.hover\\:scale-110:nth-child(1)"
+                    ]
+                },
+                {
+                    "all": [],
+                    "any": [],
+                    "html": "<a href=\"mailto:goldmanwilliam3@gmail.com\" class=\"group flex flex-col items-center transition-transform hover:scale-110\">",
+                    "impact": null,
+                    "none": [
+                        {
+                            "data": null,
+                            "id": "duplicate-img-label",
+                            "impact": "minor",
+                            "message": "Element does not duplicate existing text in <img> alt text",
+                            "relatedNodes": []
+                        }
+                    ],
+                    "target": [
+                        ".group.transition-transform.hover\\:scale-110:nth-child(2)"
+                    ]
+                },
+                {
+                    "all": [],
+                    "any": [],
+                    "html": "<a href=\"https://www.linkedin.com/in/william-goldman-79125a283/\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"group flex flex-col items-center transition-transform hover:scale-110\">",
+                    "impact": null,
+                    "none": [
+                        {
+                            "data": null,
+                            "id": "duplicate-img-label",
+                            "impact": "minor",
+                            "message": "Element does not duplicate existing text in <img> alt text",
+                            "relatedNodes": []
+                        }
+                    ],
+                    "target": [
+                        ".group.transition-transform.hover\\:scale-110:nth-child(3)"
+                    ]
+                }
+            ],
+            "tags": [
+                "cat.text-alternatives",
+                "best-practice"
+            ]
+        },
+        {
+            "description": "Ensures the contentinfo landmark is at top level",
+            "help": "Contentinfo landmark must not be contained in another landmark",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/3.1/landmark-contentinfo-is-top-level?application=axeAPI",
+            "id": "landmark-contentinfo-is-top-level",
+            "impact": null,
+            "nodes": [
+                {
+                    "all": [],
+                    "any": [
+                        {
+                            "data": {
+                                "role": "contentinfo"
+                            },
+                            "id": "landmark-is-top-level",
+                            "impact": "moderate",
+                            "message": "The contentinfo landmark is at the top level.",
+                            "relatedNodes": []
+                        }
+                    ],
+                    "html": "<footer class=\"fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-gray-900 shadow-lg transition-colors duration-300\">",
+                    "impact": null,
+                    "none": [],
+                    "target": [
+                        "footer"
+                    ]
+                }
+            ],
+            "tags": [
+                "cat.semantics",
+                "best-practice"
+            ]
+        },
+        {
+            "description": "Ensures the main landmark is at top level",
+            "help": "Main landmark must not be contained in another landmark",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/3.1/landmark-main-is-top-level?application=axeAPI",
+            "id": "landmark-main-is-top-level",
+            "impact": "moderate",
+            "nodes": [
+                {
+                    "all": [],
+                    "any": [
+                        {
+                            "data": {
+                                "role": "main"
+                            },
+                            "id": "landmark-is-top-level",
+                            "impact": "moderate",
+                            "message": "The main landmark is at the top level.",
+                            "relatedNodes": []
+                        }
+                    ],
+                    "html": "<main class=\"mt-4 bg-white/90 dark:bg-gray-900/90 rounded-lg shadow p-3 sm:p-8\">",
+                    "impact": null,
+                    "none": [],
+                    "target": [
+                        ".mt-4"
+                    ]
+                }
+            ],
+            "tags": [
+                "cat.semantics",
+                "best-practice"
+            ]
+        },
+        {
+            "description": "Ensures the page has at most one banner landmark",
+            "help": "Page must not have more than one banner landmark",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/3.1/landmark-no-duplicate-banner?application=axeAPI",
+            "id": "landmark-no-duplicate-banner",
+            "impact": null,
+            "nodes": [
+                {
+                    "all": [],
+                    "any": [
+                        {
+                            "data": null,
+                            "id": "page-no-duplicate-banner",
+                            "impact": "moderate",
+                            "message": "Document has no more than one banner landmark",
+                            "relatedNodes": []
+                        }
+                    ],
+                    "html": "<html lang=\"en\" class=\"dark theme-transition\">",
+                    "impact": null,
+                    "none": [],
+                    "target": [
+                        "html"
+                    ]
+                }
+            ],
+            "tags": [
+                "cat.semantics",
+                "best-practice"
+            ]
+        },
+        {
+            "description": "Ensures the page has at most one contentinfo landmark",
+            "help": "Page must not have more than one contentinfo landmark",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/3.1/landmark-no-duplicate-contentinfo?application=axeAPI",
+            "id": "landmark-no-duplicate-contentinfo",
+            "impact": null,
+            "nodes": [
+                {
+                    "all": [],
+                    "any": [
+                        {
+                            "data": null,
+                            "id": "page-no-duplicate-contentinfo",
+                            "impact": "moderate",
+                            "message": "Page does not have more than one contentinfo landmark",
+                            "relatedNodes": [
+                                {
+                                    "html": "<footer class=\"fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-gray-900 shadow-lg transition-colors duration-300\">",
+                                    "target": [
+                                        "footer"
+                                    ]
+                                }
+                            ]
+                        }
+                    ],
+                    "html": "<html lang=\"en\" class=\"dark theme-transition\">",
+                    "impact": null,
+                    "none": [],
+                    "target": [
+                        "html"
+                    ]
+                }
+            ],
+            "tags": [
+                "cat.semantics",
+                "best-practice"
+            ]
+        },
+        {
+            "description": "Ensures links have discernible text",
+            "help": "Links must have discernible text",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/3.1/link-name?application=axeAPI",
+            "id": "link-name",
+            "impact": "serious",
+            "nodes": [
+                {
+                    "all": [],
+                    "any": [
+                        {
+                            "data": null,
+                            "id": "has-visible-text",
+                            "impact": "minor",
+                            "message": "Element has text that is visible to screen readers",
+                            "relatedNodes": []
+                        }
+                    ],
+                    "html": "<a class=\"flex flex-col items-center text-xs\" href=\"/\">",
+                    "impact": null,
+                    "none": [
+                        {
+                            "data": null,
+                            "id": "focusable-no-name",
+                            "impact": "serious",
+                            "message": "Element is not in tab order or has accessible text",
+                            "relatedNodes": []
+                        }
+                    ],
+                    "target": [
+                        ".flex-col.text-xs[href=\"/\"]"
+                    ]
+                },
+                {
+                    "all": [],
+                    "any": [
+                        {
+                            "data": null,
+                            "id": "has-visible-text",
+                            "impact": "minor",
+                            "message": "Element has text that is visible to screen readers",
+                            "relatedNodes": []
+                        }
+                    ],
+                    "html": "<a class=\"flex flex-col items-center text-xs\" href=\"/resume\">",
+                    "impact": null,
+                    "none": [
+                        {
+                            "data": null,
+                            "id": "focusable-no-name",
+                            "impact": "serious",
+                            "message": "Element is not in tab order or has accessible text",
+                            "relatedNodes": []
+                        }
+                    ],
+                    "target": [
+                        ".flex-col.text-xs[href$=\"resume\"]"
+                    ]
+                },
+                {
+                    "all": [],
+                    "any": [
+                        {
+                            "data": null,
+                            "id": "has-visible-text",
+                            "impact": "minor",
+                            "message": "Element has text that is visible to screen readers",
+                            "relatedNodes": []
+                        }
+                    ],
+                    "html": "<a class=\"flex flex-col items-center text-xs\" href=\"/projects\">",
+                    "impact": null,
+                    "none": [
+                        {
+                            "data": null,
+                            "id": "focusable-no-name",
+                            "impact": "serious",
+                            "message": "Element is not in tab order or has accessible text",
+                            "relatedNodes": []
+                        }
+                    ],
+                    "target": [
+                        ".flex-col.text-xs[href$=\"projects\"]"
+                    ]
+                },
+                {
+                    "all": [],
+                    "any": [
+                        {
+                            "data": null,
+                            "id": "has-visible-text",
+                            "impact": "minor",
+                            "message": "Element has text that is visible to screen readers",
+                            "relatedNodes": []
+                        }
+                    ],
+                    "html": "<a class=\"flex flex-col items-center text-xs\" href=\"/skills\">",
+                    "impact": null,
+                    "none": [
+                        {
+                            "data": null,
+                            "id": "focusable-no-name",
+                            "impact": "serious",
+                            "message": "Element is not in tab order or has accessible text",
+                            "relatedNodes": []
+                        }
+                    ],
+                    "target": [
+                        ".flex-col.text-xs[href$=\"skills\"]"
+                    ]
+                },
+                {
+                    "all": [],
+                    "any": [
+                        {
+                            "data": null,
+                            "id": "has-visible-text",
+                            "impact": "minor",
+                            "message": "Element has text that is visible to screen readers",
+                            "relatedNodes": []
+                        }
+                    ],
+                    "html": "<a class=\"flex flex-col items-center text-xs\" href=\"/hobbies\">",
+                    "impact": null,
+                    "none": [
+                        {
+                            "data": null,
+                            "id": "focusable-no-name",
+                            "impact": "serious",
+                            "message": "Element is not in tab order or has accessible text",
+                            "relatedNodes": []
+                        }
+                    ],
+                    "target": [
+                        ".flex-col.text-xs[href$=\"hobbies\"]"
+                    ]
+                },
+                {
+                    "all": [],
+                    "any": [
+                        {
+                            "data": null,
+                            "id": "has-visible-text",
+                            "impact": "minor",
+                            "message": "Element has text that is visible to screen readers",
+                            "relatedNodes": []
+                        }
+                    ],
+                    "html": "<a href=\"mailto:William.Goldman@tufts.edu\" class=\"inline-flex items-center gap-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200\">",
+                    "impact": null,
+                    "none": [
+                        {
+                            "data": null,
+                            "id": "focusable-no-name",
+                            "impact": "serious",
+                            "message": "Element is not in tab order or has accessible text",
+                            "relatedNodes": []
+                        }
+                    ],
+                    "target": [
+                        ".inline-flex"
+                    ]
+                },
+                {
+                    "all": [],
+                    "any": [
+                        {
+                            "data": null,
+                            "id": "has-visible-text",
+                            "impact": "minor",
+                            "message": "Element has text that is visible to screen readers",
+                            "relatedNodes": []
+                        }
+                    ],
+                    "html": "<a href=\"https://github.com/iliketocode2\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"group flex flex-col items-center transition-transform hover:scale-110\">",
+                    "impact": null,
+                    "none": [
+                        {
+                            "data": null,
+                            "id": "focusable-no-name",
+                            "impact": "serious",
+                            "message": "Element is not in tab order or has accessible text",
+                            "relatedNodes": []
+                        }
+                    ],
+                    "target": [
+                        ".group.transition-transform.hover\\:scale-110:nth-child(1)"
+                    ]
+                },
+                {
+                    "all": [],
+                    "any": [
+                        {
+                            "data": null,
+                            "id": "has-visible-text",
+                            "impact": "minor",
+                            "message": "Element has text that is visible to screen readers",
+                            "relatedNodes": []
+                        }
+                    ],
+                    "html": "<a href=\"mailto:goldmanwilliam3@gmail.com\" class=\"group flex flex-col items-center transition-transform hover:scale-110\">",
+                    "impact": null,
+                    "none": [
+                        {
+                            "data": null,
+                            "id": "focusable-no-name",
+                            "impact": "serious",
+                            "message": "Element is not in tab order or has accessible text",
+                            "relatedNodes": []
+                        }
+                    ],
+                    "target": [
+                        ".group.transition-transform.hover\\:scale-110:nth-child(2)"
+                    ]
+                },
+                {
+                    "all": [],
+                    "any": [
+                        {
+                            "data": null,
+                            "id": "has-visible-text",
+                            "impact": "minor",
+                            "message": "Element has text that is visible to screen readers",
+                            "relatedNodes": []
+                        }
+                    ],
+                    "html": "<a href=\"https://www.linkedin.com/in/william-goldman-79125a283/\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"group flex flex-col items-center transition-transform hover:scale-110\">",
+                    "impact": null,
+                    "none": [
+                        {
+                            "data": null,
+                            "id": "focusable-no-name",
+                            "impact": "serious",
+                            "message": "Element is not in tab order or has accessible text",
+                            "relatedNodes": []
+                        }
+                    ],
+                    "target": [
+                        ".group.transition-transform.hover\\:scale-110:nth-child(3)"
+                    ]
+                }
+            ],
+            "tags": [
+                "cat.name-role-value",
+                "wcag2a",
+                "wcag412",
+                "wcag244",
+                "section508",
+                "section508.22.a"
+            ]
+        },
+        {
+            "description": "Ensures <meta name=\"viewport\"> can scale a significant amount",
+            "help": "Users should be able to zoom and scale the text up to 500%",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/3.1/meta-viewport-large?application=axeAPI",
+            "id": "meta-viewport-large",
+            "impact": null,
+            "nodes": [
+                {
+                    "all": [],
+                    "any": [
+                        {
+                            "data": null,
+                            "id": "meta-viewport-large",
+                            "impact": "minor",
+                            "message": "<meta> tag does not prevent significant zooming on mobile devices",
+                            "relatedNodes": []
+                        }
+                    ],
+                    "html": "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">",
+                    "impact": null,
+                    "none": [],
+                    "target": [
+                        "meta[name=\"viewport\"]"
+                    ]
+                }
+            ],
+            "tags": [
+                "cat.sensory-and-visual-cues",
+                "best-practice"
+            ]
+        },
+        {
+            "description": "Ensures <meta name=\"viewport\"> does not disable text scaling and zooming",
+            "help": "Zooming and scaling must not be disabled",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/3.1/meta-viewport?application=axeAPI",
+            "id": "meta-viewport",
+            "impact": null,
+            "nodes": [
+                {
+                    "all": [],
+                    "any": [
+                        {
+                            "data": null,
+                            "id": "meta-viewport",
+                            "impact": "critical",
+                            "message": "<meta> tag does not disable zooming on mobile devices",
+                            "relatedNodes": []
+                        }
+                    ],
+                    "html": "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">",
+                    "impact": null,
+                    "none": [],
+                    "target": [
+                        "meta[name=\"viewport\"]"
+                    ]
+                }
+            ],
+            "tags": [
+                "cat.sensory-and-visual-cues",
+                "wcag2aa",
+                "wcag144"
+            ]
+        },
+        {
+            "description": "Ensure that the page, or at least one of its frames contains a level-one heading",
+            "help": "Page must contain a level-one heading",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/3.1/page-has-heading-one?application=axeAPI",
+            "id": "page-has-heading-one",
+            "impact": null,
+            "nodes": [
+                {
+                    "all": [
+                        {
+                            "data": null,
+                            "id": "page-has-heading-one",
+                            "impact": "moderate",
+                            "message": "Page has at least one level-one heading",
+                            "relatedNodes": [
+                                {
+                                    "html": "<h1 class=\"text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold font-mono uppercase leading-tight mb-2 w-full text-center\" style=\"background:linear-gradient(to right, rgb(59, 130, 246), rgb(34, 197, 94));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;display:inline-block\">",
+                                    "target": [
+                                        "h1"
+                                    ]
+                                }
+                            ]
+                        }
+                    ],
+                    "any": [],
+                    "html": "<html lang=\"en\" class=\"dark theme-transition\">",
+                    "impact": null,
+                    "none": [],
+                    "target": [
+                        "html"
+                    ]
+                }
+            ],
+            "tags": [
+                "cat.semantics",
+                "best-practice"
+            ]
+        },
+        {
+            "description": "Ensures all page content is contained by landmarks",
+            "help": "All page content must be contained by landmarks",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/3.1/region?application=axeAPI",
+            "id": "region",
+            "impact": null,
+            "nodes": [
+                {
+                    "all": [],
+                    "any": [
+                        {
+                            "data": null,
+                            "id": "region",
+                            "impact": "moderate",
+                            "message": "All page content is contained by landmarks",
+                            "relatedNodes": []
+                        }
+                    ],
+                    "html": "<html lang=\"en\" class=\"dark theme-transition\">",
+                    "impact": null,
+                    "none": [],
+                    "target": [
+                        "html"
+                    ]
+                }
+            ],
+            "tags": [
+                "cat.keyboard",
+                "best-practice"
+            ]
+        }
+    ],
+    "timestamp": "2026-02-21T18:07:21.453Z",
+    "url": "http://localhost:3000/",
+    "violations": [
+        {
+            "description": "Ensures the main landmark is at top level",
+            "help": "Main landmark must not be contained in another landmark",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/3.1/landmark-main-is-top-level?application=axeAPI",
+            "id": "landmark-main-is-top-level",
+            "impact": "moderate",
+            "nodes": [
+                {
+                    "all": [],
+                    "any": [
+                        {
+                            "data": {
+                                "role": "main"
+                            },
+                            "id": "landmark-is-top-level",
+                            "impact": "moderate",
+                            "message": "The main landmark is contained in another landmark.",
+                            "relatedNodes": []
+                        }
+                    ],
+                    "failureSummary": "Fix any of the following:\n  The main landmark is contained in another landmark.",
+                    "html": "<main class=\"min-h-screen w-full max-w-full overflow-x-hidden pb-12\">",
+                    "impact": "moderate",
+                    "none": [],
+                    "target": [
+                        ".max-w-full"
+                    ]
+                }
+            ],
+            "tags": [
+                "cat.semantics",
+                "best-practice"
+            ]
+        },
+        {
+            "description": "Ensures the page has only one main landmark and each iframe in the page has at most one main landmark",
+            "help": "Page must have one main landmark",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/3.1/landmark-one-main?application=axeAPI",
+            "id": "landmark-one-main",
+            "impact": "moderate",
+            "nodes": [
+                {
+                    "all": [
+                        {
+                            "data": null,
+                            "id": "page-no-duplicate-main",
+                            "impact": "moderate",
+                            "message": "Page has more than one main landmark",
+                            "relatedNodes": [
+                                {
+                                    "html": "<main class=\"mt-4 bg-white/90 dark:bg-gray-900/90 rounded-lg shadow p-3 sm:p-8\">",
+                                    "target": [
+                                        ".mt-4"
+                                    ]
+                                },
+                                {
+                                    "html": "<main class=\"min-h-screen w-full max-w-full overflow-x-hidden pb-12\">",
+                                    "target": [
+                                        ".max-w-full"
+                                    ]
+                                }
+                            ]
+                        }
+                    ],
+                    "any": [],
+                    "failureSummary": "Fix all of the following:\n  Page has more than one main landmark",
+                    "html": "<html lang=\"en\" class=\"dark theme-transition\">",
+                    "impact": "moderate",
+                    "none": [],
+                    "target": [
+                        "html"
+                    ]
+                }
+            ],
+            "tags": [
+                "cat.semantics",
+                "best-practice"
+            ]
+        },
+        {
+            "description": "Ensures links have discernible text",
+            "help": "Links must have discernible text",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/3.1/link-name?application=axeAPI",
+            "id": "link-name",
+            "impact": "serious",
+            "nodes": [
+                {
+                    "all": [],
+                    "any": [
+                        {
+                            "data": null,
+                            "id": "has-visible-text",
+                            "impact": "minor",
+                            "message": "Element does not have text that is visible to screen readers",
+                            "relatedNodes": []
+                        },
+                        {
+                            "data": null,
+                            "id": "aria-label",
+                            "impact": "serious",
+                            "message": "aria-label attribute does not exist or is empty",
+                            "relatedNodes": []
+                        },
+                        {
+                            "data": null,
+                            "id": "aria-labelledby",
+                            "impact": "serious",
+                            "message": "aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty",
+                            "relatedNodes": []
+                        },
+                        {
+                            "data": null,
+                            "id": "role-presentation",
+                            "impact": "minor",
+                            "message": "Element's default semantics were not overridden with role=\"presentation\"",
+                            "relatedNodes": []
+                        },
+                        {
+                            "data": null,
+                            "id": "role-none",
+                            "impact": "minor",
+                            "message": "Element's default semantics were not overridden with role=\"none\"",
+                            "relatedNodes": []
+                        }
+                    ],
+                    "failureSummary": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element's default semantics were not overridden with role=\"presentation\"\n  Element's default semantics were not overridden with role=\"none\"",
+                    "html": "<a href=\"https://fetlab.notion.site/Remote-FLL-Competition-237df3d0e05280e09622c856f06f14f7\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"flex-1 flex items-center justify-center hover:bg-black/10 transition-colors\">",
+                    "impact": "serious",
+                    "none": [
+                        {
+                            "data": null,
+                            "id": "focusable-no-name",
+                            "impact": "serious",
+                            "message": "Element is in tab order and does not have accessible text",
+                            "relatedNodes": []
+                        }
+                    ],
+                    "target": [
+                        ".overflow-hidden.shadow-md.rounded-lg:nth-child(1) > .inset-0.bg-gray-900.bg-opacity-70 > .flex-1.hover\\:bg-black\\/10[target=\"_blank\"]:nth-child(1)"
+                    ]
+                },
+                {
+                    "all": [],
+                    "any": [
+                        {
+                            "data": null,
+                            "id": "has-visible-text",
+                            "impact": "minor",
+                            "message": "Element does not have text that is visible to screen readers",
+                            "relatedNodes": []
+                        },
+                        {
+                            "data": null,
+                            "id": "aria-label",
+                            "impact": "serious",
+                            "message": "aria-label attribute does not exist or is empty",
+                            "relatedNodes": []
+                        },
+                        {
+                            "data": null,
+                            "id": "aria-labelledby",
+                            "impact": "serious",
+                            "message": "aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty",
+                            "relatedNodes": []
+                        },
+                        {
+                            "data": null,
+                            "id": "role-presentation",
+                            "impact": "minor",
+                            "message": "Element's default semantics were not overridden with role=\"presentation\"",
+                            "relatedNodes": []
+                        },
+                        {
+                            "data": null,
+                            "id": "role-none",
+                            "impact": "minor",
+                            "message": "Element's default semantics were not overridden with role=\"none\"",
+                            "relatedNodes": []
+                        }
+                    ],
+                    "failureSummary": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element's default semantics were not overridden with role=\"presentation\"\n  Element's default semantics were not overridden with role=\"none\"",
+                    "html": "<a href=\"https://github.com/tuftsceeo/Remote-Robotics-Competition\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"flex-1 flex items-center justify-center hover:bg-black/10 transition-colors\">",
+                    "impact": "serious",
+                    "none": [
+                        {
+                            "data": null,
+                            "id": "focusable-no-name",
+                            "impact": "serious",
+                            "message": "Element is in tab order and does not have accessible text",
+                            "relatedNodes": []
+                        }
+                    ],
+                    "target": [
+                        ".overflow-hidden.shadow-md.rounded-lg:nth-child(1) > .inset-0.bg-gray-900.bg-opacity-70 > .flex-1.hover\\:bg-black\\/10[target=\"_blank\"]:nth-child(2)"
+                    ]
+                },
+                {
+                    "all": [],
+                    "any": [
+                        {
+                            "data": null,
+                            "id": "has-visible-text",
+                            "impact": "minor",
+                            "message": "Element does not have text that is visible to screen readers",
+                            "relatedNodes": []
+                        },
+                        {
+                            "data": null,
+                            "id": "aria-label",
+                            "impact": "serious",
+                            "message": "aria-label attribute does not exist or is empty",
+                            "relatedNodes": []
+                        },
+                        {
+                            "data": null,
+                            "id": "aria-labelledby",
+                            "impact": "serious",
+                            "message": "aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty",
+                            "relatedNodes": []
+                        },
+                        {
+                            "data": null,
+                            "id": "role-presentation",
+                            "impact": "minor",
+                            "message": "Element's default semantics were not overridden with role=\"presentation\"",
+                            "relatedNodes": []
+                        },
+                        {
+                            "data": null,
+                            "id": "role-none",
+                            "impact": "minor",
+                            "message": "Element's default semantics were not overridden with role=\"none\"",
+                            "relatedNodes": []
+                        }
+                    ],
+                    "failureSummary": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element's default semantics were not overridden with role=\"presentation\"\n  Element's default semantics were not overridden with role=\"none\"",
+                    "html": "<a href=\"https://www.mealplangurus.com/\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"flex-1 flex items-center justify-center hover:bg-black/10 transition-colors\">",
+                    "impact": "serious",
+                    "none": [
+                        {
+                            "data": null,
+                            "id": "focusable-no-name",
+                            "impact": "serious",
+                            "message": "Element is in tab order and does not have accessible text",
+                            "relatedNodes": []
+                        }
+                    ],
+                    "target": [
+                        "a[href$=\"mealplangurus.com/\"]"
+                    ]
+                },
+                {
+                    "all": [],
+                    "any": [
+                        {
+                            "data": null,
+                            "id": "has-visible-text",
+                            "impact": "minor",
+                            "message": "Element does not have text that is visible to screen readers",
+                            "relatedNodes": []
+                        },
+                        {
+                            "data": null,
+                            "id": "aria-label",
+                            "impact": "serious",
+                            "message": "aria-label attribute does not exist or is empty",
+                            "relatedNodes": []
+                        },
+                        {
+                            "data": null,
+                            "id": "aria-labelledby",
+                            "impact": "serious",
+                            "message": "aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty",
+                            "relatedNodes": []
+                        },
+                        {
+                            "data": null,
+                            "id": "role-presentation",
+                            "impact": "minor",
+                            "message": "Element's default semantics were not overridden with role=\"presentation\"",
+                            "relatedNodes": []
+                        },
+                        {
+                            "data": null,
+                            "id": "role-none",
+                            "impact": "minor",
+                            "message": "Element's default semantics were not overridden with role=\"none\"",
+                            "relatedNodes": []
+                        }
+                    ],
+                    "failureSummary": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element's default semantics were not overridden with role=\"presentation\"\n  Element's default semantics were not overridden with role=\"none\"",
+                    "html": "<a href=\"https://github.com/iliketocode2/mealplanguruofficial\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"flex-1 flex items-center justify-center hover:bg-black/10 transition-colors\">",
+                    "impact": "serious",
+                    "none": [
+                        {
+                            "data": null,
+                            "id": "focusable-no-name",
+                            "impact": "serious",
+                            "message": "Element is in tab order and does not have accessible text",
+                            "relatedNodes": []
+                        }
+                    ],
+                    "target": [
+                        ".overflow-hidden.shadow-md.rounded-lg:nth-child(2) > .inset-0.bg-gray-900.bg-opacity-70 > .flex-1.hover\\:bg-black\\/10[target=\"_blank\"]:nth-child(2)"
+                    ]
+                }
+            ],
+            "tags": [
+                "cat.name-role-value",
+                "wcag2a",
+                "wcag412",
+                "wcag244",
+                "section508",
+                "section508.22.a"
+            ]
+        }
+    ]
+}
