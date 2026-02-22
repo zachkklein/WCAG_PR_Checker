@@ -54,7 +54,7 @@ async function fixFileWithAI(filePath, violations) {
             "Content-Type": "application/json"
         },
         body: JSON.stringify({
-            model: "google/gemini-2.0-flash-lite-preview-02-05:free",
+            model: "google/gemini-3.1-pro-preview",
             messages: [{ role: "user", content: prompt }]
         })
     });
