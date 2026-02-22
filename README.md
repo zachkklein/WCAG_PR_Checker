@@ -1,8 +1,10 @@
-# a11y-diff
+# a11y-Gaurd
 
 > Detect accessibility regressions between pull requests without punishing existing debt.
 
 Unlike standard axe CI integrations that pass/fail absolutely, WCAG_PR_Checker compares accessibility health over time. It blocks a PR only if it makes things *worse* so teams with legacy debt can mitigate new issues without first fixing everything.
+
+View more information on [the website](https://a11yguardsite.vercel.app/#setup).
 
 ---
 
