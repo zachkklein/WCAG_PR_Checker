@@ -68,17 +68,6 @@ outputs:
 runs:
   using: 'composite'
   steps:
-    - name: Debug action version
-      shell: bash
-      run: |
-        echo "=== action.yml header ==="
-        head -5 ${{ github.action_path }}/action.yml
-        echo "=== scan.js first line ==="
-        head -3 ${{ github.action_path }}/src/scan.js
-        echo "=== comment.js first line ==="
-        head -3 ${{ github.action_path }}/src/comment.js
-        echo "=== package.json ==="
-        cat ${{ github.action_path }}/package.json
 
     # ── 1. Checkout PR branch ─────────────────────────────────────────────────
     - name: Checkout PR branch
@@ -124,6 +113,7 @@ runs:
       shell: bash
       run: |
         cd _a11y_pr/${{ inputs.APP_DIR }}
+        rm -rf ${{ inputs.BUILD_DIR }} .next
         npm run ${{ inputs.BUILD_COMMAND }}
 
     # ── 7. Install & build base branch ───────────────────────────────────────
@@ -137,6 +127,7 @@ runs:
       shell: bash
       run: |
         cd _a11y_base/${{ inputs.APP_DIR }}
+        rm -rf ${{ inputs.BUILD_DIR }} .next
         npm run ${{ inputs.BUILD_COMMAND }}
 
     # ── 8. Serve both builds ──────────────────────────────────────────────────
