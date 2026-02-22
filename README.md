@@ -203,6 +203,14 @@ a11y-diff-action/
 
 ---
 
+## Creators
+- [Zach Klein](https://github.com/zachkklein)
+- [Andrew Bacigalupi](https://github.com/AndrewBacigalupi)
+- [Thee Thakong](https://github.com/thee28)
+- [Alex Vu](https://github.com/AlexBVu)
+- [William Goldman](https://github.com/iliketocode2)
+- [Ethan Li](https://github.com/Ethanli628)
+
 ## License
 
 MIT
