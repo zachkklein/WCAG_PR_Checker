@@ -7,6 +7,11 @@ branding:
   color: 'blue'
 
 inputs:
+  OPENROUTER_API_KEY:
+    description: 'API Key for OpenRouter (required for AI fixes)'
+    required: false
+    default: ''
+
   APP_DIR:
     description: 'Path to your app directory relative to the repo root (e.g. "my-app", "frontend", or "." for root).'
     required: false
@@ -242,13 +247,12 @@ runs:
       if: env.HAS_REGRESSION == 'true'
       shell: bash
       env:
-        OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
-        # We tell the script to fix the files inside the PR checkout folder
+        # Change this line to use the input
+        OPENROUTER_API_KEY: ${{ inputs.OPENROUTER_API_KEY }}
         PR_PROJECT_PATH: "_a11y_pr/${{ inputs.APP_DIR }}"
       run: |
-        # We pass the diff file location to the fixer
         node ${{ github.action_path }}/src/auto-fix.js --diff /tmp/a11y_diff.json
-
+    
     # ── 14. Commit and Push AI Fixes ─────────────────────────────────────────
     # Caller workflow MUST set: permissions: contents: write (and pull-requests: write).
     - name: Commit and Push AI Fixes

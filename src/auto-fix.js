@@ -51,10 +51,22 @@ async function fixFileWithAI(filePath, violations) {
     });
 
     const data = await response.json();
+
+    if (!response.ok || !data.choices || data.choices.length === 0) {
+        const apiError = data.error?.message || JSON.stringify(data);
+        throw new Error(`OpenRouter API error (HTTP ${response.status}): ${apiError}`);
+    }
+
     return data.choices[0].message.content.trim();
 }
 
 async function main() {
+    if (!OPENROUTER_API_KEY) {
+        console.error('❌ OPENROUTER_API_KEY is not set. Skipping AI auto-fix.');
+        console.error('   Add it as a repository secret: Settings → Secrets → Actions → New repository secret.');
+        return;
+    }
+
     if (!fs.existsSync(DIFF_FILE)) return;
     const diff = JSON.parse(fs.readFileSync(DIFF_FILE, 'utf8'));
     
