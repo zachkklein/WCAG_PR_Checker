@@ -130,6 +130,14 @@ runs:
         rm -rf ${{ inputs.BUILD_DIR }} .next
         npm run ${{ inputs.BUILD_COMMAND }}
 
+    - name: Debug HTML diff
+      shell: bash
+      run: |
+        echo "=== Checking if index.html differs between branches ==="
+        diff _a11y_base/${{ inputs.APP_DIR }}/${{ inputs.BUILD_DIR }}/index.html \
+             _a11y_pr/${{ inputs.APP_DIR }}/${{ inputs.BUILD_DIR }}/index.html \
+          && echo "FILES ARE IDENTICAL" || echo "FILES DIFFER"
+
     # ── 8. Serve both builds ──────────────────────────────────────────────────
     # Wait for ports with tcp: so we only require the server to be listening,
     # not returning 2xx (Next.js static export may 404 on HEAD / until routes exist).
