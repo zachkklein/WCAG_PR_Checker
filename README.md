@@ -39,6 +39,14 @@ jobs:
           URLS: '/,/about,/dashboard'
 ```
 
+**If you use the AI auto-fixer** (regression → AI suggests fixes and commits back to the PR), the workflow **must** grant write access so the action can push the fix commit:
+
+```yaml
+    permissions:
+      contents: write   # required for git-auto-commit push
+      pull-requests: write
+```
+
 That's it. No scripts to copy, no config files to manage.
 
 ---
@@ -182,7 +190,8 @@ a11y-diff-action/
 └── src/
     ├── scan.js         # Playwright + axe-core scanner
     ├── diff.js         # Violation diffing logic
-    └── comment.js      # PR comment formatting and posting
+    ├── comment.js      # PR comment formatting and posting
+    └── auto-fix.js     # Optional: AI fixes and commits back to PR (needs OPENROUTER_API_KEY, contents: write)
 ```
 
 ---

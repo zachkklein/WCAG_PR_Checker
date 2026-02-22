@@ -240,6 +240,7 @@ runs:
         node ${{ github.action_path }}/src/auto-fix.js --diff /tmp/a11y_diff.json
 
     # ── 14. Commit and Push AI Fixes ─────────────────────────────────────────
+    # Caller workflow MUST set: permissions: contents: write (and pull-requests: write).
     - name: Commit and Push AI Fixes
       if: env.HAS_REGRESSION == 'true'
       uses: stefanzweifel/git-auto-commit-action@v5
@@ -248,7 +249,8 @@ runs:
         # CRITICAL: Point the commit action to the folder where the files were modified
         repository: _a11y_pr
         branch: ${{ github.head_ref }}
-        file_pattern: '*.html *.js *.jsx *.tsx'
+        # For static HTML sites the auto-fixer only edits *.html; add *.js *.jsx *.tsx if your fixer touches those
+        file_pattern: '*.html'
 
     # ── 15. Upload scan artifacts (Moved to end) ──────────────────────────────
     - name: Upload scan artifacts
