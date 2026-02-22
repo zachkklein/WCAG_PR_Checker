@@ -11,6 +11,7 @@ const minimist = require('minimist');
 const args     = minimist(process.argv.slice(2));
 const diffFile = args.diff || 'diff.json';
 
+/* 3 environmental variables REQUIRED to run */
 const GITHUB_TOKEN       = process.env.GITHUB_TOKEN;
 const PR_NUMBER          = process.env.PR_NUMBER;
 const GITHUB_REPOSITORY  = process.env.GITHUB_REPOSITORY;
@@ -25,6 +26,7 @@ const [owner, repo] = GITHUB_REPOSITORY.split('/');
 
 const IMPACT_EMOJI = { critical: '🔴', serious: '🟠', moderate: '🟡', minor: '🔵' };
 
+/* maps Axe-Core errors to WCAG standards */
 const WCAG_TAGS = {
   'wcag2a':        { label: 'WCAG 2.0 A',    url: 'https://www.w3.org/TR/WCAG20/' },
   'wcag2aa':       { label: 'WCAG 2.0 AA',   url: 'https://www.w3.org/TR/WCAG20/' },
@@ -34,6 +36,8 @@ const WCAG_TAGS = {
   'best-practice': { label: 'Best Practice', url: 'https://dequeuniversity.com/rules/axe/' },
 };
 
+
+/* outlines hints for each error */
 const FIX_HINTS = {
   'color-contrast':     'Increase contrast ratio to at least 4.5:1 (3:1 for large text). Check at https://webaim.org/resources/contrastchecker/',
   'image-alt':          'Add a descriptive `alt` attribute. Use `alt=""` for decorative images.',
@@ -53,6 +57,13 @@ const FIX_HINTS = {
   'video-caption':      'Add captions using a `<track kind="captions">` element inside `<video>`.',
 };
 
+/*****
+  Helper Functions
+*****/
+
+/* 
+  Gives the label and URL for the given tag, used to associate axe-core tags with real suggestions.
+*/
 function wcagInfo(tags) {
   for (const tag of (tags || [])) {
     if (WCAG_TAGS[tag]) return WCAG_TAGS[tag];
@@ -60,21 +71,39 @@ function wcagInfo(tags) {
   return { label: '—', url: null };
 }
 
+
+/*
+  Assigns an impact level emoji based on the impact of the violation, used each time to ease with user experience.
+*/
 function impactBadge(impact) {
   return `${IMPACT_EMOJI[impact] || '⚪'} **${impact}**`;
 }
 
-function delta(a, b) {
-  const n = (b || 0) - (a || 0);
+
+/*
+  Determines whether the number of vulnerabilites have increased or decreased from the codebase to the PR
+*/
+function delta(a = 0, b = 0) {
+  const n = b - a;
   if (n === 0) return '—';
   return n > 0 ? `+${n} ⬆️` : `${n} ⬇️`;
 }
 
+
+/*
+  Cuts off text that is too long so comment tables are normally-sized
+*/
 function truncate(str, max) {
   if (!str) return '';
   return str.length > max ? str.slice(0, max) + '…' : str;
 }
 
+
+
+/*
+  Builds a collapsable comment with details for each violation, v. It collects all violations of the same type
+  under the same label. This is the "expand" button on the final comment
+*/
 function buildViolationDetail(v) {
   const wcag     = wcagInfo(v.tags);
   const hint     = FIX_HINTS[v.id] || null;
@@ -122,6 +151,11 @@ ${nodeBlocks}
 </details>`;
 }
 
+
+/*
+  buildComment creates the main table. It takes all the diff output, and puts the violations in order: status header, status line, summary table, new violations,
+  resolved violations, preexisting violations, and the footer. Each section only appears if it appears.
+*/
 function buildComment(diff) {
   const { summary, newViolations, resolvedViolations, unchangedViolations, impactDelta, regression } = diff;
 
@@ -136,6 +170,7 @@ function buildComment(diff) {
       ? `> No new violations were introduced. However, **${existingCount} pre-existing violation(s)** remain on this branch — not blocking this PR but worth addressing over time.`
       : `> No accessibility violations were introduced by this PR.`;
 
+  /* Outlines the summary of violations */
   const summaryTable = `
 | | Baseline | This PR | Delta |
 |---|:---:|:---:|:---:|
@@ -220,6 +255,12 @@ ${existing.map(buildViolationDetail).join('\n\n')}
     .join('\n');
 }
 
+
+/*
+  githubRequest takes: an HTTP method, a GitHub API path, and a request body.
+  It sets up our environment to ensure that we can run our action.
+  Returns parsed result on sucess, and an error message on failure.
+*/
 function githubRequest(method, urlPath, body) {
   return new Promise((resolve, reject) => {
     const data = body ? JSON.stringify(body) : null;
@@ -249,6 +290,10 @@ function githubRequest(method, urlPath, body) {
   });
 }
 
+
+/*
+  Deletes previous comments such that the most recent is the only one that shows up in 
+*/
 async function deleteExistingComments() {
   const comments = await githubRequest('GET', `/repos/${owner}/${repo}/issues/${PR_NUMBER}/comments`);
   for (const comment of comments) {
@@ -259,6 +304,10 @@ async function deleteExistingComments() {
   }
 }
 
+/*
+  Runs all the processes to create the comment table. It fails with exit code 1 when the violations have increased
+  (a regression), and a 0 otherwise. 
+*/
 async function main() {
   console.log('\na11y-diff posting comment');
   console.log(`   diff file         : ${diffFile}`);
