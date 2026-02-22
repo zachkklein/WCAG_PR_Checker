@@ -49,10 +49,10 @@ function resolveUrlToFile(urlPath, projectRoot) {
 
     // Priority 1: framework source files (editable, version-controlled)
     const sourceCandidates = [
+        path.join(projectRoot, 'src/app', cleanPath, 'page.tsx'), // Added src/app first
         path.join(projectRoot, 'app', cleanPath, 'page.tsx'),
-        path.join(projectRoot, 'src/app', cleanPath, 'page.tsx'),
-        path.join(projectRoot, 'pages', `${cleanPath}.tsx`),
         path.join(projectRoot, 'src/pages', `${cleanPath}.tsx`),
+        path.join(projectRoot, 'pages', `${cleanPath}.tsx`),
     ];
 
     for (const testPath of sourceCandidates) {
@@ -241,6 +241,7 @@ async function main() {
         
         try {
             const fixedCode = await fixFileWithAI(filePath, pageViolations);
+            console.log(`DEBUG: Absolute path being written: ${path.resolve(filePath)}`);
             fs.writeFileSync(filePath, fixedCode);
             console.log(`SUCCESS: Successfully updated ${filePath}`);
             fixedFiles.push({ filePath, violations: pageViolations });
