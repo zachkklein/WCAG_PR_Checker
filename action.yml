@@ -206,15 +206,18 @@ runs:
 
     # ── 11. Diff results & Set Output ─────────────────────────────────────────
     - name: Diff accessibility results
-      id: diff_step # Added ID to reference results later
+      id: diff_step
       shell: bash
       run: |
-        # Run the diff and capture if there's a regression
-        # We use || true so the action doesn't crash before we can comment/fix
+        # Run diff; on regression diff.js exits 1. We set HAS_REGRESSION but exit 0
+        # so the job continues to comment, AI fix, and commit — then we fail at the end.
         node ${{ github.action_path }}/src/diff.js \
           --baseline /tmp/a11y_baseline.json \
           --head /tmp/a11y_pr.json \
-          --output /tmp/a11y_diff.json || echo "HAS_REGRESSION=true" >> $GITHUB_ENV
+          --output /tmp/a11y_diff.json
+        EXIT=$?
+        if [ $EXIT -eq 1 ]; then echo "HAS_REGRESSION=true" >> $GITHUB_ENV; fi
+        exit 0
 
     # ── 12. Post PR comment ───────────────────────────────────────────────────
     - name: Post PR comment
@@ -252,7 +255,7 @@ runs:
         # For static HTML sites the auto-fixer only edits *.html; add *.js *.jsx *.tsx if your fixer touches those
         file_pattern: '*.html'
 
-    # ── 15. Upload scan artifacts (Moved to end) ──────────────────────────────
+    # ── 15. Upload scan artifacts ─────────────────────────────────────────────
     - name: Upload scan artifacts
       if: always()
       uses: actions/upload-artifact@v4
@@ -263,3 +266,12 @@ runs:
           /tmp/a11y_pr.json
           /tmp/a11y_diff.json
         retention-days: 7
+
+    # ── 16. Fail the check if regression (after AI fix + commit have run) ──────
+    - name: Fail check if regression
+      if: env.HAS_REGRESSION == 'true' && inputs.FAIL_ON_REGRESSION == 'true'
+      shell: bash
+      run: |
+        echo "❌ Accessibility regression(s) were detected. The check fails."
+        echo "If the AI auto-fixer ran, it may have pushed fixes — re-run the check to verify."
+        exit 1
