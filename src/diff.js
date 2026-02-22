@@ -83,7 +83,7 @@ function countByImpact(map) {
 
 function main() {
   // Human-readable console output for CI logs while also writing a machine-readable diff.json.
-  console.log('\n📊 a11y-diff diffing');
+  console.log('\na11y-diff diffing');
   console.log(`   baseline : ${baselineFile}`);
   console.log(`   head     : ${headFile}`);
   console.log(`   output   : ${outputFile}\n`);
