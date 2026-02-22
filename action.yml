@@ -68,6 +68,18 @@ outputs:
 runs:
   using: 'composite'
   steps:
+    - name: Debug action version
+      shell: bash
+      run: |
+        echo "=== action.yml header ==="
+        head -5 ${{ github.action_path }}/action.yml
+        echo "=== scan.js first line ==="
+        head -3 ${{ github.action_path }}/src/scan.js
+        echo "=== comment.js first line ==="
+        head -3 ${{ github.action_path }}/src/comment.js
+        echo "=== package.json ==="
+        cat ${{ github.action_path }}/package.json
+  
     # ── 1. Checkout PR branch ─────────────────────────────────────────────────
     - name: Checkout PR branch
       uses: actions/checkout@v4
