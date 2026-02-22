@@ -269,7 +269,7 @@ runs:
           /tmp/a11y_diff.json
         retention-days: 7
 
-    # ── 16. Fail the check if regression
+    # 16. Fail the check if regression
     - name: Fail check if regression
       if: env.HAS_REGRESSION == 'true' && inputs.FAIL_ON_REGRESSION == 'true'
       shell: bash

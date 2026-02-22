@@ -92,15 +92,15 @@ jobs:
 When regressions are found, the action posts a comment like this:
 
 ```
-♿ Accessibility Check — ❌ Regressions Found
+Accessibility Check — Regressions Found
 
 |                  | Baseline | This PR | Delta  |
 |------------------|----------|---------|--------|
 | Total violations | 12       | 14      | +2     |
-| 🔴 Critical      | 0        | 1       | +1 ⬆️  |
-| 🟠 Serious       | 3        | 4       | +1 ⬆️  |
+| 🔴 Critical       | 0        | 1       | +1 ⬆️  |
+| 🟠 Serious        | 3        | 4       | +1 ⬆️  |
 
-🚨 New Violations (2)
+New Violations (2)
 | Impact       | Rule            | WCAG        | Page  | Selector    | Docs |
 |--------------|-----------------|-------------|-------|-------------|------|
 | 🔴 critical  | color-contrast  | WCAG 2.1 AA | /     | #submit-btn | docs |
