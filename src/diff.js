@@ -143,7 +143,7 @@ function main() {
 
   if (regression) {
     // Non-zero exit makes CI fail so regressions block merges.
-    console.error(`\n❌ REGRESSION — ${newViolations.length} new accessibility violation(s)\n`);
+    console.error(`\nREGRESSION — ${newViolations.length} new accessibility violation(s)\n`);
     for (const v of newViolations) {
       // Print details per violation so developers can jump straight to fixes.
       console.error(`  [${v.impact.toUpperCase()}] ${v.id} on ${v.urlPath}`);
@@ -154,7 +154,7 @@ function main() {
     process.exit(1);
   }
   // Exit 0 signals “no regressions” even if there are existing baseline issues.
-  console.log('\n✅ No regressions detected.');
+  console.log('\nNo regressions detected.');
   process.exit(0);
 }
 
