@@ -211,11 +211,15 @@ runs:
       run: |
         # Run diff; on regression diff.js exits 1. We set HAS_REGRESSION but exit 0
         # so the job continues to comment, AI fix, and commit — then we fail at the end.
+        # set +e prevents bash's default "exit on error" from killing the step before
+        # we can capture the exit code and write HAS_REGRESSION to GITHUB_ENV.
+        set +e
         node ${{ github.action_path }}/src/diff.js \
           --baseline /tmp/a11y_baseline.json \
           --head /tmp/a11y_pr.json \
           --output /tmp/a11y_diff.json
         EXIT=$?
+        set -e
         if [ $EXIT -eq 1 ]; then echo "HAS_REGRESSION=true" >> $GITHUB_ENV; fi
         exit 0
 
