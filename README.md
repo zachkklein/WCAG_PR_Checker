@@ -215,4 +215,4 @@ a11y-diff-action/
 
 ## License
 
-MIT
+MIT -- See LICENSE.txt
