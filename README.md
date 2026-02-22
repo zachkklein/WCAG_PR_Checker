@@ -1,4 +1,4 @@
-# a11y-Gaurd
+# a11yGuard
 
 > Detect accessibility regressions between pull requests without punishing existing debt.
 
