@@ -7,6 +7,11 @@ branding:
   color: 'blue'
 
 inputs:
+  OPENROUTER_API_KEY:
+    description: 'API Key for OpenRouter (required for AI fixes)'
+    required: false
+    default: ''
+
   APP_DIR:
     description: 'Path to your app directory relative to the repo root (e.g. "my-app", "frontend", or "." for root).'
     required: false
@@ -204,14 +209,24 @@ runs:
           --waitForNetworkIdle "${{ inputs.WAIT_FOR_NETWORK_IDLE }}" \
           --extraWaitMs "${{ inputs.EXTRA_WAIT_MS }}"
 
-    # ── 11. Diff results ──────────────────────────────────────────────────────
+    # ── 11. Diff results & Set Output ─────────────────────────────────────────
     - name: Diff accessibility results
+      id: diff_step
       shell: bash
       run: |
+        # Run diff; on regression diff.js exits 1. We set HAS_REGRESSION but exit 0
+        # so the job continues to comment, AI fix, and commit — then we fail at the end.
+        # set +e prevents bash's default "exit on error" from killing the step before
+        # we can capture the exit code and write HAS_REGRESSION to GITHUB_ENV.
+        set +e
         node ${{ github.action_path }}/src/diff.js \
           --baseline /tmp/a11y_baseline.json \
           --head /tmp/a11y_pr.json \
-          --output /tmp/a11y_diff.json || true
+          --output /tmp/a11y_diff.json
+        EXIT=$?
+        set -e
+        if [ $EXIT -eq 1 ]; then echo "HAS_REGRESSION=true" >> $GITHUB_ENV; fi
+        exit 0
 
     # ── 12. Post PR comment ───────────────────────────────────────────────────
     - name: Post PR comment
@@ -222,9 +237,39 @@ runs:
         GITHUB_REPOSITORY: ${{ github.repository }}
         FAIL_ON_REGRESSION: ${{ inputs.FAIL_ON_REGRESSION }}
       run: |
+        # Wrap in set +e so the AI Fixer can run even if this script exits with 1
+        set +e
         node ${{ github.action_path }}/src/comment.js --diff /tmp/a11y_diff.json
+        set -e
 
-    # ── 13. Upload scan artifacts for debugging ───────────────────────────────
+    # ── 13. Run AI Auto-Fixer ────────────────────────────────────────────────
+    - name: Run AI Auto-Fixer
+      if: env.HAS_REGRESSION == 'true'
+      shell: bash
+      env:
+        OPENROUTER_API_KEY: ${{ inputs.OPENROUTER_API_KEY }}
+        PR_PROJECT_PATH: "_a11y_pr/${{ inputs.APP_DIR }}"
+        # Needed to post the AI fix summary comment
+        GITHUB_TOKEN: ${{ inputs.TOKEN }}
+        PR_NUMBER: ${{ github.event.pull_request.number }}
+        GITHUB_REPOSITORY: ${{ github.repository }}
+      run: |
+        node ${{ github.action_path }}/src/auto-fix.js --diff /tmp/a11y_diff.json
+    
+    # ── 14. Commit and Push AI Fixes ─────────────────────────────────────────
+    # Caller workflow MUST set: permissions: contents: write (and pull-requests: write).
+    - name: Commit and Push AI Fixes
+      if: env.HAS_REGRESSION == 'true'
+      uses: stefanzweifel/git-auto-commit-action@v5
+      with:
+        commit_message: "🤖 chore: auto-fix accessibility violations via AI."
+        # CRITICAL: Point the commit action to the folder where the files were modified
+        repository: _a11y_pr
+        branch: ${{ github.head_ref }}
+        # For static HTML sites the auto-fixer only edits *.html; add *.js *.jsx *.tsx if your fixer touches those
+        file_pattern: '*.html'
+
+    # ── 15. Upload scan artifacts ─────────────────────────────────────────────
     - name: Upload scan artifacts
       if: always()
       uses: actions/upload-artifact@v4
@@ -235,4 +280,12 @@ runs:
           /tmp/a11y_pr.json
           /tmp/a11y_diff.json
         retention-days: 7
-        if-no-files-found: ignore
+
+    # ── 16. Fail the check if regression (after AI fix + commit have run) ──────
+    - name: Fail check if regression
+      if: env.HAS_REGRESSION == 'true' && inputs.FAIL_ON_REGRESSION == 'true'
+      shell: bash
+      run: |
+        echo "❌ Accessibility regression(s) were detected. The check fails."
+        echo "If the AI auto-fixer ran, it may have pushed fixes — re-run the check to verify."
+        exit 1
