@@ -204,14 +204,17 @@ runs:
           --waitForNetworkIdle "${{ inputs.WAIT_FOR_NETWORK_IDLE }}" \
           --extraWaitMs "${{ inputs.EXTRA_WAIT_MS }}"
 
-    # ── 11. Diff results ──────────────────────────────────────────────────────
+    # ── 11. Diff results & Set Output ─────────────────────────────────────────
     - name: Diff accessibility results
+      id: diff_step # Added ID to reference results later
       shell: bash
       run: |
+        # Run the diff and capture if there's a regression
+        # We use || true so the action doesn't crash before we can comment/fix
         node ${{ github.action_path }}/src/diff.js \
           --baseline /tmp/a11y_baseline.json \
           --head /tmp/a11y_pr.json \
-          --output /tmp/a11y_diff.json || true
+          --output /tmp/a11y_diff.json || echo "HAS_REGRESSION=true" >> $GITHUB_ENV
 
     # ── 12. Post PR comment ───────────────────────────────────────────────────
     - name: Post PR comment
@@ -224,7 +227,30 @@ runs:
       run: |
         node ${{ github.action_path }}/src/comment.js --diff /tmp/a11y_diff.json
 
-    # ── 13. Upload scan artifacts for debugging ───────────────────────────────
+    # ── 13. Run AI Auto-Fixer ────────────────────────────────────────────────
+    - name: Run AI Auto-Fixer
+      if: env.HAS_REGRESSION == 'true'
+      shell: bash
+      env:
+        OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+        # We tell the script to fix the files inside the PR checkout folder
+        PR_PROJECT_PATH: "_a11y_pr/${{ inputs.APP_DIR }}"
+      run: |
+        # We pass the diff file location to the fixer
+        node ${{ github.action_path }}/src/auto-fix.js --diff /tmp/a11y_diff.json
+
+    # ── 14. Commit and Push AI Fixes ─────────────────────────────────────────
+    - name: Commit and Push AI Fixes
+      if: env.HAS_REGRESSION == 'true'
+      uses: stefanzweifel/git-auto-commit-action@v5
+      with:
+        commit_message: "🤖 chore: auto-fix accessibility violations via AI."
+        # CRITICAL: Point the commit action to the folder where the files were modified
+        repository: _a11y_pr
+        branch: ${{ github.head_ref }}
+        file_pattern: '*.html *.js *.jsx *.tsx'
+
+    # ── 15. Upload scan artifacts (Moved to end) ──────────────────────────────
     - name: Upload scan artifacts
       if: always()
       uses: actions/upload-artifact@v4
@@ -235,4 +261,3 @@ runs:
           /tmp/a11y_pr.json
           /tmp/a11y_diff.json
         retention-days: 7
-        if-no-files-found: ignore
