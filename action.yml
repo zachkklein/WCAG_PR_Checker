@@ -79,16 +79,6 @@ runs:
         head -3 ${{ github.action_path }}/src/comment.js
         echo "=== package.json ==="
         cat ${{ github.action_path }}/package.json
-  
-    - name: Debug build contents
-      shell: bash
-      run: |
-        echo "=== Base branch index.html ===" 
-        cat _a11y_base/out/index.html | grep -i "button\|img\|aria\|alt" | head -20
-        echo "=== PR branch index.html ==="
-        cat _a11y_pr/out/index.html | grep -i "button\|img\|aria\|alt" | head -20
-        echo "=== Are they identical? ==="
-        diff _a11y_base/out/index.html _a11y_pr/out/index.html && echo "IDENTICAL" || echo "DIFFERENT"
 
     # ── 1. Checkout PR branch ─────────────────────────────────────────────────
     - name: Checkout PR branch
