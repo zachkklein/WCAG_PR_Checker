@@ -15,7 +15,8 @@ const GITHUB_TOKEN       = process.env.GITHUB_TOKEN;
 const PR_NUMBER          = process.env.PR_NUMBER;
 const GITHUB_REPOSITORY  = process.env.GITHUB_REPOSITORY;
 
-// Mapping URL paths (from scan) to local file paths relative to PR_PROJECT_PATH.
+// Mapping URL paths to local file paths relative to PR_PROJECT_PATH.
+// TODO: UPDATE
 const URL_TO_FILE_MAP = {
     '/': 'index.html',
     '/about': 'about.html',
@@ -67,7 +68,6 @@ async function fixFileWithAI(filePath, violations) {
         throw new Error(`OpenRouter API error (HTTP ${response.status}): ${apiError}`);
     }
 
-    // Return the message
     return data.choices[0].message.content.trim();
 }
 
@@ -121,7 +121,7 @@ function buildFixSummaryComment(fixedFiles, skippedUrls) {
     ).join('\n');
 
     const skippedSection = skippedUrls.length > 0
-        ? `\n> ⚠️ **Skipped** (no local file mapping): ${skippedUrls.map(u => `\`${u}\``).join(', ')}\n`
+        ? `\n> **Skipped** (no local file mapping): ${skippedUrls.map(u => `\`${u}\``).join(', ')}\n`
         : '';
 
     return `${AI_FIX_MARKER}
@@ -153,7 +153,6 @@ async function main() {
     if (!fs.existsSync(DIFF_FILE)) return;
     const diff = JSON.parse(fs.readFileSync(DIFF_FILE, 'utf8'));
 
-    // If there is no error regression, then just return
     if (!diff.regression) {
         console.log('✅ No new violations to fix.');
         return;
@@ -190,10 +189,10 @@ async function main() {
         try {
             const fixedCode = await fixFileWithAI(filePath, pageViolations);
             fs.writeFileSync(filePath, fixedCode);
-            console.log(`✨ Successfully updated ${filePath}`);
+            console.log(`SUCCESS:Successfully updated ${filePath}`);
             fixedFiles.push({ filePath, violations: pageViolations });
         } catch (err) {
-            console.error(`❌ Failed to fix ${filePath}:`, err);
+            console.error(`FAILURE: Failed to fix ${filePath}:`, err);
         }
     }
 

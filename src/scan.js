@@ -35,10 +35,11 @@ function meetsImpactThreshold(impact) {
   return IMPACT_ORDER.indexOf(impact) >= minImpactIdx;
 }
 
-// Scan a single page (already created) at a given URL path.
+// Scan a single page at a given URL path.
 async function scanPage(page, urlPath) {
   const fullUrl = `${baseUrl}${urlPath}`;
-  console.log(`  → Scanning ${fullUrl}`);
+  console.log(`INFO: Scanning ${fullUrl}`);
+
   // Navigate and wait for DOM to be ready
   await page.goto(fullUrl, { waitUntil: 'domcontentloaded' });
   if (waitIdle) {
@@ -46,12 +47,13 @@ async function scanPage(page, urlPath) {
       await page.waitForLoadState('networkidle', { timeout: 10000 });
     } catch {
       // keep scanning even if the page never reaches networkidle
-      console.warn(`  ⚠ networkidle timeout on ${urlPath}, continuing`);
+      console.warn(`  WARN: networkidle timeout on ${urlPath}, continuing`);
     }
   }
   if (extraWaitMs > 0) {
     await page.waitForTimeout(extraWaitMs);
   }
+
   // Build an axe scan for the current Playwright page.
   // A new builder each time to ensure no state leaks between scans.
   let builder = new AxeBuilder({ page });
@@ -62,11 +64,11 @@ async function scanPage(page, urlPath) {
   }
   const results = await builder.analyze();
   
-  // Filter violations by severity threshold (impact).
+  // Filter violations by severity threshold
   const violations = results.violations.filter((v) =>
     meetsImpactThreshold(v.impact)
   );
-  // Return a compact page summary plus the filtered violations list.
+
   return {
     urlPath,
     fullUrl,
@@ -76,19 +78,21 @@ async function scanPage(page, urlPath) {
     timestamp: new Date().toISOString(),
   };
 }
+
 /*
  * CLI entry point.
  * Iterates through all URL paths, scans them one-by-one, writes a report JSON file,
- * and exits with code 1 if any page fails to scan (useful for CI).
+ * and exits with code 1 if any page fails to scan.
  */
 async function main() {
-  console.log('\n🔍 a11y-diff scanner');
+  console.log('\nRESULTS: a11y-diff scanner');
   console.log(`   baseUrl      : ${baseUrl}`);
   console.log(`   output       : ${outputFile}`);
   console.log(`   urls         : ${urls.join(', ')}`);
   console.log(`   ignoreRules  : ${ignoreRules.join(', ') || '(none)'}`);
   console.log(`   minImpact    : ${impactLevel}\n`);
-  // Launch Chromium in headless mode. The args are commonly needed in CI containers.
+
+  // Launch Chromium in headless mode
   const browser = await chromium.launch({
     args: ['--no-sandbox', '--disable-setuid-sandbox'],
   });
@@ -97,16 +101,16 @@ async function main() {
   const errors = [];
 
   // Scan sequentially to keep output deterministic and avoid overloading the target.
-  // (Parallel scanning could be added later, but would need concurrency control.
+  // (Parallel scanning could be added later!)
   for (const urlPath of urls) {
     const page = await context.newPage();
     try {
       const result = await scanPage(page, urlPath);
       pages.push(result);
-      console.log(`  ✓ ${urlPath} — ${result.violations.length} violation(s) found`);
+      console.log(` SUCCESS: ${urlPath} — ${result.violations.length} violation(s) found`);
     } catch (err) {
       // Record error and continue scanning other pages.
-      console.error(`  ✗ Error scanning ${urlPath}: ${err.message}`);
+      console.error(`FAILURE: Error scanning ${urlPath}: ${err.message}`);
       errors.push({ urlPath, error: err.message });
     } finally {
       await page.close();
@@ -114,7 +118,7 @@ async function main() {
   }
   await browser.close();
   
-  // Final report payload (JSON).
+  // Final report payload
   const output = {
     generatedAt: new Date().toISOString(),
     baseUrl,
@@ -122,18 +126,17 @@ async function main() {
     pages,
     errors,
   };
-  // Write report to disk (pretty-printed for easy diffing in PRs).
+
   fs.writeFileSync(outputFile, JSON.stringify(output, null, 2));
-  console.log(`\n✅ Scan complete → ${outputFile}`);
+  console.log(`\nSUCCESS:Scan complete: ${outputFile}`);
   
   if (errors.length > 0) {
-    // Non-zero exit for CI signal when any page failed to scan.
-    console.error(`\n❌ ${errors.length} page(s) failed to scan.`);
+    console.error(`\nFAILURE: ${errors.length} page(s) failed to scan.`);
     process.exit(1);
   }
 }
-// Ensure unhandled async errors cause a clean non-zero exit code.
+
 main().catch((err) => {
-  console.error('\n💥 Fatal scan error:', err.message);
+  console.error('\nFAILURE: Fatal scan error:', err.message);
   process.exit(1);
 });

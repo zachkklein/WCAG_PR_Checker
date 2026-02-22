@@ -31,7 +31,7 @@ if (!baselineFile || !headFile) {
 /**
  * Build a stable fingerprint for a single violation node.
  * Format: "ruleId::selector1>selector2::htmlLength"
- * Using HTML length (not content) avoids false positives from minor markup
+ * Using HTML length avoids false positives from minor markup
  * tweaks while still distinguishing between different elements.
  */
 function fingerprint(violationId, node) {
@@ -42,7 +42,7 @@ function fingerprint(violationId, node) {
 
 /**
  * Flatten all pages in a scan result into a single Map of:
- *   fingerprint → violation metadata
+ *   fingerprint to violation metadata
  */
 function buildFingerprintMap(scanResult) {
   const map = new Map();
@@ -82,8 +82,7 @@ function countByImpact(map) {
 }
 
 function main() {
-  // Human-readable console output for CI logs while also writing a machine-readable diff.json.
-  console.log('\n📊 a11y-diff diffing');
+  console.log('\nRESULTS: a11y-diff diffing');
   console.log(`   baseline : ${baselineFile}`);
   console.log(`   head     : ${headFile}`);
   console.log(`   output   : ${outputFile}\n`);
@@ -107,10 +106,10 @@ function main() {
     if (!headMap.has(fp)) resolvedViolations.push(v);
   }
 
-  // Unchanged violations exist in both scans (use head metadata for display).
+  // Unchanged violations exist in both scans
   const unchangedViolations = [...headMap.entries()].filter(([fp]) => baselineMap.has(fp)).map(([, v]) => v);
   const unchangedCount = unchangedViolations.length;
-  // Regression is strictly defined as “any new violations introduced”.
+  // Regression is strictly defined as any new violations introduced
   const regression     = newViolations.length > 0;
 
   const diff = {
@@ -134,7 +133,6 @@ function main() {
 
   fs.writeFileSync(outputFile, JSON.stringify(diff, null, 2));
 
-  // Print a quick summary suitable for CI log scanning.
   console.log(`  Baseline violations : ${baselineMap.size}`);
   console.log(`  Head violations     : ${headMap.size}`);
   console.log(`  New (regressions)   : ${newViolations.length}`);
@@ -142,10 +140,8 @@ function main() {
   console.log(`  Unchanged           : ${unchangedCount}`);
 
   if (regression) {
-    // Non-zero exit makes CI fail so regressions block merges.
-    console.error(`\n❌ REGRESSION — ${newViolations.length} new accessibility violation(s)\n`);
+    console.error(`\nFAILURE: REGRESSION — ${newViolations.length} new accessibility violation(s)\n`);
     for (const v of newViolations) {
-      // Print details per violation so developers can jump straight to fixes.
       console.error(`  [${v.impact.toUpperCase()}] ${v.id} on ${v.urlPath}`);
       console.error(`    Selector : ${v.target.join(' > ')}`);
       console.error(`    Summary  : ${v.failureSummary}`);
@@ -153,8 +149,8 @@ function main() {
     }
     process.exit(1);
   }
-  // Exit 0 signals “no regressions” even if there are existing baseline issues.
-  console.log('\n✅ No regressions detected.');
+  // Exit 0 signals no regressions even if there are existing baseline issues.
+  console.log('\n SUCCESS: No regressions detected.');
   process.exit(0);
 }
 
