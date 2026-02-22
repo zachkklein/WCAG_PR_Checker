@@ -1,8 +1,8 @@
 # a11y-diff
 
-> Detect accessibility regressions between pull requests — without punishing existing debt.
+> Detect accessibility regressions between pull requests without punishing existing debt.
 
-Unlike standard axe CI integrations that pass/fail absolutely, **a11y-diff compares accessibility health over time**. It blocks a PR only if it makes things *worse* — so teams with legacy debt can hold the line without first fixing everything.
+Unlike standard axe CI integrations that pass/fail absolutely, WCAG_PR_Checker compares accessibility health over time. It blocks a PR only if it makes things *worse* so teams with legacy debt can mitigate new issues without first fixing everything.
 
 ---
 
@@ -41,15 +41,19 @@ jobs:
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
 ```
 
-**If you use the AI auto-fixer** (regression → AI suggests fixes and commits back to the PR), the workflow **must** grant write access so the action can push the fix commit:
+### Fill out Fields:
+1. Set `APP_DIR` to the location of your projects root directory.
+2. Set `URLS` to contain the routes on your website you wish to check for accessibility issues. Separate routes with a comma (e.g., running the workflow on / and '/contact' would look like `URLS: '/,/contact').
+
+### Using the AI auto-fixer
+1. Ensure that you have granted write access by setting the `permissions` section above to:
 
 ```yaml
     permissions:
       contents: write   # required for git-auto-commit push
       pull-requests: write
 ```
-
-That's it. No scripts to copy, no config files to manage.
+2. In the GitHub repository that you integrate this workflow into, set the `OPENROUTER_API_KEY` by navigating to `Settings` then `Environemnt Variables` then `Actions` and add the key as a `Repository Secret`.
 
 ---
 
@@ -57,6 +61,7 @@ That's it. No scripts to copy, no config files to manage.
 
 | Input | Description | Default |
 |-------|-------------|---------|
+| `OPENROUTER_API_KEY` | API key for OpenRouter. Required to enable the AI auto-fixer. Add as a repository secret. | `` |
 | `APP_DIR` | Path to your app directory relative to repo root. Use `"."` if your app is at the root. | `.` |
 | `BUILD_DIR` | Static build output directory (`dist`, `out`, `build`). | `dist` |
 | `BUILD_COMMAND` | npm script to build your app. | `build` |
@@ -110,11 +115,11 @@ When **neither** `BASE_URL` nor `PR_URL` is set, the action checks out both bran
 | Framework | Build command | Output dir | Notes |
 |-----------|--------------|------------|-------|
 | Vite | `vite build` | `dist` | Works out of the box |
-| Next.js (static) | `next build` | `out` | Requires `output: 'export'` in `next.config.ts` and no dynamic routes (or use `generateStaticParams`) |
+| Next.js (static) | `next build` | `.next/server/app` | Requires `output: 'export'` in `next.config.ts` and no dynamic routes (or use `generateStaticParams`) |
 | Create React App | `react-scripts build` | `build` | Works out of the box |
 | Nuxt | `nuxt generate` | `.output/public` | Use static generation mode |
 
-Standard **Next.js apps** that use `next build` (without `output: 'export'`) produce a `.next` server bundle, not static files — so there is no `out/` to serve. Use [Preview URL mode](#preview-url-mode) instead.
+One way to verify your build folder is to run a build in your repository (i.e. with `npm run build` when using Next.js, and copy the file path to `index.html`).
 
 ### Preview URL mode
 
@@ -132,7 +137,7 @@ Vercel exposes the PR preview URL in the workflow; you can pass your production 
 ### Vite app at repo root
 
 ```yaml
-- uses: your-org/a11y-diff-action@v1
+- uses: zachkklein/WCAG_PR_Checker@main
   with:
     APP_DIR: '.'
     BUILD_DIR: 'dist'
@@ -142,10 +147,10 @@ Vercel exposes the PR preview URL in the workflow; you can pass your production 
 ### Next.js app in a subdirectory
 
 ```yaml
-- uses: your-org/a11y-diff-action@v1
+- uses: zachkklein/WCAG_PR_Checker@main
   with:
     APP_DIR: 'frontend'
-    BUILD_DIR: 'out'
+    BUILD_DIR: '.next/server/app'
     URLS: '/,/dashboard'
 ```
 
@@ -154,7 +159,7 @@ Vercel exposes the PR preview URL in the workflow; you can pass your production 
 Use deployment URLs instead of building locally. No `BUILD_DIR` or build step — the action only scans the given URLs.
 
 ```yaml
-- uses: your-org/a11y-diff-action@v1
+- uses: zachkklein/WCAG_PR_Checker@main
   with:
     BASE_URL: 'https://your-app.vercel.app'      # production or main preview
     PR_URL: ${{ steps.deploy.outputs.url }}      # or env from Vercel GitHub Action
@@ -166,7 +171,7 @@ If you use the [Vercel GitHub Action](https://github.com/amondnet/vercel-action)
 ### Report-only mode (never fails the build)
 
 ```yaml
-- uses: your-org/a11y-diff-action@v1
+- uses: zachkklein/WCAG_PR_Checker@main
   with:
     FAIL_ON_REGRESSION: 'false'
     URLS: '/,/about,/contact'
@@ -175,7 +180,7 @@ If you use the [Vercel GitHub Action](https://github.com/amondnet/vercel-action)
 ### Only track serious and critical violations
 
 ```yaml
-- uses: your-org/a11y-diff-action@v1
+- uses: zachkklein/WCAG_PR_Checker@main
   with:
     IMPACT_LEVEL: 'serious'
     URLS: '/'
@@ -197,6 +202,14 @@ a11y-diff-action/
 ```
 
 ---
+
+## Creators
+- [Zach Klein](https://github.com/zachkklein)
+- [Andrew Bacigalupi](https://github.com/AndrewBacigalupi)
+- [Thee Thakong](https://github.com/thee28)
+- [Alex Vu](https://github.com/AlexBVu)
+- [William Goldman](https://github.com/iliketocode2)
+- [Ethan Li](https://github.com/Ethanli628)
 
 ## License
 
