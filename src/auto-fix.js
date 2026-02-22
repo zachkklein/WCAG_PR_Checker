@@ -16,15 +16,15 @@ const GITHUB_TOKEN       = process.env.GITHUB_TOKEN;
 const PR_NUMBER          = process.env.PR_NUMBER;
 const GITHUB_REPOSITORY  = process.env.GITHUB_REPOSITORY;
 
-const IMPACT_EMOJI   = { critical: '🔴', serious: '🟠', moderate: '🟡', minor: '🔵' };
 const AI_FIX_MARKER  = '';
 
 /**
- * Dynamically resolves a URL path to a physical file on disk.
- * Supports standard static builds and Next.js internal structures.
+ * SOURCE-AWARE RESOLVER:
+ * Resolves a URL path to the original source file, prioritising framework
+ * source files (Next.js App Router, Pages Router) before falling back to
+ * static HTML outputs.
  */
 function resolveUrlToFile(urlPath, projectRoot) {
-    // 1. Normalize the path (remove domain if it exists)
     let pathname;
     try {
         pathname = new URL(urlPath, 'http://localhost').pathname;
@@ -32,30 +32,44 @@ function resolveUrlToFile(urlPath, projectRoot) {
         pathname = urlPath;
     }
 
-    // 2. Map '/' to 'index.html'
-    if (pathname === '/' || pathname === '') {
-        const rootIndex = path.join(projectRoot, 'index.html');
-        return fs.existsSync(rootIndex) ? rootIndex : null;
+    const cleanPath = pathname.replace(/^\/|\/$/g, '');
+
+    // Root path: check source index files first, then index.html
+    if (cleanPath === '') {
+        const rootCandidates = [
+            path.join(projectRoot, 'app/page.tsx'),
+            path.join(projectRoot, 'src/app/page.tsx'),
+            path.join(projectRoot, 'index.html'),
+        ];
+        for (const c of rootCandidates) {
+            if (fs.existsSync(c)) return c;
+        }
+        return null;
     }
 
-    const cleanPath = pathname.startsWith('/') ? pathname.slice(1) : pathname;
+    // Priority 1: framework source files (editable, version-controlled)
+    const sourceCandidates = [
+        path.join(projectRoot, 'app', cleanPath, 'page.tsx'),
+        path.join(projectRoot, 'src/app', cleanPath, 'page.tsx'),
+        path.join(projectRoot, 'pages', `${cleanPath}.tsx`),
+        path.join(projectRoot, 'src/pages', `${cleanPath}.tsx`),
+    ];
 
-    // 3. Define the search order (Standard -> Next.js App -> Next.js Pages)
-    const searchPaths = [
+    for (const testPath of sourceCandidates) {
+        if (fs.existsSync(testPath)) return testPath;
+    }
+
+    // Priority 2: static HTML outputs (plain sites, Next.js export)
+    const htmlCandidates = [
         path.join(projectRoot, cleanPath),
         path.join(projectRoot, `${cleanPath}.html`),
         path.join(projectRoot, cleanPath, 'index.html'),
-        // Next.js internal build locations
         path.join(projectRoot, '.next/server/app', `${cleanPath}.html`),
-        path.join(projectRoot, '.next/server/app', cleanPath, 'index.html'),
         path.join(projectRoot, '.next/server/pages', `${cleanPath}.html`),
-        path.join(projectRoot, '.next/server/pages', cleanPath, 'index.html')
     ];
 
-    for (const testPath of searchPaths) {
-        if (fs.existsSync(testPath) && fs.lstatSync(testPath).isFile()) {
-            return testPath;
-        }
+    for (const testPath of htmlCandidates) {
+        if (fs.existsSync(testPath) && fs.lstatSync(testPath).isFile()) return testPath;
     }
 
     return null;
@@ -64,9 +78,10 @@ function resolveUrlToFile(urlPath, projectRoot) {
 // LLM API Prompt
 async function fixFileWithAI(filePath, violations) {
     const originalCode = fs.readFileSync(filePath, 'utf8');
+    const isJSX = /\.(tsx|jsx|js)$/.test(filePath);
 
     const prompt = `You are a Senior Accessibility Engineer.
-    I have a file with accessibility violations.
+    I have a ${isJSX ? 'React (JSX/TSX)' : 'HTML'} file with accessibility violations.
 
     FILE CONTENT:
     ${originalCode}
@@ -79,8 +94,9 @@ async function fixFileWithAI(filePath, violations) {
 
     CRITICAL RULES:
     - Do NOT change any text content, links, or visual styling
-    - Only add or modify HTML attributes (alt, aria-label, role, etc.) to fix the violations
-    - Return the complete file content exactly as it should be written to disk`;
+    - Only add or modify attributes (alt, aria-label, role, etc.) to fix the violations
+    - Return the complete file content exactly as it should be written to disk
+    ${isJSX ? '- This is React/JSX: use "className" not "class", and do not break imports or component structure.' : ''}`;
 
     const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
         method: "POST",
@@ -163,29 +179,27 @@ async function deleteExistingAIFixComments(owner, repo) {
 function buildFixSummaryComment(fixedFiles, skippedUrls) {
     const rows = fixedFiles.flatMap(({ filePath, violations }) =>
         violations.map(v =>
-            `| ${IMPACT_EMOJI[v.impact] || '⚪'} ${v.impact} | \`${v.id}\` | \`${(v.target || []).join(' > ')}\` | \`${v.urlPath}\` |`
+            `| ${v.impact} | \`${v.id}\` | \`${v.urlPath}\` | \`${filePath}\` |`
         )
     ).join('\n');
 
     const skippedSection = skippedUrls.length > 0
-        ? `\n> **Skipped** (no local file mapping found): ${skippedUrls.map(u => `\`${u}\``).join(', ')}\n`
+        ? `\n> **Skipped** (no source or HTML file found): ${skippedUrls.map(u => `\`${u}\``).join(', ')}\n`
         : '';
 
     return `${AI_FIX_MARKER}
-## INFO: AI Accessibility Auto-Fix Summary
+## AI Accessibility Auto-Fix Summary
 
-The AI has automatically generated patches for the following violations and committed them to this branch.
+Accessibility regressions were detected. The AI has mapped these URLs back to your **source code** and applied fixes.
 
-| Impact | Rule | Selector | Page |
-|--------|------|----------|------|
+| Impact | Rule | URL | Fixed Source File |
+|--------|------|-----|-------------------|
 ${rows}
 ${skippedSection}
-**Files modified:** ${fixedFiles.map(f => `\`${f.filePath}\``).join(', ')}
-
-> **Note:** Re-run the accessibility check to confirm all violations are resolved.
+**Note:** Since source files were modified, review the changes and run a new build to verify the fixes.
 
 ---
-<sub>Generated by <a href="[https://github.com/zachkklein/WCAG_PR_Checker](https://github.com/zachkklein/WCAG_PR_Checker)">a11yGuard</a></sub>`;
+<sub>Generated by <a href="https://github.com/zachkklein/WCAG_PR_Checker">a11yGuard</a></sub>`;
 }
 
 async function main() {

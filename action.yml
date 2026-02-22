@@ -241,26 +241,24 @@ runs:
       env:
         OPENROUTER_API_KEY: ${{ inputs.OPENROUTER_API_KEY }}
         GITHUB_TOKEN: ${{ inputs.TOKEN }}
-        PR_PROJECT_PATH: "_a11y_pr/${{ inputs.APP_DIR }}/${{ inputs.BUILD_DIR }}"
         PR_NUMBER: ${{ github.event.pull_request.number }}
         GITHUB_REPOSITORY: ${{ github.repository }}
+        PR_PROJECT_PATH: "_a11y_pr/${{ inputs.APP_DIR }}"
       run: |
         node ${{ github.action_path }}/src/auto-fix.js --diff /tmp/a11y_diff.json
-    
+
     # 14. Commit and Push AI Fixes
     - name: Commit and Push AI Fixes
       if: env.HAS_REGRESSION == 'true'
       uses: stefanzweifel/git-auto-commit-action@v5
       with:
         commit_message: "a11yGuard BOT: Auto-fix accessibility violations"
-
         commit_user_name: "a11yGuard-bot[bot]"
         commit_user_email: "41898282+github-actions[bot]@users.noreply.github.com"
         commit_author: "a11yGuard-bot <41898282+github-actions[bot]@users.noreply.github.com>"
-        
-        repository: _a11y_pr
+                repository: _a11y_pr
         branch: ${{ github.head_ref }}
-        file_pattern: '*.html'
+        file_pattern: 'src/**/*.tsx src/**/*.js app/**/*.tsx *.html'
 
     # 15. Upload scan artifacts
     - name: Upload scan artifacts
