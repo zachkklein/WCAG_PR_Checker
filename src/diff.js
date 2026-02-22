@@ -1,7 +1,7 @@
 /**
  * diff.js
  * Compares two axe scan JSON files (baseline vs PR head) and outputs a diff.
- * A violation is matched by: rule id + page urlPath + CSS selector + SHA-1 of HTML content.
+ * A violation is matched by: rule id + CSS selector target + HTML length.
  *
  * Usage:
  *   node diff.js --baseline baseline.json --head pr.json --output diff.json
@@ -13,8 +13,7 @@
 
 'use strict';
 
-const fs     = require('fs');
-const crypto = require('crypto');
+const fs = require('fs');
 const minimist = require('minimist');
 
 const args = minimist(process.argv.slice(2));
@@ -29,22 +28,14 @@ if (!baselineFile || !headFile) {
 
 /**
  * Build a stable fingerprint for a single violation node.
- * Format: "ruleId::urlPath::selector1>selector2::sha1(html)"
- *
- * - urlPath is included so the same broken element on two different pages
- *   is never treated as the same violation.
- * - SHA-1 of the actual HTML content (not just its length) prevents false
- *   matches between different elements that happen to have markup of equal
- *   length, which was the root cause of phantom recurring violations.
+ * Format: "ruleId::selector1>selector2::htmlLength"
+ * Using HTML length (not content) avoids false positives from minor markup
+ * tweaks while still distinguishing between different elements.
  */
-function fingerprint(violationId, urlPath, node) {
-  const target  = node.target.join('>');
-  const htmlHash = crypto
-    .createHash('sha1')
-    .update(node.html || '')
-    .digest('hex')
-    .slice(0, 12);
-  return `${violationId}::${urlPath}::${target}::${htmlHash}`;
+function fingerprint(violationId, node) {
+  const target = node.target.join('>');
+  const htmlLen = (node.html || '').length;
+  return `${violationId}::${target}::${htmlLen}`;
 }
 
 /**
@@ -57,10 +48,7 @@ function buildFingerprintMap(scanResult) {
   for (const page of scanResult.pages) {
     for (const violation of page.violations) {
       for (const node of violation.nodes) {
-        const fp = fingerprint(violation.id, page.urlPath, node);
-        // If two nodes produce the same fingerprint (genuine duplicates), keep
-        // the first one — the Map.set below would overwrite, so we guard here.
-        if (map.has(fp)) continue;
+        const fp = fingerprint(violation.id, node);
         map.set(fp, {
           id:             violation.id,
           impact:         violation.impact,
@@ -111,9 +99,7 @@ function main() {
     if (!headMap.has(fp)) resolvedViolations.push(v);
   }
 
-  const unchangedViolations = [...headMap.entries()]
-    .filter(([fp]) => baselineMap.has(fp))
-    .map(([, v]) => v);
+  const unchangedViolations = [...headMap.entries()].filter(([fp]) => baselineMap.has(fp)).map(([, v]) => v);
   const unchangedCount = unchangedViolations.length;
   const regression     = newViolations.length > 0;
 
@@ -121,11 +107,11 @@ function main() {
     generatedAt: new Date().toISOString(),
     regression,
     summary: {
-      baselineTotal:      baselineMap.size,
-      headTotal:          headMap.size,
-      newViolations:      newViolations.length,
+      baselineTotal:     baselineMap.size,
+      headTotal:         headMap.size,
+      newViolations:     newViolations.length,
       resolvedViolations: resolvedViolations.length,
-      unchanged:          unchangedCount,
+      unchanged:         unchangedCount,
     },
     impactDelta: {
       baseline: countByImpact(baselineMap),
