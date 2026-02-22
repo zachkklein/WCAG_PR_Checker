@@ -258,7 +258,9 @@ runs:
         commit_author: "a11yGuard-bot <41898282+github-actions[bot]@users.noreply.github.com>"
         repository: _a11y_pr
         branch: ${{ github.head_ref }}
-        file_pattern: 'src/**/*.tsx src/**/*.js app/**/*.tsx *.html'
+        file_pattern: 'src/**/*.tsx **/*.jsx src/**/*.js app/**/*.tsx *.html'
+        add_options: '--force'
+
 
     # 15. Upload scan artifacts
     - name: Upload scan artifacts
