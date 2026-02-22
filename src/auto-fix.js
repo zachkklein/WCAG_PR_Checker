@@ -15,13 +15,34 @@ const GITHUB_TOKEN       = process.env.GITHUB_TOKEN;
 const PR_NUMBER          = process.env.PR_NUMBER;
 const GITHUB_REPOSITORY  = process.env.GITHUB_REPOSITORY;
 
-// Mapping URL paths to local file paths relative to PR_PROJECT_PATH.
-// TODO: UPDATE
-const URL_TO_FILE_MAP = {
-    '/': 'index.html',
-    '/about': 'about.html',
-    '/contact': 'contact.html'
-};
+/**
+ * Dynamically resolves a URL path to a physical file on disk using common
+ * web server conventions. Tries three strategies in order:
+ *   1. Exact file match         /about.html → about.html
+ *   2. Clean URL                /about      → about.html
+ *   3. Directory index          /about      → about/index.html
+ */
+function resolveUrlToFile(urlPath, projectRoot) {
+    if (urlPath === '/' || urlPath === '') {
+        return path.join(projectRoot, 'index.html');
+    }
+
+    const cleanPath = urlPath.startsWith('/') ? urlPath.slice(1) : urlPath;
+
+    const candidates = [
+        path.join(projectRoot, cleanPath),
+        path.join(projectRoot, `${cleanPath}.html`),
+        path.join(projectRoot, cleanPath, 'index.html'),
+    ];
+
+    for (const candidate of candidates) {
+        if (fs.existsSync(candidate) && fs.lstatSync(candidate).isFile()) {
+            return candidate;
+        }
+    }
+
+    return null;
+}
 
 const IMPACT_EMOJI   = { critical: '🔴', serious: '🟠', moderate: '🟡', minor: '🔵' };
 const AI_FIX_MARKER  = '<!-- a11y-ai-fix -->';
@@ -167,18 +188,10 @@ async function main() {
 
     // For each of the pages we need to fix:
     for (const urlPath of pagesToFix) {
-        const relativePath = URL_TO_FILE_MAP[urlPath];
+        const filePath = resolveUrlToFile(urlPath, PR_PROJECT_PATH);
 
-        // error handling:
-        if (!relativePath) {
-            console.warn(` No file mapping for URL ${urlPath}`);
-            skippedUrls.push(urlPath);
-            continue;
-        }
-        
-        const filePath = path.join(PR_PROJECT_PATH, relativePath);
-        if (!fs.existsSync(filePath)) {
-            console.warn(`Could not find local file for ${urlPath} at ${filePath}`);
+        if (!filePath) {
+            console.warn(`WARNING: No file found for URL ${urlPath} under ${PR_PROJECT_PATH}`);
             skippedUrls.push(urlPath);
             continue;
         }
