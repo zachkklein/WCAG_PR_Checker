@@ -259,7 +259,7 @@ ${existing.map(buildViolationDetail).join('\n\n')}
 /*
   githubRequest takes: an HTTP method, a GitHub API path, and a request body.
   It sets up our environment to ensure that we can run our action.
-  Returns parsed result on sucess, and an error message on failure.
+  Returns parsed result on success, and an error message on failure.
 */
 function githubRequest(method, urlPath, body) {
   return new Promise((resolve, reject) => {
