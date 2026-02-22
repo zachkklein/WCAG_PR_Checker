@@ -1,5 +1,5 @@
 name: 'A11y Diff'
-description: 'Detect accessibility regressions between your PR and main. Fails the check if violations increase — without punishing existing debt.'
+description: 'Detect accessibility regressions between your PR and main'
 author: 'a11y-diff'
 
 branding:
