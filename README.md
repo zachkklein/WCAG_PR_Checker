@@ -29,14 +29,16 @@ jobs:
   a11y:
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: write
       pull-requests: write
     steps:
-      - uses: zachkklein/WCAG_PR_Checker@v1
+      - name: Run accessibility check
+        uses: zachkklein/WCAG_PR_Checker@main
         with:
           APP_DIR: '.'
-          BUILD_DIR: 'dist'
-          URLS: '/,/about,/dashboard'
+          BUILD_DIR: 'public'
+          URLS: '/'
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
 ```
 
 **If you use the AI auto-fixer** (regression → AI suggests fixes and commits back to the PR), the workflow **must** grant write access so the action can push the fix commit:
