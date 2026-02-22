@@ -3,8 +3,8 @@ description: 'Detect accessibility regressions between your PR and main'
 author: 'a11y-diff'
 
 branding:
-  icon: 'eye'
-  color: 'blue'
+  icon: 'users'
+  color: 'purple'
 
 inputs:
   OPENROUTER_API_KEY:
