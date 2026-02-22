@@ -18,9 +18,19 @@ inputs:
     default: 'dist'
 
   BUILD_COMMAND:
-    description: 'The npm script used to build your app.'
+    description: 'The npm script used to build your app (e.g. "build", "export"). Ignored if BUILD_RUN is set.'
     required: false
     default: 'build'
+
+  BUILD_RUN:
+    description: 'Optional. Full command to run instead of "npm run BUILD_COMMAND" (e.g. "pnpm build", "npm run export"). Set to "true" to skip build (use when output already exists).'
+    required: false
+    default: ''
+
+  INSTALL_COMMAND:
+    description: 'Command to install dependencies (e.g. "npm ci", "pnpm install", "yarn install"). Set empty to skip install.'
+    required: false
+    default: 'npm ci'
 
   URLS:
     description: 'Comma-separated list of URL paths to scan (e.g. "/,/about,/dashboard").'
@@ -103,29 +113,49 @@ runs:
 
     # ── 6. Install & build PR branch ─────────────────────────────────────────
     - name: Install dependencies (PR branch)
+      if: inputs.INSTALL_COMMAND != ''
       shell: bash
       run: |
         cd _a11y_pr/${{ inputs.APP_DIR }}
-        npm ci
+        eval "$INSTALL_CMD"
+      env:
+        INSTALL_CMD: ${{ inputs.INSTALL_COMMAND }}
 
     - name: Build PR branch
       shell: bash
+      env:
+        BUILD_RUN: ${{ inputs.BUILD_RUN }}
+        BUILD_COMMAND: ${{ inputs.BUILD_COMMAND }}
       run: |
         cd _a11y_pr/${{ inputs.APP_DIR }}
-        npm run ${{ inputs.BUILD_COMMAND }}
+        if [ -n "$BUILD_RUN" ]; then
+          bash -c "$BUILD_RUN"
+        else
+          npm run "$BUILD_COMMAND"
+        fi
 
     # ── 7. Install & build base branch ───────────────────────────────────────
     - name: Install dependencies (base branch)
+      if: inputs.INSTALL_COMMAND != ''
       shell: bash
       run: |
         cd _a11y_base/${{ inputs.APP_DIR }}
-        npm ci
+        eval "$INSTALL_CMD"
+      env:
+        INSTALL_CMD: ${{ inputs.INSTALL_COMMAND }}
 
     - name: Build base branch
       shell: bash
+      env:
+        BUILD_RUN: ${{ inputs.BUILD_RUN }}
+        BUILD_COMMAND: ${{ inputs.BUILD_COMMAND }}
       run: |
         cd _a11y_base/${{ inputs.APP_DIR }}
-        npm run ${{ inputs.BUILD_COMMAND }}
+        if [ -n "$BUILD_RUN" ]; then
+          bash -c "$BUILD_RUN"
+        else
+          npm run "$BUILD_COMMAND"
+        fi
 
     # ── 8. Serve both builds ──────────────────────────────────────────────────
     # Wait for ports with tcp: so we only require the server to be listening,

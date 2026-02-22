@@ -32,7 +32,7 @@ jobs:
       contents: read
       pull-requests: write
     steps:
-      - uses: your-org/a11y-diff-action@v1
+      - uses: zachkklein/WCAG_PR_Checker@v1.0.1
         with:
           APP_DIR: '.'
           BUILD_DIR: 'dist'
@@ -49,7 +49,9 @@ That's it. No scripts to copy, no config files to manage.
 |-------|-------------|---------|
 | `APP_DIR` | Path to your app directory relative to repo root. Use `"."` if your app is at the root. | `.` |
 | `BUILD_DIR` | Static build output directory (`dist`, `out`, `build`). | `dist` |
-| `BUILD_COMMAND` | npm script to build your app. | `build` |
+| `BUILD_COMMAND` | npm script to build your app (used when `BUILD_RUN` is not set). | `build` |
+| `BUILD_RUN` | Full command to run instead of `npm run BUILD_COMMAND` (e.g. `pnpm build`, `npm run export`). Set to `true` to skip build. | (none) |
+| `INSTALL_COMMAND` | Command to install deps (e.g. `npm ci`, `pnpm install`). Set empty to skip install. | `npm ci` |
 | `URLS` | Comma-separated URL paths to scan. | `/` |
 | `IGNORE_RULES` | Comma-separated axe rule IDs to skip (e.g. `"duplicate-id,color-contrast"`). | `` |
 | `FAIL_ON_REGRESSION` | Fail the check when new violations are found. Set `"false"` to report only. | `true` |
@@ -86,6 +88,17 @@ When regressions are found, the action posts a comment like this:
 |--------------|-----------------|-------------|-------|-------------|------|
 | 🔴 critical  | color-contrast  | WCAG 2.1 AA | /     | #submit-btn | docs |
 ```
+
+---
+
+## Different build processes
+
+If your repo doesn't use `npm run build` or `npm ci`, use these inputs:
+
+- **Different npm script** (e.g. `export`, `generate`): set `BUILD_COMMAND: 'export'` (or whatever your script is called).
+- **pnpm / yarn**: set `INSTALL_COMMAND: 'pnpm install'` and optionally `BUILD_RUN: 'pnpm build'`.
+- **No build step** (static files already in repo): set `INSTALL_COMMAND: ''` to skip install, and `BUILD_RUN: 'true'` to skip build; ensure `BUILD_DIR` points to the folder that contains the static files.
+- **Custom build command**: set `BUILD_RUN: 'npm run export'` or any shell command that produces the static output in `BUILD_DIR`.
 
 ---
 
