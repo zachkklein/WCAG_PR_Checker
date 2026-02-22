@@ -57,6 +57,17 @@ inputs:
     required: false
     default: ${{ github.token }}
 
+  # Preview-URL mode: when both are set, skip build/serve and scan these URLs instead.
+  # Use this for Next.js (or any stack) with PR preview deployments (e.g. Vercel).
+  BASE_URL:
+    description: 'Base branch deployment URL (e.g. production or main preview). If set with PR_URL, skips local build/serve.'
+    required: false
+    default: ''
+  PR_URL:
+    description: 'PR preview deployment URL (e.g. Vercel PR comment link). If set with BASE_URL, skips local build/serve.'
+    required: false
+    default: ''
+
 outputs:
   new_violations:
     description: 'Number of new violations introduced by this PR.'
@@ -69,14 +80,16 @@ runs:
   using: 'composite'
   steps:
 
-    # ── 1. Checkout PR branch ─────────────────────────────────────────────────
+    # ── 1. Checkout PR branch (skip when using BASE_URL + PR_URL) ─────────────
     - name: Checkout PR branch
+      if: inputs.BASE_URL == '' || inputs.PR_URL == ''
       uses: actions/checkout@v4
       with:
         path: _a11y_pr
 
-    # ── 2. Checkout base (main) branch ───────────────────────────────────────
+    # ── 2. Checkout base (main) branch (skip when using BASE_URL + PR_URL) ────
     - name: Checkout base branch
+      if: inputs.BASE_URL == '' || inputs.PR_URL == ''
       uses: actions/checkout@v4
       with:
         ref: ${{ github.event.pull_request.base.sha }}
@@ -102,28 +115,32 @@ runs:
         cd ${{ github.action_path }}
         npx playwright install chromium --with-deps
 
-    # ── 6. Install & build PR branch ─────────────────────────────────────────
+    # ── 6. Install & build PR branch (skip when using BASE_URL + PR_URL) ───────
     - name: Install dependencies (PR branch)
+      if: inputs.BASE_URL == '' || inputs.PR_URL == ''
       shell: bash
       run: |
         cd _a11y_pr/${{ inputs.APP_DIR }}
         npm ci
 
     - name: Build PR branch
+      if: inputs.BASE_URL == '' || inputs.PR_URL == ''
       shell: bash
       run: |
         cd _a11y_pr/${{ inputs.APP_DIR }}
         rm -rf ${{ inputs.BUILD_DIR }} .next
         npm run ${{ inputs.BUILD_COMMAND }}
 
-    # ── 7. Install & build base branch ───────────────────────────────────────
+    # ── 7. Install & build base branch (skip when using BASE_URL + PR_URL) ─────
     - name: Install dependencies (base branch)
+      if: inputs.BASE_URL == '' || inputs.PR_URL == ''
       shell: bash
       run: |
         cd _a11y_base/${{ inputs.APP_DIR }}
         npm ci
 
     - name: Build base branch
+      if: inputs.BASE_URL == '' || inputs.PR_URL == ''
       shell: bash
       run: |
         cd _a11y_base/${{ inputs.APP_DIR }}
@@ -131,6 +148,7 @@ runs:
         npm run ${{ inputs.BUILD_COMMAND }}
 
     - name: Debug HTML diff
+      if: inputs.BASE_URL == '' || inputs.PR_URL == ''
       shell: bash
       run: |
         echo "=== Checking if index.html differs between branches ==="
@@ -138,10 +156,11 @@ runs:
              _a11y_pr/${{ inputs.APP_DIR }}/${{ inputs.BUILD_DIR }}/index.html \
           && echo "FILES ARE IDENTICAL" || echo "FILES DIFFER"
 
-    # ── 8. Serve both builds ──────────────────────────────────────────────────
+    # ── 8. Serve both builds (skip when using BASE_URL + PR_URL) ───────────────
     # Wait for ports with tcp: so we only require the server to be listening,
     # not returning 2xx (Next.js static export may 404 on HEAD / until routes exist).
     - name: Serve both builds
+      if: inputs.BASE_URL == '' || inputs.PR_URL == ''
       shell: bash
       run: |
         export PATH="${{ github.action_path }}/node_modules/.bin:$PATH"
@@ -159,12 +178,12 @@ runs:
 
         echo "Both servers ready."
 
-    # ── 9. Scan base branch ───────────────────────────────────────────────────
+    # ── 9. Scan base branch (BASE_URL or localhost:4000) ───────────────────────
     - name: Scan base branch
       shell: bash
       run: |
         node ${{ github.action_path }}/src/scan.js \
-          --baseUrl http://localhost:4000 \
+          --baseUrl "${{ inputs.BASE_URL || 'http://localhost:4000' }}" \
           --output /tmp/a11y_baseline.json \
           --urls "${{ inputs.URLS }}" \
           --ignore "${{ inputs.IGNORE_RULES }}" \
@@ -172,12 +191,12 @@ runs:
           --waitForNetworkIdle "${{ inputs.WAIT_FOR_NETWORK_IDLE }}" \
           --extraWaitMs "${{ inputs.EXTRA_WAIT_MS }}"
 
-    # ── 10. Scan PR branch ────────────────────────────────────────────────────
+    # ── 10. Scan PR branch (PR_URL or localhost:5000) ────────────────────────────
     - name: Scan PR branch
       shell: bash
       run: |
         node ${{ github.action_path }}/src/scan.js \
-          --baseUrl http://localhost:5000 \
+          --baseUrl "${{ inputs.PR_URL || 'http://localhost:5000' }}" \
           --output /tmp/a11y_pr.json \
           --urls "${{ inputs.URLS }}" \
           --ignore "${{ inputs.IGNORE_RULES }}" \

@@ -8,10 +8,10 @@ Unlike standard axe CI integrations that pass/fail absolutely, **a11y-diff compa
 
 ## How it works
 
-1. On every PR, the action builds both the **base branch** and the **PR branch**
-2. Runs [axe-core](https://github.com/dequelabs/axe-core) on both via Playwright
-3. Diffs the results — new violations are flagged, resolved violations are celebrated
-4. Posts a structured comment to the PR and optionally fails the check
+1. **Base vs PR**: The action compares the **base branch** (e.g. `main`) to the **PR branch** — either by building both and serving static files, or by scanning live deployment URLs.
+2. Runs [axe-core](https://github.com/dequelabs/axe-core) on both via Playwright.
+3. Diffs the results — new violations are flagged, resolved violations are celebrated.
+4. Posts a structured comment to the PR and optionally fails the check.
 
 ---
 
@@ -57,6 +57,8 @@ That's it. No scripts to copy, no config files to manage.
 | `WAIT_FOR_NETWORK_IDLE` | Wait for network idle before scanning. Recommended for SPAs. | `true` |
 | `EXTRA_WAIT_MS` | Additional milliseconds to wait after page load before scanning. | `500` |
 | `TOKEN` | GitHub token with `pull-requests: write`. | `github.token` |
+| `BASE_URL` | Base branch deployment URL. If set *with* `PR_URL`, skips local build/serve and scans these URLs (see [Preview URL mode](#preview-url-mode)). | `` |
+| `PR_URL` | PR preview deployment URL. If set *with* `BASE_URL`, skips local build/serve. | `` |
 
 ## Outputs
 
@@ -89,16 +91,29 @@ When regressions are found, the action posts a comment like this:
 
 ---
 
-## Framework compatibility
+## Deployment modes
 
-The action requires your app to produce a **static export** that can be served with `npx serve`. Most frameworks support this:
+### Static build mode (default)
+
+When **neither** `BASE_URL` nor `PR_URL` is set, the action checks out both branches, builds each, serves the static output with `npx serve`, and scans localhost. This only works when your app produces a **static export** (e.g. a folder of HTML/JS/CSS).
 
 | Framework | Build command | Output dir | Notes |
 |-----------|--------------|------------|-------|
 | Vite | `vite build` | `dist` | Works out of the box |
-| Next.js | `next build` | `out` | Requires `output: 'export'` in `next.config.ts` |
+| Next.js (static) | `next build` | `out` | Requires `output: 'export'` in `next.config.ts` and no dynamic routes (or use `generateStaticParams`) |
 | Create React App | `react-scripts build` | `build` | Works out of the box |
 | Nuxt | `nuxt generate` | `.output/public` | Use static generation mode |
+
+Standard **Next.js apps** that use `next build` (without `output: 'export'`) produce a `.next` server bundle, not static files — so there is no `out/` to serve. Use [Preview URL mode](#preview-url-mode) instead.
+
+### Preview URL mode
+
+When **both** `BASE_URL` and `PR_URL` are set, the action **skips** checkout, install, build, and serve. It only installs its own dependencies and Playwright, then scans the two URLs you provide. Use this for:
+
+- **Next.js** (or any stack) with PR preview deployments (e.g. Vercel, Netlify).
+- Any app where the base and PR are already deployed and you have two URLs to compare.
+
+Vercel exposes the PR preview URL in the workflow; you can pass your production or main-preview URL as `BASE_URL` and the PR deployment as `PR_URL`.
 
 ---
 
@@ -123,6 +138,20 @@ The action requires your app to produce a **static export** that can be served w
     BUILD_DIR: 'out'
     URLS: '/,/dashboard'
 ```
+
+### Next.js / Vercel (preview URL mode)
+
+Use deployment URLs instead of building locally. No `BUILD_DIR` or build step — the action only scans the given URLs.
+
+```yaml
+- uses: your-org/a11y-diff-action@v1
+  with:
+    BASE_URL: 'https://your-app.vercel.app'      # production or main preview
+    PR_URL: ${{ steps.deploy.outputs.url }}      # or env from Vercel GitHub Action
+    URLS: '/,/about,/projects'
+```
+
+If you use the [Vercel GitHub Action](https://github.com/amondnet/vercel-action) or similar, the PR preview URL is often available as an output or env var — pass that into `PR_URL`.
 
 ### Report-only mode (never fails the build)
 
