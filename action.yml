@@ -240,11 +240,10 @@ runs:
       shell: bash
       env:
         OPENROUTER_API_KEY: ${{ inputs.OPENROUTER_API_KEY }}
-        PR_PROJECT_PATH: "_a11y_pr/${{ inputs.APP_DIR }}"
         GITHUB_TOKEN: ${{ inputs.TOKEN }}
+        PR_PROJECT_PATH: "_a11y_pr/${{ inputs.APP_DIR }}/${{ inputs.BUILD_DIR }}"
         PR_NUMBER: ${{ github.event.pull_request.number }}
         GITHUB_REPOSITORY: ${{ github.repository }}
-        PR_PROJECT_PATH: "_a11y_pr/${{ inputs.APP_DIR }}/${{ inputs.BUILD_DIR }}"
       run: |
         node ${{ github.action_path }}/src/auto-fix.js --diff /tmp/a11y_diff.json
     
