@@ -252,7 +252,7 @@ runs:
       if: env.HAS_REGRESSION == 'true'
       uses: stefanzweifel/git-auto-commit-action@v5
       with:
-        commit_message: "🤖 chore: auto-fix accessibility violations via AI."
+        commit_message: "a11yGuard BOT: Auto-fix accessibility violations"
         repository: _a11y_pr
         branch: ${{ github.head_ref }}
         file_pattern: '*.html'
@@ -269,7 +269,7 @@ runs:
           /tmp/a11y_diff.json
         retention-days: 7
 
-    # ── 16. Fail the check if regression (after AI fix + commit have run) ──────
+    # 16. Fail the check if regression
     - name: Fail check if regression
       if: env.HAS_REGRESSION == 'true' && inputs.FAIL_ON_REGRESSION == 'true'
       shell: bash
