@@ -232,7 +232,10 @@ runs:
         GITHUB_REPOSITORY: ${{ github.repository }}
         FAIL_ON_REGRESSION: ${{ inputs.FAIL_ON_REGRESSION }}
       run: |
+        # Wrap in set +e so the AI Fixer can run even if this script exits with 1
+        set +e
         node ${{ github.action_path }}/src/comment.js --diff /tmp/a11y_diff.json
+        set -e
 
     # ── 13. Run AI Auto-Fixer ────────────────────────────────────────────────
     - name: Run AI Auto-Fixer
