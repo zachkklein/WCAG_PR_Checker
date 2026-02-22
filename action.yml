@@ -256,7 +256,7 @@ runs:
         commit_user_name: "a11yGuard-bot[bot]"
         commit_user_email: "41898282+github-actions[bot]@users.noreply.github.com"
         commit_author: "a11yGuard-bot <41898282+github-actions[bot]@users.noreply.github.com>"
-                repository: _a11y_pr
+        repository: _a11y_pr
         branch: ${{ github.head_ref }}
         file_pattern: 'src/**/*.tsx src/**/*.js app/**/*.tsx *.html'
 
